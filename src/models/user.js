@@ -23,7 +23,7 @@ export default class User extends Sequelize.Model {
           allowNull: false,
         },
         point: {
-          type: Sequelize.STRING(50),
+          type: Sequelize.INTEGER,
           allowNull: false,
         },
       },
