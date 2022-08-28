@@ -15,6 +15,10 @@ export default class Board extends Sequelize.Model {
           type: Sequelize.STRING(200),
           allowNull: false,
         },
+        is_choose: {
+          type: Sequelize.BOOLEAN,
+          allowNull: false,
+        },
       },
       {
         sequelize,
