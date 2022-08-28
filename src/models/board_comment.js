@@ -12,7 +12,7 @@ export default class BoardComment extends Sequelize.Model {
           type: Sequelize.STRING(100),
           allowNull: false,
         },
-        choose: {
+        is_choose: {
           type: Sequelize.BOOLEAN,
           allowNull: false,
         },
@@ -29,6 +29,7 @@ export default class BoardComment extends Sequelize.Model {
   }
   // 외래키 설정 User의 id값 즉 외래키로 UserId 생성
   // 외래키 설정 Post의 id값 즉 외래키로 PostId 생성
+  // 확인
   static associate(db) {
     db.board_comment.belongsTo(db.user);
     db.board_comment.belongsTo(db.board);
