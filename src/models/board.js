@@ -15,6 +15,10 @@ export default class Board extends Sequelize.Model {
           type: Sequelize.STRING(200),
           allowNull: false,
         },
+        language: {
+          type: Sequelize.STRING(50),
+          allowNull: false,
+        },
         is_resolve: {
           type: Sequelize.BOOLEAN,
           allowNull: false,
@@ -33,11 +37,9 @@ export default class Board extends Sequelize.Model {
   }
 
   static associate(db) {
-    db.board.hasMany(db.board_comment, {
-      onDelete: "cascade",
-      onUpdate: "cascade",
-    });
+    db.board.hasMany(db.board_comment);
     db.board.belongsTo(db.user);
     db.board.hasMany(db.board_like);
+    db.board.hasMany(db.board_bookmark);
   }
 }
