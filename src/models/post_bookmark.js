@@ -2,21 +2,16 @@ import Sequelize from "sequelize";
 
 import { sequelize } from "./sequelize.js";
 
-export default class BoardCommentLike extends Sequelize.Model {
+export default class PostBookmark extends Sequelize.Model {
   static init(sequelize) {
     // like를 BOOLEAN 값으로 설정
     return super.init(
-      {
-        user_name: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
-        },
-      },
+      {},
       {
         sequelize,
         timestamps: false,
         underscored: true,
-        tableName: "board_comment_like",
+        tableName: "post_bookmark",
         charset: "utf8",
         collate: "utf8_general_ci",
       }
@@ -24,6 +19,7 @@ export default class BoardCommentLike extends Sequelize.Model {
   }
   // belongsTo로 받아옴
   static associate(db) {
-    db.board_comment_like.belongsTo(db.board_comment);
+    db.post_bookmark.belongsTo(db.post);
+    db.post_bookmark.belongsTo(db.user);
   }
 }
