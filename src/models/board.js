@@ -2,7 +2,7 @@ import Sequelize from "sequelize";
 
 import { sequelize } from "./sequelize.js";
 
-export default class QnAPost extends Sequelize.Model {
+export default class Board extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       // title과 content init
@@ -20,9 +20,8 @@ export default class QnAPost extends Sequelize.Model {
         sequelize,
         timestamps: true,
         paranoid: false,
-        underscored: false,
-        modelName: "QnAPost",
-        tableName: "QnApost",
+        underscored: true,
+        tableName: "board",
         charset: "utf8",
         collate: "utf8_general_ci",
       }
@@ -30,11 +29,11 @@ export default class QnAPost extends Sequelize.Model {
   }
 
   static associate(db) {
-    db.QnAPost.hasMany(db.QnAComment, {
+    db.board.hasMany(db.board_comment, {
       onDelete: "cascade",
       onUpdate: "cascade",
     });
-    db.QnAPost.belongsTo(db.User);
-    db.QnAPost.hasMany(db.QnALike);
+    db.board.belongsTo(db.user);
+    db.board.hasMany(db.board_like);
   }
 }
