@@ -2,13 +2,43 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import router from './routes/index.js';
+import session from 'express-session';
+import redis from 'redis';
+import passport from 'passport';
+import passportConfig from './passport/index.js';
+
+import connectRedis from 'connect-redis';
+let RedisStore = connectRedis(session);
 
 dotenv.config();
+const app = express();
+passportConfig();
+
+// 로그인에 필요한 session 저장소
+const redisClient = redis.createClient({
+  url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
+  password: process.env.REDIS_PASSWORD,
+});
+
+const sessionOption = {
+  resave: false,
+  saveUninitialized: false,
+  secret: process.env.COOKIE_SECRET,
+  cookie: {
+    httpOnly: true,
+    secure: false,
+  },
+  store: new RedisStore({ client: redisClient }),
+};
+if (process.env.NODE_ENV === 'production') {
+  sessionOption.proxy = true;
+}
+
+app.use(session(sessionOption));
+app.use(passport.initialize());
+app.use(passport.session());
 
 import { sequelize } from './models/index.js';
-import router from './routes/index.js';
-
-const app = express();
 
 app.set('port', process.env.PORT || 3000);
 
