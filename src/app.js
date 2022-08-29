@@ -6,6 +6,7 @@ dotenv.config();
 
 import { sequelize } from './models/index.js';
 import router from './routes/index.js';
+
 const app = express();
 
 app.set('port', process.env.PORT || 3000);
@@ -35,10 +36,9 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  return res.json({
+  return res.status(err.status).json({
     success: false,
     message: err.message,
-    result: err,
   });
 });
 
