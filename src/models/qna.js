@@ -18,6 +18,7 @@ export default class Qna extends Sequelize.Model {
         },
         is_resolve: {
           type: Sequelize.BOOLEAN,
+          defaultValue: false,
           allowNull: false,
         },
       },
