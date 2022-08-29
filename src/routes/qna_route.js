@@ -5,6 +5,7 @@ import QnaController from '../controllers/qna_controller.js';
 const router = express.Router();
 const qnaController = new QnaController();
 
+router.get('/', qnaController.findAllQna);
 router.post('/', qnaController.createQna);
 
 export default router;
