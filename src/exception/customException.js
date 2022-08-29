@@ -6,6 +6,7 @@ class CustomException extends Error {
   constructor(message, statusCode = 500) {
     super(message);
 
+    this.success = false;
     this.name = 'CustomException';
     this.message = message;
     this.statusCode = statusCode;
@@ -61,7 +62,7 @@ class UnkownException extends CustomException {
   }
 }
 
-module.exports = {
+export {
   CustomException,
   ForbiddenException,
   ConflictException,
