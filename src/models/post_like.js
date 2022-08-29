@@ -19,7 +19,10 @@ export default class PostLike extends Sequelize.Model {
   }
   // belongsTo로 받아옴
   static associate(db) {
-    db.post_like.belongsTo(db.post);
+    db.post_like.belongsTo(db.post, {
+      foreignKey: 'post_id',
+      targetKey: 'id',
+    });
     db.post_like.belongsTo(db.user);
   }
 }

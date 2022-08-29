@@ -34,6 +34,9 @@ export default class PostComment extends Sequelize.Model {
   // 외래키 설정 User의 id값 즉 외래키로 UserId 생성
   // 외래키 설정 Post의 id값 즉 외래키로 PostId 생성
   static associate(db) {
-    db.post_comment.belongsTo(db.post);
+    db.post_comment.belongsTo(db.post, {
+      foreignKey: 'post_id',
+      targetKey: 'id',
+    });
   }
 }

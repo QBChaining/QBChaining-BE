@@ -35,7 +35,10 @@ export default class QnaComment extends Sequelize.Model {
   // 외래키 설정 Post의 id값 즉 외래키로 PostId 생성
   // 확인
   static associate(db) {
-    db.qna_comment.belongsTo(db.qna);
+    db.qna_comment.belongsTo(db.qna, {
+      foreignKey: 'qna_id',
+      targetKey: 'id',
+    });
     db.qna_comment.hasMany(db.qna_comment_like);
   }
 }
