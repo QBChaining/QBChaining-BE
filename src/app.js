@@ -5,7 +5,7 @@ import cors from 'cors';
 dotenv.config();
 
 import { sequelize } from './models/index.js';
-
+import router from './routes/index.js';
 const app = express();
 
 app.set('port', process.env.PORT || 3000);
@@ -24,8 +24,7 @@ app.use(
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// app.use("/api", router);
+app.use('/api', router);
 
 app.use((req, res, next) => {
   const error = new Error(
