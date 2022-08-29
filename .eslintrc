@@ -10,8 +10,8 @@
   "rules": {
     "no-unexpected-multiline": "error",
     "semi": ["error", "always"],
-    "quotes": ["error", "double"],
+    "quotes": ["error", "single"],
     "indent": ["error", 2],
-    "max-len": ["error", { "code": 100 }]
+    "max-len": ["error", { "code": 150 }]
   }
 }

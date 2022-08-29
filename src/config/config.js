@@ -1,6 +1,6 @@
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 
-dotenv.config({ path: ".env" });
+dotenv.config({ path: '.env' });
 
 const config = {
   development: {
@@ -8,9 +8,9 @@ const config = {
     password: process.env.DB_PW,
     database: process.env.DB,
     host: process.env.DB_HOST,
-    dialect: "mysql",
+    dialect: 'mysql',
     logging: false,
-    timezone: "+09:00",
+    timezone: '+09:00',
     dialectOptions: {
       dateStrings: true,
       typeCast: true,
@@ -20,18 +20,18 @@ const config = {
     },
   },
   test: {
-    username: "root",
+    username: 'root',
     password: null,
-    database: "database_test",
-    host: "127.0.0.1",
-    dialect: "mysql",
+    database: 'database_test',
+    host: '127.0.0.1',
+    dialect: 'mysql',
   },
   production: {
     username: process.env.DB_ID,
     password: process.env.DB_PW,
     database: process.env.DB,
-    host: "127.0.0.1",
-    dialect: "mysql",
+    host: '127.0.0.1',
+    dialect: 'mysql',
     logging: false,
   },
 };

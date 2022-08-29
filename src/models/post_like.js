@@ -1,6 +1,6 @@
-import Sequelize from "sequelize";
+import Sequelize from 'sequelize';
 
-import { sequelize } from "./sequelize.js";
+import { sequelize } from './sequelize.js';
 
 export default class PostLike extends Sequelize.Model {
   static init(sequelize) {
@@ -11,9 +11,9 @@ export default class PostLike extends Sequelize.Model {
         sequelize,
         timestamps: false,
         underscored: true,
-        tableName: "post_like",
-        charset: "utf8",
-        collate: "utf8_general_ci",
+        tableName: 'post_like',
+        charset: 'utf8',
+        collate: 'utf8_general_ci',
       }
     );
   }

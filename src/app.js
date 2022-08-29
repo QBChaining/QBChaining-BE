@@ -1,18 +1,18 @@
-import express from "express";
-import dotenv from "dotenv";
-import cors from "cors";
+import express from 'express';
+import dotenv from 'dotenv';
+import cors from 'cors';
 
 dotenv.config();
 
-import { sequelize } from "./models/index.js";
+import { sequelize } from './models/index.js';
 
 const app = express();
 
-app.set("port", process.env.PORT || 3000);
+app.set('port', process.env.PORT || 3000);
 
 sequelize
   .sync({ force: true })
-  .then(() => console.log("db connect"))
+  .then(() => console.log('db connect'))
   .catch((err) => console.error(err));
 
 app.use(
@@ -43,4 +43,4 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(app.get("port"), () => console.log(3000));
+app.listen(app.get('port'), () => console.log(3000));
