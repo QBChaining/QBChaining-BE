@@ -1,8 +1,8 @@
-import Sequelize from "sequelize";
+import Sequelize from 'sequelize';
 
-import { sequelize } from "./sequelize.js";
+import { sequelize } from './sequelize.js';
 
-export default class BoardComment extends Sequelize.Model {
+export default class QnaComment extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       // comment라는 이름으로 init
@@ -25,9 +25,9 @@ export default class BoardComment extends Sequelize.Model {
         sequelize,
         timestamps: true,
         underscored: true,
-        tableName: "board_comment",
-        charset: "utf8",
-        collate: "utf8_general_ci",
+        tableName: 'qna_comment',
+        charset: 'utf8',
+        collate: 'utf8_general_ci',
       }
     );
   }
@@ -35,7 +35,7 @@ export default class BoardComment extends Sequelize.Model {
   // 외래키 설정 Post의 id값 즉 외래키로 PostId 생성
   // 확인
   static associate(db) {
-    db.board_comment.belongsTo(db.board);
-    db.board_comment.hasMany(db.board_comment_like);
+    db.qna_comment.belongsTo(db.qna);
+    db.qna_comment.hasMany(db.qna_comment_like);
   }
 }

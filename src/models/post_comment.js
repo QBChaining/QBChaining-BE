@@ -1,6 +1,6 @@
-import Sequelize from "sequelize";
+import Sequelize from 'sequelize';
 
-import { sequelize } from "./sequelize.js";
+import { sequelize } from './sequelize.js';
 
 export default class PostComment extends Sequelize.Model {
   static init(sequelize) {
@@ -25,9 +25,9 @@ export default class PostComment extends Sequelize.Model {
         sequelize,
         timestamps: true,
         underscored: true,
-        tableName: "post_comment",
-        charset: "utf8",
-        collate: "utf8_general_ci",
+        tableName: 'post_comment',
+        charset: 'utf8',
+        collate: 'utf8_general_ci',
       }
     );
   }
