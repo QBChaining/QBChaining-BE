@@ -1,9 +1,13 @@
 import express, { application } from 'express';
+import postRouter from './post_route.js';
+import qnaRouter from './qna_route.js';
 
 const router = express.Router();
 
-import qnqRouter from './qna_route.js';
 
-router.use('/qna', qnqRouter);
+
+router.use('/posts', postRouter);
+router.use('/qna', qnaRouter);
+
 
 export default router;
