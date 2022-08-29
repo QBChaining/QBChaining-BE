@@ -1,10 +1,12 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import router from './routes/index.js';
 
 dotenv.config();
 
 import { sequelize } from './models/index.js';
+import router from './routes/index.js';
 
 const app = express();
 
@@ -25,7 +27,7 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// app.use("/api", router);
+app.use('/api', router);
 
 app.use((req, res, next) => {
   const error = new Error(
@@ -36,10 +38,9 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  return res.json({
+  return res.status(err.status).json({
     success: false,
     message: err.message,
-    result: err,
   });
 });
 

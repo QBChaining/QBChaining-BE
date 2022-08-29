@@ -1,4 +1,5 @@
 import express, { application } from 'express';
+<<<<<<< HEAD
 
 const router = express.Router();
 
@@ -16,5 +17,17 @@ router.use('/posts', postRouter);
 router.use('/comments', commentRouter);
 router.use('/QnApost', QnApostRouter);
 router.use('/QnAComment', QnACommentRouter);
+=======
+import postRouter from './post_route.js';
+import qnaRouter from './qna_route.js';
+
+const router = express.Router();
+
+
+
+router.use('/posts', postRouter);
+router.use('/qna', qnaRouter);
+
+>>>>>>> 68af974a319a1f29a0a3b84cac8f4979693675ac
 
 export default router;
