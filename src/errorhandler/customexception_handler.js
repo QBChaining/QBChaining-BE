@@ -1,4 +1,4 @@
-const { CustomException } = require('../exception/customException');
+import { CustomException } from '../exception/customexception.js';
 
 /**
  *
@@ -10,4 +10,4 @@ const exceptionHandler = (err) => {
   return err;
 };
 
-module.exports = exceptionHandler;
+export default exceptionHandler;
