@@ -23,6 +23,22 @@ class qnaController {
         .json({ success: exception.success, message: exception.message });
     }
   };
+
+  findAllQna = async (req, res, next) => {
+    try {
+      const data = await this.qnaService.findAllQna();
+
+      return res
+        .status(200)
+        .json({ succses: true, message: '전체 조회 성공', data });
+    } catch (err) {
+      const exception = exceptionHandler(err);
+
+      return res
+        .status(exception.statusCode)
+        .json({ success: exception.success, message: exception.message });
+    }
+  };
 }
 
 export default qnaController;
