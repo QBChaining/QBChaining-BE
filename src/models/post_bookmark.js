@@ -19,7 +19,13 @@ export default class PostBookmark extends Sequelize.Model {
   }
   // belongsTo로 받아옴
   static associate(db) {
-    db.post_bookmark.belongsTo(db.post);
-    db.post_bookmark.belongsTo(db.user);
+    db.post_bookmark.belongsTo(db.post, {
+      foreignKey: 'post_id',
+      targetKey: 'id',
+    });
+    db.post_bookmark.belongsTo(db.user, {
+      foreignKey: 'user_id',
+      targetKey: 'id',
+    });
   }
 }

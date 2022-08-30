@@ -12,7 +12,7 @@ export default class Qna extends Sequelize.Model {
           type: Sequelize.STRING(200),
           allowNull: false,
         },
-        language: {
+        category: {
           type: Sequelize.STRING(50),
           allowNull: false,
         },
@@ -36,8 +36,12 @@ export default class Qna extends Sequelize.Model {
 
   static associate(db) {
     db.qna.hasMany(db.qna_comment);
-    db.qna.belongsTo(db.user);
+    db.qna.belongsTo(db.user, {
+      foreignKey: 'user_id',
+      targetKey: 'id',
+    });
     db.qna.hasMany(db.qna_like);
     db.qna.hasMany(db.qna_bookmark);
+    db.qna.hasMany(db.qna_tag);
   }
 }
