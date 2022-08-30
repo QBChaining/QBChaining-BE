@@ -9,9 +9,10 @@ import passportConfig from './passport/index.js';
 import connectRedis from 'connect-redis';
 
 let RedisStore = connectRedis(session);
-
 const app = express();
+
 dotenv.config();
+
 passportConfig();
 
 // 로그인에 필요한 session 저장소
