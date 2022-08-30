@@ -1,10 +1,10 @@
 import QnaService from '../services/qna_service.js';
 import exceptionHandler from '../errorhandler/customexception_handler.js';
 
-class qnaController {
+class QnaController {
   qnaService = new QnaService();
 
-  createQna = async (req, res, next) => {
+  CreateQna = async (req, res, next) => {
     // 아이디받기 세션 or 토큰
     // const { id } = res.locals
     const id = 1;
@@ -26,7 +26,7 @@ class qnaController {
     }
   };
 
-  findAllQna = async (req, res, next) => {
+  FindAllQna = async (req, res, next) => {
     try {
       const data = await this.qnaService.findAllQna();
 
@@ -43,7 +43,7 @@ class qnaController {
     }
   };
 
-  findOneQna = async (req, res, next) => {
+  FindOneQna = async (req, res, next) => {
     const { id } = req.params;
 
     try {
@@ -60,6 +60,25 @@ class qnaController {
         .json({ success: exception.success, message: exception.message });
     }
   };
+
+  AddBookMark = async (req, res, next) => {
+    const qna_id = req.params.id;
+    // 세션 유저아이디 받기
+    const user_id = 1;
+    try {
+      await this.qnaService.AddBookMark(qna_id, user_id);
+      return res
+        .status(200)
+        .json({ success: true, message: '즐겨찾기 추가 되었습니다.' });
+    } catch (err) {
+      console.log(err);
+      const exception = exceptionHandler(err);
+
+      return res
+        .status(exception.statusCode)
+        .json({ success: exception.success, message: exception.message });
+    }
+  };
 }
 
-export default qnaController;
+export default QnaController;
