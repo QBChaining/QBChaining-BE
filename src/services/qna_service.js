@@ -99,6 +99,12 @@ class QnaService {
     if (existLike) throw new ConflictException('반복해서 눌렀습니다.');
     else await QnaLike.create({ qna_id, user_id });
   };
+
+  RemoveLikeQna = async (qna_id, user_id) => {
+    const existLike = await QnaLike.findOne({ where: { qna_id, user_id } });
+    if (!existLike) throw new ConflictException('반복해서 눌렀습니다.');
+    else await QnaLike.destroy({ where: { qna_id, user_id } });
+  };
 }
 
 export default QnaService;

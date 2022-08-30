@@ -115,6 +115,23 @@ class QnaController {
         .json({ success: exception.success, message: exception.message });
     }
   };
+
+  RemoveLikeQna = async (req, res, next) => {
+    const qna_id = req.params.id;
+    // 세션 유저아이디 받기
+    const user_id = 1;
+    try {
+      await this.qnaService.RemoveLikeQna(qna_id, user_id);
+      return res.status(200).json({ success: true, message: '추천 최소' });
+    } catch (err) {
+      console.log(err);
+      const exception = exceptionHandler(err);
+
+      return res
+        .status(exception.statusCode)
+        .json({ success: exception.success, message: exception.message });
+    }
+  };
 }
 
 export default QnaController;
