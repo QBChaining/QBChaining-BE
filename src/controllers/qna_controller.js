@@ -8,15 +8,16 @@ class qnaController {
     // 아이디받기 세션 or 토큰
     // const { id } = res.locals
     const id = 1;
-    const { title, content, tag, rowtag } = req.body;
+    const { title, content, category, tag } = req.body;
 
     try {
-      await this.qnaService.createQna(title, content, tag, rowtag, id);
+      await this.qnaService.createQna(title, content, category, tag, id);
 
       return res
         .status(201)
         .json({ success: true, message: '게시글 작성 되었습니다.' });
     } catch (err) {
+      console.log(err);
       const exception = exceptionHandler(err);
 
       res
@@ -33,6 +34,7 @@ class qnaController {
         .status(200)
         .json({ succses: true, message: '전체 조회 성공', data });
     } catch (err) {
+      console.log(err);
       const exception = exceptionHandler(err);
 
       return res
