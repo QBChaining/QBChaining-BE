@@ -11,4 +11,5 @@ router.post('/', qnaController.CreateQna);
 router.post('/:id/bookmark', qnaController.AddBookMark);
 router.delete('/:id/bookmark', qnaController.RemoveBookMark);
 router.post('/:id/like', qnaController.LikeQna);
+router.delete('/:id/like', qnaController.RemoveLikeQna);
 export default router;
