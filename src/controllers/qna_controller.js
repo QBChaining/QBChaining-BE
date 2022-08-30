@@ -7,10 +7,11 @@ class qnaController {
   createQna = async (req, res, next) => {
     // 아이디받기 세션 or 토큰
     // const { id } = res.locals
+    const id = 1;
     const { title, content, tag, rowtag } = req.body;
 
     try {
-      await this.qnaService.createQna(title, content, tag, rowtag);
+      await this.qnaService.createQna(title, content, tag, rowtag, id);
 
       return res
         .status(201)
