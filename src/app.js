@@ -6,12 +6,12 @@ import session from 'express-session';
 import redis from 'redis';
 import passport from 'passport';
 import passportConfig from './passport/index.js';
-
 import connectRedis from 'connect-redis';
+
 let RedisStore = connectRedis(session);
 
-dotenv.config();
 const app = express();
+dotenv.config();
 passportConfig();
 
 // 로그인에 필요한 session 저장소
@@ -30,6 +30,7 @@ const sessionOption = {
   },
   store: new RedisStore({ client: redisClient }),
 };
+
 if (process.env.NODE_ENV === 'production') {
   sessionOption.proxy = true;
 }

@@ -23,13 +23,10 @@ const github = () => {
           if (exUser) {
             done(null, exUser);
           } else {
-            console.log(profile);
             const newUser = await User.create({
               email: profile.profileUrl,
               user_name: profile.username,
               name: profile.username,
-              //   snsId: profile.id,
-              //   provider: 'github',
               rank_point: 0,
             });
             done(null, newUser);
