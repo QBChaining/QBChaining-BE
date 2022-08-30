@@ -15,7 +15,7 @@ import User from '../models/user.js';
 import QnaLike from '../models/qna_like.js';
 
 class QnaService {
-  createQna = async (title, content, category, tags, qna_id) => {
+  CreateQna = async (title, content, category, tags, qna_id) => {
     if ((!title || !content, !category)) {
       throw new ConflictException(`null 값이 존재합니다.`);
     }
@@ -28,7 +28,7 @@ class QnaService {
     // await QnaTag  >>> Pending
   };
 
-  findAllQna = async () => {
+  FindAllQna = async () => {
     const qnaLists = await Qna.findAll({
       // attributes: ['id', 'title', 'is_resolve'],
       include: [
@@ -58,7 +58,7 @@ class QnaService {
     });
   };
 
-  findOneQna = async (id) => {
+  FindOneQna = async (id) => {
     const lists = await Qna.findOne({
       wherer: { id },
       attributes: [
@@ -78,6 +78,12 @@ class QnaService {
     });
 
     return lists;
+  };
+
+  AddBookMark = async (qna_id, user_id) => {
+    const existLike = await QnaLike.findOne({ where: { qna_id, user_id } });
+    if (existLike) throw new ConflictException('이미 즐겨찾기 되었습니다.');
+    else await QnaLike.create({ qna_id, user_id });
   };
 }
 
