@@ -30,18 +30,17 @@ class QnaService {
 
   findAllQna = async () => {
     const qnaLists = await Qna.findAll({
-      attributes: ['id', 'title', 'is_resolve'],
+      // attributes: ['id', 'title', 'is_resolve'],
       include: [
-        { model: User, attributes: ['id', 'user_name', 'email'] },
+        { model: User, attributes: ['id', 'user_name', 'createdAt'] },
         { model: QnaComment, attributes: ['id'] },
         { model: QnaTag, attributes: ['tag'], raw: true },
         { model: QnaLike, attributes: ['id'] },
       ],
     });
-
     return qnaLists.map((list) => {
       const tag = [];
-      for (let i = 0; i < list.QnaTags?.length; i++) {
+      for (let i = 0; i < list.QnaTags.length; i++) {
         tag.push(list.QnaTags[i].dataValues.tag);
       }
       return {
@@ -49,7 +48,7 @@ class QnaService {
         title: list.title,
         content: list.content,
         is_resolve: list.is_resolve,
-        createAt: list.createAt,
+        createdAt: list.createdAt,
         honey_tip: list.QnaLikes?.length,
         cntcomment: list.QnaComments?.length,
         category: list.category,
@@ -57,6 +56,28 @@ class QnaService {
         user: list.User,
       };
     });
+  };
+
+  findOneQna = async (id) => {
+    const lists = await Qna.findOne({
+      wherer: { id },
+      attributes: [
+        'id',
+        'title',
+        'content',
+        'category',
+        'is_resolve',
+        'createdAt',
+      ],
+      include: [
+        {
+          model: QnaComment,
+          attributes: ['id', 'comment', 'is_choose', 'user_name', 'createdAt'],
+        },
+      ],
+    });
+
+    return lists;
   };
 }
 

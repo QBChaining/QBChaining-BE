@@ -42,6 +42,24 @@ class qnaController {
         .json({ success: exception.success, message: exception.message });
     }
   };
+
+  findOneQna = async (req, res, next) => {
+    const { id } = req.params;
+
+    try {
+      const data = await this.qnaService.findOneQna(id);
+      return res
+        .status(200)
+        .json({ success: true, message: '상세 조회 완료', data });
+    } catch (err) {
+      console.log(err);
+      const exception = exceptionHandler(err);
+
+      return res
+        .status(exception.statusCode)
+        .json({ success: exception.success, message: exception.message });
+    }
+  };
 }
 
 export default qnaController;
