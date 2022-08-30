@@ -19,7 +19,13 @@ export default class QnaBookmark extends Sequelize.Model {
   }
   // belongsTo로 받아옴
   static associate(db) {
-    db.qna_bookmark.belongsTo(db.qna);
-    db.qna_bookmark.belongsTo(db.user);
+    db.qna_bookmark.belongsTo(db.qna, {
+      foreignKey: 'qna_id',
+      targetKey: 'id',
+    });
+    db.qna_bookmark.belongsTo(db.user, {
+      foreignKey: 'user_id',
+      targetKey: 'id',
+    });
   }
 }

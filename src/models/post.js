@@ -37,7 +37,10 @@ export default class Post extends Sequelize.Model {
       onDelete: 'cascade',
       onUpdate: 'cascade',
     });
-    db.post.belongsTo(db.user);
+    db.post.belongsTo(db.user, {
+      foreignKey: 'user_id',
+      targetKey: 'id',
+    });
     db.post.hasMany(db.post_like);
     db.post.hasMany(db.post_bookmark);
   }
