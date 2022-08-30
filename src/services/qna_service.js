@@ -13,6 +13,7 @@ import QnaComment from '../models/qna_comment.js';
 import QnaTag from '../models/qna_tag.js';
 import User from '../models/user.js';
 import QnaLike from '../models/qna_like.js';
+import QnaBookmark from '../models/qna_bookmark.js';
 
 class QnaService {
   CreateQna = async (title, content, category, tags, qna_id) => {
@@ -81,15 +82,22 @@ class QnaService {
   };
 
   AddBookMark = async (qna_id, user_id) => {
-    const existLike = await QnaLike.findOne({ where: { qna_id, user_id } });
+    const existLike = await QnaBookmark.findOne({ where: { qna_id, user_id } });
     if (existLike) throw new ConflictException('반복해서 눌렀습니다.');
-    else await QnaLike.create({ qna_id, user_id });
+    else await QnaBookmark.create({ qna_id, user_id });
+    throw Error('statuscode');
   };
 
   RemoveBookMark = async (qna_id, user_id) => {
-    const existLike = await QnaLike.findOne({ where: { qna_id, user_id } });
+    const existLike = await QnaBookmark.findOne({ where: { qna_id, user_id } });
     if (!existLike) throw new ConflictException('반복해서 눌렀습니다.');
-    else await QnaLike.destroy({ where: { qna_id, user_id } });
+    else await QnaBookmark.destroy({ where: { qna_id, user_id } });
+  };
+
+  LikeQna = async (qna_id, user_id) => {
+    const existLike = await QnaLike.findOne({ where: { qna_id, user_id } });
+    if (existLike) throw new ConflictException('반복해서 눌렀습니다.');
+    else await QnaLike.create({ qna_id, user_id });
   };
 }
 
