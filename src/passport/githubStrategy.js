@@ -1,4 +1,7 @@
 import passport from 'passport';
+import dotenv from 'dotenv';
+
+dotenv.config({ path: '../.env' });
 
 // const GitHubStrategy = require('passport-github').Strategy;
 
@@ -6,12 +9,15 @@ import GitHubStrategy from 'passport-github';
 
 import User from '../models/user.js';
 
+let id = process.env.GIT_ID;
+let secret = process.env.GIT_SECRET;
+
 const github = () => {
   passport.use(
     new GitHubStrategy(
       {
-        clientID: process.env.GIT_ID,
-        clientSecret: process.env.GIT_SECRET,
+        clientID: `${id}`,
+        clientSecret: `${secret}`,
         callbackURL: 'http://localhost:3000/api/auth/github/callback',
       },
       async (accessToken, refreshToken, profile, done) => {

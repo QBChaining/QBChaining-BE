@@ -41,7 +41,7 @@ class QnaService {
 
     return qnaLists.map((list) => {
       const tag = [];
-      for (let i = 0; i < list.QnaTags?.length; i++) {
+      for (let i = 0; i < list.QnaTags.length; i++) {
         tag.push(list.QnaTags[i].dataValues.tag);
       }
       return {
@@ -50,8 +50,8 @@ class QnaService {
         content: list.content,
         is_resolve: list.is_resolve,
         createAt: list.createAt,
-        honey_tip: list.QnaLikes?.length,
-        cntcomment: list.QnaComments?.length,
+        honey_tip: list.QnaLikes.length,
+        cntcomment: list.QnaComments.length,
         category: list.category,
         tag,
         user: list.User,
