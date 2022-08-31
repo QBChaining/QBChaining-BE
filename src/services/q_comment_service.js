@@ -86,6 +86,16 @@ class QnaCommentService {
     if (!existLike) throw new ConflictException('반복해서 눌렀습니다.');
     else await QnaCommentLike.destroy({ where: { qna_comment_id, user_id } });
   };
+
+  ChooseComment = async (qna_comment_id, user_id) => {
+    const existComment = await QnaComment.findByPk(qna_comment_id);
+    if (!existComment) throw new ConflictException('존재하지 않는 댓글입니다.');
+
+    const qna = await existComment.getQna();
+    if (qna.user_id !== user_id)
+      throw new ConflictException('채택은 게시글 작성자만 가능합니다.');
+    else await Qna.update({ is_resolve: true }, { where: { id: qna.id } });
+  };
 }
 
 export default QnaCommentService;
