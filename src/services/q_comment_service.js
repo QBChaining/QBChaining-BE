@@ -51,15 +51,24 @@ class QnaCommentService {
       });
   };
 
-  UpdateComment = async (qna_id, comment) => {
-    if (!comment) throw ConflictException('수정 요청에 내용이 없다니..');
+  UpdateComment = async (id, comment, user_name) => {
+    if (!comment) throw new ConflictException('수정 요청에 내용이 없다니..');
 
-    const existQna = await Qna.findOne({ where: { id: qna_id } });
-    if (!existQna) throw NotFoundException('게시물이 존재 하지 않음');
-    if (existQna.user_id != qna_id)
-      throw new ConflictException('자신의 글만 수정 가능합니다.');
+    const isSameUser = await QnaComment.findByPk(id);
+    if (!isSameUser) throw new ConflictException('댓글이 존재하지 않습니다.');
+    if (isSameUser.user_name !== user_name)
+      throw new ConflictException('자신의 댓글만 수정 가능합니다.');
 
-    await QnaComment.update({ comment }, { where: { qna_id } });
+    await QnaComment.update({ comment }, { where: { id } });
+  };
+
+  RemoveComment = async (id, comment, user_name) => {
+    const isSameUser = await QnaComment.findByPk(id);
+    if (!isSameUser) throw new ConflictException('댓글이 존재하지 않습니다.');
+    if (isSameUser.user_name !== user_name)
+      throw new ConflictException('자신의 댓글만 수정 가능합니다.');
+
+    await QnaComment.destroy({ where: { id } });
   };
 }
 

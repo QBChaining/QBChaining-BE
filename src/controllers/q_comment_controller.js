@@ -44,8 +44,26 @@ class QnaCommentController {
   UpdateComment = async (req, res, next) => {
     const { id } = req.params;
     const { comment } = req.body;
+    const { user_name } = req.user;
     try {
-      await this.qnaCommentService.UpdateComment(id, comment);
+      await this.qnaCommentService.UpdateComment(id, comment, user_name);
+      return res.status(200).json({ success: true, message: '댓글 수정 완료' });
+    } catch (err) {
+      console.log(err);
+      const exception = exceptionHandler(err);
+
+      return res
+        .status(exception.statusCode)
+        .json({ success: exception.success, message: exception.message });
+    }
+  };
+
+  RemoveComment = async (req, res, next) => {
+    const { id } = req.params;
+    const { comment } = req.body;
+    const { user_name } = req.user;
+    try {
+      await this.qnaCommentService.UpdateComment(id, comment, user_name);
       return res.status(200).json({ success: true, message: '댓글 수정 완료' });
     } catch (err) {
       console.log(err);
