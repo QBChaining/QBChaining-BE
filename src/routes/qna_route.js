@@ -18,5 +18,6 @@ router.delete('/:id/like', qnaController.RemoveLikeQna);
 router.post('/:id/comments', qnaCommentController.CreateQnaComment);
 router.get('/:id/comments', qnaCommentController.FindAllComment);
 router.put('/comments/:id', qnaCommentController.UpdateComment);
-
+router.delete('/comments/:id', qnaCommentController.RemoveComment);
+router.post('/comments/:id/like', qnaCommentController.LikeComment);
 export default router;
