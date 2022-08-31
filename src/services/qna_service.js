@@ -16,29 +16,29 @@ import QnaLike from '../models/qna_like.js';
 import QnaBookmark from '../models/qna_bookmark.js';
 
 class QnaService {
-  CreateQna = async (title, content, category, tags, qna_id) => {
+  CreateQna = async (title, content, category, tags, user_id) => {
     if ((!title || !content, !category)) {
       throw new ConflictException(`null 값이 존재합니다.`);
     }
-    const result = await Qna.create({ title, content, category, user_id: 1 });
+
+    await Qna.create({ title, content, category, user_id });
 
     for (const tag of tags) {
-      await QnaTag.create({ user_id: 1, tag });
+      await QnaTag.create({ user_id, tag });
     }
-
-    // await QnaTag  >>> Pending
   };
 
   FindAllQna = async () => {
     const qnaLists = await Qna.findAll({
-      // attributes: ['id', 'title', 'is_resolve'],
+      attributes: ['id', 'title', 'is_resolve', 'createdAt', 'category'],
       include: [
-        { model: User, attributes: ['id', 'user_name', 'createdAt'] },
+        { model: User, attributes: ['id', 'user_name'] },
         { model: QnaComment, attributes: ['id'] },
         { model: QnaTag, attributes: ['tag'], raw: true },
         { model: QnaLike, attributes: ['id'] },
       ],
     });
+
     return qnaLists.map((list) => {
       const tag = [];
       for (let i = 0; i < list.QnaTags.length; i++) {
@@ -47,7 +47,7 @@ class QnaService {
       return {
         id: list.id,
         title: list.title,
-        content: list.content,
+        // content: list.content,
         is_resolve: list.is_resolve,
         createdAt: list.createdAt,
         honey_tip: list.QnaLikes?.length,
@@ -61,7 +61,7 @@ class QnaService {
 
   FindOneQna = async (id) => {
     const lists = await Qna.findOne({
-      wherer: { id },
+      where: { id },
       attributes: [
         'id',
         'title',
@@ -71,21 +71,32 @@ class QnaService {
         'createdAt',
       ],
       include: [
-        {
-          model: QnaComment,
-          attributes: ['id', 'comment', 'is_choose', 'user_name', 'createdAt'],
-        },
+        { model: User, attributes: ['id', 'user_name'] },
+        { model: QnaTag, attributes: ['tag'], raw: true },
+        { model: QnaLike, attributes: ['id'] },
       ],
     });
+    const tag = [];
+    for (let i = 0; i < lists.QnaTags.length; i++)
+      tag.push(lists.QnaTags[i].dataValues.tag);
 
-    return lists;
+    return {
+      id: lists.id,
+      title: lists.title,
+      content: lists.content,
+      is_resolve: lists.is_resolve,
+      honey_tip: lists.QnaLikes.length,
+      createdAt: lists.createdAt,
+      category: lists.category,
+      tag,
+      user: lists.User,
+    };
   };
 
   AddBookMark = async (qna_id, user_id) => {
     const existLike = await QnaBookmark.findOne({ where: { qna_id, user_id } });
     if (existLike) throw new ConflictException('반복해서 눌렀습니다.');
     else await QnaBookmark.create({ qna_id, user_id });
-    throw Error('statuscode');
   };
 
   RemoveBookMark = async (qna_id, user_id) => {
