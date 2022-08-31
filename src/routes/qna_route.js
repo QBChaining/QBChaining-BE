@@ -7,6 +7,7 @@ const qnaController = new QnaController();
 const qnaCommentController = new QnaCommentController();
 
 router.get('/', qnaController.FindAllQna);
+router.get('/bookmark', qnaController.FindBookMark);
 router.get('/:id', qnaController.FindOneQna);
 router.post('/', qnaController.CreateQna);
 router.post('/:id/bookmark', qnaController.AddBookMark);
