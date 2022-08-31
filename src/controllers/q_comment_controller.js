@@ -23,6 +23,23 @@ class QnaCommentController {
         .json({ success: exception.success, message: exception.message });
     }
   };
+
+  FindAllComment = async (req, res, next) => {
+    const { id } = req.params;
+    try {
+      const data = await this.qnaCommentService.FindAllComment(id);
+      return res
+        .status(200)
+        .json({ success: true, message: '댓글 조회 완료', data });
+    } catch (err) {
+      console.log(err);
+      const exception = exceptionHandler(err);
+
+      return res
+        .status(exception.statusCode)
+        .json({ success: exception.success, message: exception.message });
+    }
+  };
 }
 
 export default QnaCommentController;
