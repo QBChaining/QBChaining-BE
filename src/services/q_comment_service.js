@@ -19,7 +19,7 @@ import QnaCommentLike from '../models/qna_comment_like.js';
 class QnaCommentService {
   CreateQnaComment = async (qna_id, user_name, comment) => {
     if (!comment) throw ConflictException('내용 입력은 필수');
-    console.log(qna_id, user_name, comment);
+
     const existQna = await Qna.findOne({ where: { id: qna_id } });
     if (!existQna) throw NotFoundException('게시물이 존재 하지 않음');
 
@@ -49,6 +49,17 @@ class QnaCommentService {
         b = b.honey_tip;
         return b - a;
       });
+  };
+
+  UpdateComment = async (qna_id, comment) => {
+    if (!comment) throw ConflictException('수정 요청에 내용이 없다니..');
+
+    const existQna = await Qna.findOne({ where: { id: qna_id } });
+    if (!existQna) throw NotFoundException('게시물이 존재 하지 않음');
+    if (existQna.user_id != qna_id)
+      throw new ConflictException('자신의 글만 수정 가능합니다.');
+
+    await QnaComment.update({ comment }, { where: { qna_id } });
   };
 }
 
