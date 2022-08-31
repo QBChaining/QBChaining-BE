@@ -5,8 +5,6 @@ import { sequelize } from './sequelize.js';
 export default class QnaComment extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
-      // comment라는 이름으로 init
-      // 문자열이며 100자 제한, allowNull은 false
       {
         comment: {
           type: Sequelize.STRING(100),
@@ -32,9 +30,6 @@ export default class QnaComment extends Sequelize.Model {
       }
     );
   }
-  // 외래키 설정 User의 id값 즉 외래키로 UserId 생성
-  // 외래키 설정 Post의 id값 즉 외래키로 PostId 생성
-  // 확인
   static associate(db) {
     db.qna_comment.belongsTo(db.qna, {
       foreignKey: 'qna_id',

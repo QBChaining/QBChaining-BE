@@ -116,6 +116,15 @@ class QnaService {
     if (!existLike) throw new ConflictException('반복해서 눌렀습니다.');
     else await QnaLike.destroy({ where: { qna_id, user_id } });
   };
+
+  FindBookMark = async (user_id) => {
+    const bookmarkLists = await QnaBookmark.findAll({
+      where: { user_id },
+      attributes: ['qna_id'],
+      include: [{ model: Qna, attributes: ['title'] }],
+    });
+    return bookmarkLists;
+  };
 }
 
 export default QnaService;
