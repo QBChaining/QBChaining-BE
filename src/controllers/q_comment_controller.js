@@ -40,6 +40,22 @@ class QnaCommentController {
         .json({ success: exception.success, message: exception.message });
     }
   };
+
+  UpdateComment = async (req, res, next) => {
+    const { id } = req.params;
+    const { comment } = req.body;
+    try {
+      await this.qnaCommentService.UpdateComment(id, comment);
+      return res.status(200).json({ success: true, message: '댓글 수정 완료' });
+    } catch (err) {
+      console.log(err);
+      const exception = exceptionHandler(err);
+
+      return res
+        .status(exception.statusCode)
+        .json({ success: exception.success, message: exception.message });
+    }
+  };
 }
 
 export default QnaCommentController;
