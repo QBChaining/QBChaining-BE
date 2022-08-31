@@ -14,6 +14,7 @@ export default class QnaComment extends Sequelize.Model {
         },
         is_choose: {
           type: Sequelize.BOOLEAN,
+          defaultValue: false,
           allowNull: false,
         },
         user_name: {

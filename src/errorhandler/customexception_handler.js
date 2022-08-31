@@ -1,7 +1,7 @@
 import {
   CustomException,
   UnkownException,
-} from '../exception/customexception.js';
+} from '../exception/customException.js';
 
 /**
  *

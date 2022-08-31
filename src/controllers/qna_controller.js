@@ -5,13 +5,12 @@ class QnaController {
   qnaService = new QnaService();
 
   CreateQna = async (req, res, next) => {
-    // 아이디받기 세션 or 토큰
-    // const { id } = res.locals
-    const id = 1;
+    const user_id = res.user.id;
+
     const { title, content, category, tag } = req.body;
 
     try {
-      await this.qnaService.createQna(title, content, category, tag, id);
+      await this.qnaService.CreateQna(title, content, category, tag, user_id);
 
       return res
         .status(201)
@@ -28,7 +27,7 @@ class QnaController {
 
   FindAllQna = async (req, res, next) => {
     try {
-      const data = await this.qnaService.findAllQna();
+      const data = await this.qnaService.FindAllQna();
 
       return res
         .status(200)
@@ -47,7 +46,7 @@ class QnaController {
     const { id } = req.params;
 
     try {
-      const data = await this.qnaService.findOneQna(id);
+      const data = await this.qnaService.FindOneQna(id);
       return res
         .status(200)
         .json({ success: true, message: '상세 조회 완료', data });
@@ -63,8 +62,7 @@ class QnaController {
 
   AddBookMark = async (req, res, next) => {
     const qna_id = req.params.id;
-    // 세션 유저아이디 받기
-    const user_id = 1;
+    const user_id = req.user.id;
     try {
       await this.qnaService.AddBookMark(qna_id, user_id);
       return res
@@ -82,8 +80,8 @@ class QnaController {
 
   RemoveBookMark = async (req, res, next) => {
     const qna_id = req.params.id;
-    // 세션 유저아이디 받기
-    const user_id = 1;
+    const user_id = req.user.id;
+
     try {
       await this.qnaService.RemoveBookMark(qna_id, user_id);
       return res
@@ -101,8 +99,7 @@ class QnaController {
 
   LikeQna = async (req, res, next) => {
     const qna_id = req.params.id;
-    // 세션 유저아이디 받기
-    const user_id = 1;
+    const user_id = req.user.id;
     try {
       await this.qnaService.LikeQna(qna_id, user_id);
       return res.status(200).json({ success: true, message: '추천 완료' });
@@ -118,8 +115,7 @@ class QnaController {
 
   RemoveLikeQna = async (req, res, next) => {
     const qna_id = req.params.id;
-    // 세션 유저아이디 받기
-    const user_id = 1;
+    const user_id = req.user.id;
     try {
       await this.qnaService.RemoveLikeQna(qna_id, user_id);
       return res.status(200).json({ success: true, message: '추천 최소' });
