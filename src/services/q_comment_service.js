@@ -78,6 +78,14 @@ class QnaCommentService {
     if (existLike) throw new ConflictException('반복해서 눌렀습니다.');
     else await QnaCommentLike.create({ qna_comment_id, user_id });
   };
+
+  RemoveLikeComment = async (qna_comment_id, user_name) => {
+    const existLike = await QnaCommentLike.findOne({
+      where: { qna_comment_id, user_name },
+    });
+    if (!existLike) throw new ConflictException('반복해서 눌렀습니다.');
+    else await QnaCommentLike.destroy({ where: { qna_comment_id, user_id } });
+  };
 }
 
 export default QnaCommentService;
