@@ -106,6 +106,23 @@ class QnaCommentController {
         .json({ success: exception.success, message: exception.message });
     }
   };
+
+  ChooseComment = async (req, res, next) => {
+    const comment_id = req.params.id;
+    const user_id = req.user.id;
+
+    try {
+      await this.qnaCommentService.ChooseComment(comment_id, user_id);
+      return res.status(200).json({ success: true, message: '댓글 채택 완료' });
+    } catch (err) {
+      console.log(err);
+      const exception = exceptionHandler(err);
+
+      return res
+        .status(exception.statusCode)
+        .json({ success: exception.success, message: exception.message });
+    }
+  };
 }
 
 export default QnaCommentController;
