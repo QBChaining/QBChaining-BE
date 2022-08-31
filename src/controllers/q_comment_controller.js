@@ -90,6 +90,22 @@ class QnaCommentController {
         .json({ success: exception.success, message: exception.message });
     }
   };
+
+  RemoveLikeComment = async (req, res, next) => {
+    const { user_name } = req.user;
+    const { id } = req.params;
+    try {
+      await this.qnaCommentService.RemoveLikeComment(id, user_name);
+      return res.status(200).json({ success: true, message: '댓글 삭제 완료' });
+    } catch (err) {
+      console.log(err);
+      const exception = exceptionHandler(err);
+
+      return res
+        .status(exception.statusCode)
+        .json({ success: exception.success, message: exception.message });
+    }
+  };
 }
 
 export default QnaCommentController;
