@@ -1,13 +1,13 @@
-import passport from 'passport';
-import dotenv from 'dotenv';
+import passport from "passport";
+import dotenv from "dotenv";
 
-dotenv.config({ path: '../.env' });
+dotenv.config({ path: "../.env" });
 
 // const GitHubStrategy = require('passport-github').Strategy;
 
-import GitHubStrategy from 'passport-github';
+import GitHubStrategy from "passport-github";
 
-import User from '../models/user.js';
+import User from "../models/user.js";
 
 let id = process.env.GIT_ID;
 let secret = process.env.GIT_SECRET;
@@ -18,10 +18,10 @@ const github = () => {
       {
         clientID: `${id}`,
         clientSecret: `${secret}`,
-        callbackURL: 'http://localhost:3000/api/auth/github/callback',
+        callbackURL: "http://13.124.114.140/api/auth/github/callback",
       },
       async (accessToken, refreshToken, profile, done) => {
-        console.log('git profile', profile);
+        console.log("git profile", profile);
         try {
           const exUser = await User.findOne({
             where: { email: profile.profileUrl },
