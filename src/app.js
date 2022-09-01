@@ -15,7 +15,6 @@ dotenv.config();
 
 passportConfig();
 
-// 로그인에 필요한 session 저장소
 const redisClient = redis.createClient({
   url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
   password: process.env.REDIS_PASSWORD,
@@ -49,12 +48,7 @@ sequelize
   .then(() => console.log('db connect'))
   .catch((err) => console.error(err));
 
-app.use(
-  cors({
-    origin: true,
-    credentials: true,
-  })
-);
+app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

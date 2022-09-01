@@ -13,17 +13,14 @@ router.get(
     failureRedirect: '/',
   }),
   (req, res) => {
-    res.redirect('/');
+    res.json({ message: req.user });
   }
 );
 
 router.get('/logout', isLoggedIn, (req, res) => {
-  req.logout(function (err) {
-    if (err) {
-      return next(err);
-    }
-    res.redirect('/');
-  });
+  req.logout();
+  req.session.destroy();
+  res.json({ message: 'logout' });
 });
 
 export default router;
