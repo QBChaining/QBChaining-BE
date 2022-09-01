@@ -6,7 +6,7 @@ import {
   BadRequestException,
   UnauthorizedException,
   UnkownException,
-} from '../exception/customexception.js';
+} from '../exception/customException.js';
 
 import Qna from '../models/qna.js';
 import QnaComment from '../models/qna_comment.js';
