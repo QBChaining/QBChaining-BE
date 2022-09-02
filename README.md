@@ -22,8 +22,10 @@
     <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=MySQL&logoColor=white">
     <img src="https://img.shields.io/badge/Visual Studio Code-007ACC?style=flat&logo=Visual Studio Code&logoColor=white">
     <img src="https://img.shields.io/badge/Passport-34E27A?style=flat&logo=Passport&logoColor=white">
+    <img src="https://img.shields.io/badge/.ENV-ECD53F?style=flat&logo=dotenv&logoColor=white">
+    <img src="https://img.shields.io/badge/redis-DC382D?style=flat&logo=redis&logoColor=white">
 </div>
-NODEJS, EXPRESS, SQL을 활용합니다
+NODEJS, EXPRESS, SQL, Passport, dotenv, redis
 
 ### 기술선정이유
 
