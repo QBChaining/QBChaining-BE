@@ -9,7 +9,7 @@ export default class Qna extends Sequelize.Model {
           allowNull: false,
         },
         content: {
-          type: Sequelize.STRING(200),
+          type: Sequelize.STRING(500),
           allowNull: false,
         },
         category: {
