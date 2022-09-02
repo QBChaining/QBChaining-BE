@@ -15,9 +15,9 @@ export default class Post extends Sequelize.Model {
           type: Sequelize.STRING(200),
           allowNull: false,
         },
-        img: {
-          type: Sequelize.STRING(200),
-          allowNull: true,
+        tag: {
+          type: Sequelize.STRING(50),
+          allowNull: false,
         },
       },
       {
@@ -40,6 +40,8 @@ export default class Post extends Sequelize.Model {
     db.post.belongsTo(db.user, {
       foreignKey: 'user_id',
       targetKey: 'id',
+      onDelete: 'cascade',
+      onUpdate: 'cascade',
     });
     db.post.hasMany(db.post_like);
     db.post.hasMany(db.post_bookmark);

@@ -1,11 +1,12 @@
 import PostService from '../services/post_service.js';
+import exceptionHandler from '../errorhandler/customexception_handler.js';
 
 export default class PostController {
   postService = new PostService();
 
-  postShowAll = async (req, res, next) => {
+  PostShowAll = async (req, res, next) => {
     try {
-      const postShowAll = await this.postService.postShowAll();
+      const postShowAll = await this.postService.PostShowAll();
       console.log(postShowAll);
       return res.status(200).json({
         success: true,
@@ -17,10 +18,10 @@ export default class PostController {
     }
   };
 
-  postShowOne = async (req, res, next) => {
+  PostShowOne = async (req, res, next) => {
     const post_id = req.params.post_id;
     try {
-      const postShowOne = await this.postService.postShowOne(post_id);
+      const postShowOne = await this.postService.PostShowOne(post_id);
 
       return res.status(200).json({
         success: true,
@@ -32,39 +33,63 @@ export default class PostController {
     }
   };
 
-  postCreate = async (req, res, next) => {
-    const user_id = 1;
-    const title = req.body.title;
-    const content = req.body.content;
-    const img = 'img';
-
+  PostShowMy = async (req, res, next) => {
+    const user_id = 2;
     try {
-      const postCreate = await this.postService.postCreate(
-        title,
-        content,
-        user_id,
-        img
-      );
+      const PostShowMy = await this.postService.PostShowMy(user_id);
 
-      return res.status(201).json({
+      return res.status(200).json({
         success: true,
-        message: '작성 성공',
+        message: '조회 성공',
+        data: PostShowMy,
       });
     } catch (error) {
       return next(error);
     }
   };
 
-  postUpdate = async (req, res, next) => {
-    const user_id = 1;
+  PostCreate = async (req, res, next) => {
     const title = req.body.title;
     const content = req.body.content;
-
+    const tag = req.body.tag;
+    const user_id = 2;
     try {
-      const postUpdate = await this.postService.postUpdate(
+      const postCreate = await this.postService.PostCreate(
         title,
         content,
+        tag,
         user_id
+      );
+
+      return res.status(200).json({
+        success: true,
+        message: '작성 성공',
+      });
+    } catch (error) {
+      const errorhandler = exceptionHandler(error);
+      console.log(errorhandler);
+
+      res.status(errorhandler.statusCode).json({
+        success: errorhandler.success,
+        message: errorhandler.message,
+      });
+    }
+  };
+
+  PostUpdate = async (req, res, next) => {
+    const user_id = 2;
+    const title = req.body.title;
+    const content = req.body.content;
+    const tag = req.body.tag;
+    const post_id = req.params.post_id;
+
+    try {
+      const postUpdate = await this.postService.PostUpdate(
+        title,
+        content,
+        tag,
+        user_id,
+        post_id
       );
 
       return res.status(200).json({
@@ -72,21 +97,144 @@ export default class PostController {
         message: '수정 성공',
       });
     } catch (error) {
-      return next(error);
+      console.log(error);
+      const errorhandler = exceptionHandler(error);
+
+      res.status(errorhandler.statusCode).json({
+        success: errorhandler.success,
+        message: errorhandler.message,
+      });
     }
   };
 
-  postDelete = async (req, res, next) => {
-    const user_id = 1;
+  PostDelete = async (req, res, next) => {
+    const user_id = 2;
     const post_id = req.params.post_id;
     try {
-      const postDelete = await this.postService.postDelete(post_id, user_id);
+      const postDelete = await this.postService.PostDelete(post_id, user_id);
       return res.status(200).json({
         success: true,
         message: '삭제 성공',
       });
     } catch (error) {
       return next(error);
+    }
+  };
+
+  PostLike = async (req, res, next) => {
+    const user_id = 2;
+    const post_id = req.params.post_id;
+    try {
+      const postLike = await this.postService.PostLike(post_id, user_id);
+      return res.status(200).json({
+        success: true,
+        message: '좋아요 성공',
+      });
+    } catch (error) {
+      console.log(error);
+      const errorhandler = exceptionHandler(error);
+
+      res.status(errorhandler.statusCode).json({
+        success: errorhandler.success,
+        message: errorhandler.message,
+      });
+    }
+  };
+
+  PostLikeDelete = async (req, res, next) => {
+    const user_id = 2;
+    const post_id = req.params.post_id;
+    try {
+      const postLikeDelete = await this.postService.PostLikeDelete(
+        post_id,
+        user_id
+      );
+      return res.status(200).json({
+        success: true,
+        message: '좋아요 삭제 성공',
+      });
+    } catch (error) {
+      console.log(error);
+      const errorhandler = exceptionHandler(error);
+
+      res.status(errorhandler.statusCode).json({
+        success: errorhandler.success,
+        message: errorhandler.message,
+      });
+    }
+  };
+
+  PostBookMark = async (req, res, next) => {
+    const user_id = 2;
+    const post_id = req.params.post_id;
+
+    try {
+      const PostBookMark = await this.postService.PostBookMark(
+        post_id,
+        user_id
+      );
+      return res.status(200).json({
+        success: true,
+        message: '즐겨찾기 성공',
+      });
+    } catch (error) {
+      console.log(error);
+      const errorhandler = exceptionHandler(error);
+
+      res.status(errorhandler.statusCode).json({
+        success: errorhandler.success,
+        message: errorhandler.message,
+      });
+    }
+  };
+
+  PostBookMarkDelete = async (req, res, next) => {
+    const user_id = 2;
+    const post_id = req.params.post_id;
+
+    try {
+      const PostBookMark = await this.postService.PostBookMarkDelete(
+        post_id,
+        user_id
+      );
+      return res.status(200).json({
+        success: true,
+        message: '즐겨찾기 삭제 성공',
+      });
+    } catch (error) {
+      console.log(error);
+      const errorhandler = exceptionHandler(error);
+
+      res.status(errorhandler.statusCode).json({
+        success: errorhandler.success,
+        message: errorhandler.message,
+      });
+    }
+  };
+
+  PostBookMarkView = async (req, res, next) => {
+    const user_id = 2;
+    const post_id = req.params.post_id;
+
+    try {
+      const PostBookMarkView = await this.postService.PostBookMarkView(
+        post_id,
+        user_id
+      );
+      console.log(PostBookMarkView);
+      return res.status(200).json({
+        success: true,
+        message: '즐겨찾기 한 게시물',
+        data: PostBookMarkView,
+      });
+    } catch (error) {
+      console.log(error);
+      const errorhandler = exceptionHandler(error);
+
+      res.status(errorhandler.statusCode).json({
+        success: errorhandler.success,
+        message: errorhandler.message,
+      });
     }
   };
 }
