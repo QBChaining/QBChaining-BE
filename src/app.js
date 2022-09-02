@@ -30,7 +30,6 @@ const sessionOption = {
     httpOnly: true,
     secure: false,
   },
-  name: "session",
   store: new RedisStore({ client: redisClient }),
 };
 

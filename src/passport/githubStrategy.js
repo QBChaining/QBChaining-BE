@@ -18,10 +18,10 @@ const github = () => {
       {
         clientID: `${id}`,
         clientSecret: `${secret}`,
-        callbackURL: "http://13.124.114.140/api/auth/github/callback",
+        callbackURL: "http://localhost:3001/api/auth/github/callback",
       },
       async (accessToken, refreshToken, profile, done) => {
-        console.log("git profile", profile);
+        // console.log("git profile", profile);
         try {
           const exUser = await User.findOne({
             where: { email: profile.profileUrl },
