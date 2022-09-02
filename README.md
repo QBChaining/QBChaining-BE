@@ -21,6 +21,7 @@
     <img src="https://img.shields.io/badge/-EXPRESS-007ACC?style=flat&logo=EXPRESS&logoColor=white"/>
     <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=MySQL&logoColor=white">
     <img src="https://img.shields.io/badge/Visual Studio Code-007ACC?style=flat&logo=Visual Studio Code&logoColor=white">
+    <img src="https://img.shields.io/badge/Passport-34E27A?style=flat&logo=Passport&logoColor=white">
 </div>
 NODEJS, EXPRESS, SQL을 활용합니다
 
