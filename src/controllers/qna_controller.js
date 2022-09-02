@@ -31,7 +31,7 @@ class QnaController {
 
       return res
         .status(200)
-        .json({ succses: true, message: '전체 조회 성공', data });
+        .json({ success: true, message: '전체 조회 성공', data });
     } catch (err) {
       console.log(err);
       const exception = exceptionHandler(err);
