@@ -24,14 +24,13 @@ router.get(
         issuer: "jihun",
       }
     );
-    return res.json({
-      code: 200,
-      message: "토큰이 발급되었습니다",
-      token,
-    });
+    return res.redirect(`http://localhost:3000?token=${token}`);
   }
 );
 
+router.get("/test", verifyToken, (req, res) => {
+  res.json(req.decoded);
+});
 // router.get("/logout", verifyToken, (req, res) => {
 //   res.json({ message: "logout" });
 // });
