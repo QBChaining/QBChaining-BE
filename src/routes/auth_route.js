@@ -1,26 +1,38 @@
-import express from 'express';
-import passport from 'passport';
-import { isLoggedIn, isNotLoggedIn } from '../middlewares/authMiddleware.js';
-// import AuthController from '../controllers/auth_controller.js';
+import express from "express";
+import passport from "passport";
+import verifyToken from "../middlewares/authMiddleware.js";
+import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
-router.get('/github', passport.authenticate('github'));
+router.get("/github", passport.authenticate("github", { session: false }));
 
 router.get(
-  '/github/callback',
-  passport.authenticate('github', {
-    failureRedirect: '/',
+  "/github/callback",
+  passport.authenticate("github", {
+    failureRedirect: "/",
   }),
   (req, res) => {
-    res.json({ message: req.user });
+    const token = jwt.sign(
+      {
+        id: req.user.id,
+        name: req.user.user_name,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "15m",
+        issuer: "jihun",
+      }
+    );
+    return res.redirect(`http://localhost:3000?token=${token}`);
   }
 );
 
-router.get('/logout', isLoggedIn, (req, res) => {
-  req.logout();
-  req.session.destroy();
-  res.json({ message: 'logout' });
+router.get("/test", verifyToken, (req, res) => {
+  res.json(req.decoded);
 });
+// router.get("/logout", verifyToken, (req, res) => {
+//   res.json({ message: "logout" });
+// });
 
 export default router;
