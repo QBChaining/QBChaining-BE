@@ -1,0 +1,253 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'i' ]
+2 info using npm@3.5.2
+3 info using node@v8.10.0
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readLocalPackageData
+7 silly install normalizeTree
+8 silly loadCurrentTree Finishing
+9 silly loadIdealTree Starting
+10 silly install loadIdealTree
+11 silly cloneCurrentTree Starting
+12 silly install cloneCurrentTreeToIdealTree
+13 silly cloneCurrentTree Finishing
+14 silly loadShrinkwrap Starting
+15 silly install loadShrinkwrap
+16 silly loadShrinkwrap Finishing
+17 silly loadAllDepsIntoIdealTree Starting
+18 silly install loadAllDepsIntoIdealTree
+19 silly fetchNamedPackageData bcrypt
+20 silly mapToRegistry name bcrypt
+21 silly mapToRegistry using default registry
+22 silly mapToRegistry registry https://registry.npmjs.org/
+23 silly mapToRegistry uri https://registry.npmjs.org/bcrypt
+24 silly fetchNamedPackageData cors
+25 silly mapToRegistry name cors
+26 silly mapToRegistry using default registry
+27 silly mapToRegistry registry https://registry.npmjs.org/
+28 silly mapToRegistry uri https://registry.npmjs.org/cors
+29 silly fetchNamedPackageData dotenv
+30 silly mapToRegistry name dotenv
+31 silly mapToRegistry using default registry
+32 silly mapToRegistry registry https://registry.npmjs.org/
+33 silly mapToRegistry uri https://registry.npmjs.org/dotenv
+34 silly fetchNamedPackageData express
+35 silly mapToRegistry name express
+36 silly mapToRegistry using default registry
+37 silly mapToRegistry registry https://registry.npmjs.org/
+38 silly mapToRegistry uri https://registry.npmjs.org/express
+39 silly fetchNamedPackageData jsonwebtoken
+40 silly mapToRegistry name jsonwebtoken
+41 silly mapToRegistry using default registry
+42 silly mapToRegistry registry https://registry.npmjs.org/
+43 silly mapToRegistry uri https://registry.npmjs.org/jsonwebtoken
+44 silly fetchNamedPackageData multer
+45 silly mapToRegistry name multer
+46 silly mapToRegistry using default registry
+47 silly mapToRegistry registry https://registry.npmjs.org/
+48 silly mapToRegistry uri https://registry.npmjs.org/multer
+49 silly fetchNamedPackageData mysql2
+50 silly mapToRegistry name mysql2
+51 silly mapToRegistry using default registry
+52 silly mapToRegistry registry https://registry.npmjs.org/
+53 silly mapToRegistry uri https://registry.npmjs.org/mysql2
+54 silly fetchNamedPackageData path
+55 silly mapToRegistry name path
+56 silly mapToRegistry using default registry
+57 silly mapToRegistry registry https://registry.npmjs.org/
+58 silly mapToRegistry uri https://registry.npmjs.org/path
+59 silly fetchNamedPackageData sequelize
+60 silly mapToRegistry name sequelize
+61 silly mapToRegistry using default registry
+62 silly mapToRegistry registry https://registry.npmjs.org/
+63 silly mapToRegistry uri https://registry.npmjs.org/sequelize
+64 silly fetchNamedPackageData sequelize-cli
+65 silly mapToRegistry name sequelize-cli
+66 silly mapToRegistry using default registry
+67 silly mapToRegistry registry https://registry.npmjs.org/
+68 silly mapToRegistry uri https://registry.npmjs.org/sequelize-cli
+69 verbose get https://registry.npmjs.org/bcrypt not expired, no request
+70 silly resolveWithNewModule bcrypt@5.0.1 checking installable status
+71 silly cache add args [ 'bcrypt@^5.0.1', null ]
+72 verbose cache add spec bcrypt@^5.0.1
+73 silly cache add parsed spec Result {
+73 silly cache add   raw: 'bcrypt@^5.0.1',
+73 silly cache add   scope: null,
+73 silly cache add   name: 'bcrypt',
+73 silly cache add   rawSpec: '^5.0.1',
+73 silly cache add   spec: '>=5.0.1 <6.0.0',
+73 silly cache add   type: 'range' }
+74 silly addNamed bcrypt@>=5.0.1 <6.0.0
+75 verbose addNamed ">=5.0.1 <6.0.0" is a valid semver range for bcrypt
+76 silly addNameRange { name: 'bcrypt', range: '>=5.0.1 <6.0.0', hasData: false }
+77 silly mapToRegistry name bcrypt
+78 silly mapToRegistry using default registry
+79 silly mapToRegistry registry https://registry.npmjs.org/
+80 silly mapToRegistry uri https://registry.npmjs.org/bcrypt
+81 verbose addNameRange registry:https://registry.npmjs.org/bcrypt not in flight; fetching
+82 verbose get https://registry.npmjs.org/cors not expired, no request
+83 silly resolveWithNewModule cors@2.8.5 checking installable status
+84 silly cache add args [ 'cors@^2.8.5', null ]
+85 verbose cache add spec cors@^2.8.5
+86 silly cache add parsed spec Result {
+86 silly cache add   raw: 'cors@^2.8.5',
+86 silly cache add   scope: null,
+86 silly cache add   name: 'cors',
+86 silly cache add   rawSpec: '^2.8.5',
+86 silly cache add   spec: '>=2.8.5 <3.0.0',
+86 silly cache add   type: 'range' }
+87 silly addNamed cors@>=2.8.5 <3.0.0
+88 verbose addNamed ">=2.8.5 <3.0.0" is a valid semver range for cors
+89 silly addNameRange { name: 'cors', range: '>=2.8.5 <3.0.0', hasData: false }
+90 silly mapToRegistry name cors
+91 silly mapToRegistry using default registry
+92 silly mapToRegistry registry https://registry.npmjs.org/
+93 silly mapToRegistry uri https://registry.npmjs.org/cors
+94 verbose addNameRange registry:https://registry.npmjs.org/cors not in flight; fetching
+95 verbose get https://registry.npmjs.org/dotenv not expired, no request
+96 silly resolveWithNewModule dotenv@16.0.1 checking installable status
+97 silly cache add args [ 'dotenv@^16.0.1', null ]
+98 verbose cache add spec dotenv@^16.0.1
+99 silly cache add parsed spec Result {
+99 silly cache add   raw: 'dotenv@^16.0.1',
+99 silly cache add   scope: null,
+99 silly cache add   name: 'dotenv',
+99 silly cache add   rawSpec: '^16.0.1',
+99 silly cache add   spec: '>=16.0.1 <17.0.0',
+99 silly cache add   type: 'range' }
+100 silly addNamed dotenv@>=16.0.1 <17.0.0
+101 verbose addNamed ">=16.0.1 <17.0.0" is a valid semver range for dotenv
+102 silly addNameRange { name: 'dotenv', range: '>=16.0.1 <17.0.0', hasData: false }
+103 silly mapToRegistry name dotenv
+104 silly mapToRegistry using default registry
+105 silly mapToRegistry registry https://registry.npmjs.org/
+106 silly mapToRegistry uri https://registry.npmjs.org/dotenv
+107 verbose addNameRange registry:https://registry.npmjs.org/dotenv not in flight; fetching
+108 verbose get https://registry.npmjs.org/express not expired, no request
+109 silly resolveWithNewModule express@4.18.1 checking installable status
+110 silly cache add args [ 'express@^4.18.1', null ]
+111 verbose cache add spec express@^4.18.1
+112 silly cache add parsed spec Result {
+112 silly cache add   raw: 'express@^4.18.1',
+112 silly cache add   scope: null,
+112 silly cache add   name: 'express',
+112 silly cache add   rawSpec: '^4.18.1',
+112 silly cache add   spec: '>=4.18.1 <5.0.0',
+112 silly cache add   type: 'range' }
+113 silly addNamed express@>=4.18.1 <5.0.0
+114 verbose addNamed ">=4.18.1 <5.0.0" is a valid semver range for express
+115 silly addNameRange { name: 'express', range: '>=4.18.1 <5.0.0', hasData: false }
+116 silly mapToRegistry name express
+117 silly mapToRegistry using default registry
+118 silly mapToRegistry registry https://registry.npmjs.org/
+119 silly mapToRegistry uri https://registry.npmjs.org/express
+120 verbose addNameRange registry:https://registry.npmjs.org/express not in flight; fetching
+121 verbose get https://registry.npmjs.org/jsonwebtoken not expired, no request
+122 silly resolveWithNewModule jsonwebtoken@8.5.1 checking installable status
+123 silly cache add args [ 'jsonwebtoken@^8.5.1', null ]
+124 verbose cache add spec jsonwebtoken@^8.5.1
+125 silly cache add parsed spec Result {
+125 silly cache add   raw: 'jsonwebtoken@^8.5.1',
+125 silly cache add   scope: null,
+125 silly cache add   name: 'jsonwebtoken',
+125 silly cache add   rawSpec: '^8.5.1',
+125 silly cache add   spec: '>=8.5.1 <9.0.0',
+125 silly cache add   type: 'range' }
+126 silly addNamed jsonwebtoken@>=8.5.1 <9.0.0
+127 verbose addNamed ">=8.5.1 <9.0.0" is a valid semver range for jsonwebtoken
+128 silly addNameRange { name: 'jsonwebtoken', range: '>=8.5.1 <9.0.0', hasData: false }
+129 silly mapToRegistry name jsonwebtoken
+130 silly mapToRegistry using default registry
+131 silly mapToRegistry registry https://registry.npmjs.org/
+132 silly mapToRegistry uri https://registry.npmjs.org/jsonwebtoken
+133 verbose addNameRange registry:https://registry.npmjs.org/jsonwebtoken not in flight; fetching
+134 verbose get https://registry.npmjs.org/multer not expired, no request
+135 silly resolveWithNewModule multer@1.4.5-lts.1 checking installable status
+136 silly cache add args [ 'multer@^1.4.5-lts.1', null ]
+137 verbose cache add spec multer@^1.4.5-lts.1
+138 silly cache add parsed spec Result {
+138 silly cache add   raw: 'multer@^1.4.5-lts.1',
+138 silly cache add   scope: null,
+138 silly cache add   name: 'multer',
+138 silly cache add   rawSpec: '^1.4.5-lts.1',
+138 silly cache add   spec: '>=1.4.5-lts.1 <2.0.0',
+138 silly cache add   type: 'range' }
+139 silly addNamed multer@>=1.4.5-lts.1 <2.0.0
+140 verbose addNamed ">=1.4.5-lts.1 <2.0.0" is a valid semver range for multer
+141 silly addNameRange { name: 'multer', range: '>=1.4.5-lts.1 <2.0.0', hasData: false }
+142 silly mapToRegistry name multer
+143 silly mapToRegistry using default registry
+144 silly mapToRegistry registry https://registry.npmjs.org/
+145 silly mapToRegistry uri https://registry.npmjs.org/multer
+146 verbose addNameRange registry:https://registry.npmjs.org/multer not in flight; fetching
+147 verbose get https://registry.npmjs.org/mysql2 not expired, no request
+148 silly resolveWithNewModule mysql2@2.3.3 checking installable status
+149 silly cache add args [ 'mysql2@^2.3.3', null ]
+150 verbose cache add spec mysql2@^2.3.3
+151 silly cache add parsed spec Result {
+151 silly cache add   raw: 'mysql2@^2.3.3',
+151 silly cache add   scope: null,
+151 silly cache add   name: 'mysql2',
+151 silly cache add   rawSpec: '^2.3.3',
+151 silly cache add   spec: '>=2.3.3 <3.0.0',
+151 silly cache add   type: 'range' }
+152 silly addNamed mysql2@>=2.3.3 <3.0.0
+153 verbose addNamed ">=2.3.3 <3.0.0" is a valid semver range for mysql2
+154 silly addNameRange { name: 'mysql2', range: '>=2.3.3 <3.0.0', hasData: false }
+155 silly mapToRegistry name mysql2
+156 silly mapToRegistry using default registry
+157 silly mapToRegistry registry https://registry.npmjs.org/
+158 silly mapToRegistry uri https://registry.npmjs.org/mysql2
+159 verbose addNameRange registry:https://registry.npmjs.org/mysql2 not in flight; fetching
+160 verbose get https://registry.npmjs.org/path not expired, no request
+161 silly resolveWithNewModule path@0.12.7 checking installable status
+162 silly cache add args [ 'path@^0.12.7', null ]
+163 verbose cache add spec path@^0.12.7
+164 silly cache add parsed spec Result {
+164 silly cache add   raw: 'path@^0.12.7',
+164 silly cache add   scope: null,
+164 silly cache add   name: 'path',
+164 silly cache add   rawSpec: '^0.12.7',
+164 silly cache add   spec: '>=0.12.7 <0.13.0',
+164 silly cache add   type: 'range' }
+165 silly addNamed path@>=0.12.7 <0.13.0
+166 verbose addNamed ">=0.12.7 <0.13.0" is a valid semver range for path
+167 silly addNameRange { name: 'path', range: '>=0.12.7 <0.13.0', hasData: false }
+168 silly mapToRegistry name path
+169 silly mapToRegistry using default registry
+170 silly mapToRegistry registry https://registry.npmjs.org/
+171 silly mapToRegistry uri https://registry.npmjs.org/path
+172 verbose addNameRange registry:https://registry.npmjs.org/path not in flight; fetching
+173 verbose get https://registry.npmjs.org/sequelize not expired, no request
+174 verbose stack Error: Missing required argument #1
+174 verbose stack     at andLogAndFinish (/usr/share/npm/lib/fetch-package-metadata.js:31:3)
+174 verbose stack     at fetchPackageMetadata (/usr/share/npm/lib/fetch-package-metadata.js:51:22)
+174 verbose stack     at resolveWithNewModule (/usr/share/npm/lib/install/deps.js:456:12)
+174 verbose stack     at /usr/share/npm/lib/install/deps.js:457:7
+174 verbose stack     at /usr/share/npm/node_modules/iferr/index.js:13:50
+174 verbose stack     at /usr/share/npm/lib/fetch-package-metadata.js:37:12
+174 verbose stack     at addRequestedAndFinish (/usr/share/npm/lib/fetch-package-metadata.js:82:5)
+174 verbose stack     at returnAndAddMetadata (/usr/share/npm/lib/fetch-package-metadata.js:117:7)
+174 verbose stack     at pickVersionFromRegistryDocument (/usr/share/npm/lib/fetch-package-metadata.js:134:20)
+174 verbose stack     at /usr/share/npm/node_modules/iferr/index.js:13:50
+175 verbose cwd /home/ubuntu/deploy/src
+176 error Linux 5.4.0-1078-aws
+177 error argv "/usr/bin/node" "/usr/bin/npm" "i"
+178 error node v8.10.0
+179 error npm  v3.5.2
+180 error code EMISSINGARG
+181 error typeerror Error: Missing required argument #1
+181 error typeerror     at andLogAndFinish (/usr/share/npm/lib/fetch-package-metadata.js:31:3)
+181 error typeerror     at fetchPackageMetadata (/usr/share/npm/lib/fetch-package-metadata.js:51:22)
+181 error typeerror     at resolveWithNewModule (/usr/share/npm/lib/install/deps.js:456:12)
+181 error typeerror     at /usr/share/npm/lib/install/deps.js:457:7
+181 error typeerror     at /usr/share/npm/node_modules/iferr/index.js:13:50
+181 error typeerror     at /usr/share/npm/lib/fetch-package-metadata.js:37:12
+181 error typeerror     at addRequestedAndFinish (/usr/share/npm/lib/fetch-package-metadata.js:82:5)
+181 error typeerror     at returnAndAddMetadata (/usr/share/npm/lib/fetch-package-metadata.js:117:7)
+181 error typeerror     at pickVersionFromRegistryDocument (/usr/share/npm/lib/fetch-package-metadata.js:134:20)
+181 error typeerror     at /usr/share/npm/node_modules/iferr/index.js:13:50
+182 error typeerror This is an error with npm itself. Please report this error at:
+182 error typeerror     <http://github.com/npm/npm/issues>
+183 verbose exit [ 1, true ]

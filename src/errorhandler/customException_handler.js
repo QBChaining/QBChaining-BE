@@ -1,7 +1,7 @@
 import {
   CustomException,
   UnkownException,
-} from '../exception/customexception.js';
+} from '../exception/customException.js';
 
 /**
  *
@@ -11,7 +11,7 @@ import {
 const exceptionHandler = (err) => {
   if (err instanceof CustomException) return err;
   else if (err instanceof Error) return new UnkownException(err);
-  else return new UnkownException(`알 수 없는 에러가 났다.`);
+  else return new UnkownException('알 수 없는 에러가 났다.');
 };
 
 export default exceptionHandler;
