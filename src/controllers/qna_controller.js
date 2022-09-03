@@ -1,6 +1,6 @@
 import QnaService from '../services/qna_service.js';
 import exceptionHandler from '../errorhandler/customException_handler.js';
-import auth from '../middlewares/authMiddleware.js';
+
 class QnaController {
   qnaService = new QnaService();
 
