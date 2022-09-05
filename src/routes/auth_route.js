@@ -8,8 +8,8 @@ const router = express.Router();
 // router.get("/github", passport.authenticate("github", { session: false }));
 
 router.get(
-  "/github",
-  passport.authenticate("github", { scope: ["user:email"], session: false})
+  '/github',
+  passport.authenticate('github', { scope: ['user:email'], session: false })
 );
 
 router.get(
@@ -21,7 +21,7 @@ router.get(
     const token = jwt.sign(
       {
         id: req.user.id,
-        name: req.user.name,
+        user_name: req.user.name,
       },
       process.env.JWT_SECRET,
       {
