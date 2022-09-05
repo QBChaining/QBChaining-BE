@@ -1,6 +1,6 @@
-import Sequelize from 'sequelize';
+import Sequelize from "sequelize";
 
-import { sequelize } from './sequelize.js';
+import { sequelize } from "./sequelize.js";
 
 export default class User extends Sequelize.Model {
   static init(sequelize) {
@@ -10,9 +10,13 @@ export default class User extends Sequelize.Model {
           type: Sequelize.STRING(50),
           allowNull: true,
         },
-        user_name: {
+        profile_url: {
+          type: Sequelize.STRING(50),
+          allowNull: true,
+        },
+        nick_name: {
           type: Sequelize.STRING(20),
-          allowNull: false,
+          allowNull: true,
           unique: true,
         },
         name: {
@@ -21,16 +25,19 @@ export default class User extends Sequelize.Model {
         },
         rank_point: {
           type: Sequelize.INTEGER,
-          allowNull: false,
+          allowNull: true,
+        },
+        is_new: {
+          type: Sequelize.STRING(10),
         },
       },
       {
         sequelize,
         timestamps: true,
         underscored: true,
-        tableName: 'user',
-        charset: 'utf8',
-        collate: 'utf8_general_ci',
+        tableName: "user",
+        charset: "utf8",
+        collate: "utf8_general_ci",
       }
     );
   }

@@ -5,7 +5,12 @@ import jwt from 'jsonwebtoken';
 
 const router = express.Router();
 
-router.get('/github', passport.authenticate('github', { session: false }));
+// router.get("/github", passport.authenticate("github", { session: false }));
+
+router.get(
+  "/github",
+  passport.authenticate("github", { scope: ["user:email"], session: false})
+);
 
 router.get(
   '/github/callback',
@@ -16,7 +21,7 @@ router.get(
     const token = jwt.sign(
       {
         id: req.user.id,
-        name: req.user.user_name,
+        name: req.user.name,
       },
       process.env.JWT_SECRET,
       {
