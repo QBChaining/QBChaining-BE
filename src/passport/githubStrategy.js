@@ -24,27 +24,16 @@ const github = () => {
       async (accessToken, refreshToken, profile, done) => {
         try {
           const exUser = await User.findOne({
-            where: { name: profile.username },
+            where: { user_name: profile.username },
           });
 
           if (exUser) {
-            if (exUser.is_new == "false") {
-              done(null, exUser);
-            } else if (exUser.is_new == "true") {
-              const updateUser = await User.update(
-                { is_new: "false" },
-                { where: { name: profile.username } }
-              );
-              done(null, updateUser);
-            } else {
-              console.error(error);
-              done(error);
-            }
+            done(null, exUser);
           } else {
             const newUser = await User.create({
               email: profile.emails[0].value,
               profile_url: profile.profileUrl,
-              name: profile.username,
+              user_name: profile.username,
               is_new: "true",
             });
             done(null, newUser);

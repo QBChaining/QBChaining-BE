@@ -1,4 +1,4 @@
-import PostService from '../services/post_service.js';
+import PostService from "../services/post_service.js";
 
 export default class PostController {
   postService = new PostService();
@@ -9,7 +9,7 @@ export default class PostController {
       console.log(postShowAll);
       return res.status(200).json({
         success: true,
-        message: '조회 성공',
+        message: "조회 성공",
         data: postShowAll,
       });
     } catch (error) {
@@ -24,7 +24,7 @@ export default class PostController {
 
       return res.status(200).json({
         success: true,
-        message: '조회 성공',
+        message: "조회 성공",
         data: postShowOne,
       });
     } catch (error) {
@@ -36,7 +36,7 @@ export default class PostController {
     const user_id = 1;
     const title = req.body.title;
     const content = req.body.content;
-    const img = 'img';
+    const img = "img";
 
     try {
       const postCreate = await this.postService.postCreate(
@@ -48,7 +48,7 @@ export default class PostController {
 
       return res.status(201).json({
         success: true,
-        message: '작성 성공',
+        message: "작성 성공",
       });
     } catch (error) {
       return next(error);
@@ -69,7 +69,7 @@ export default class PostController {
 
       return res.status(200).json({
         success: true,
-        message: '수정 성공',
+        message: "수정 성공",
       });
     } catch (error) {
       return next(error);
@@ -83,7 +83,7 @@ export default class PostController {
       const postDelete = await this.postService.postDelete(post_id, user_id);
       return res.status(200).json({
         success: true,
-        message: '삭제 성공',
+        message: "삭제 성공",
       });
     } catch (error) {
       return next(error);

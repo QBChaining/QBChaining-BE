@@ -14,13 +14,9 @@ export default class User extends Sequelize.Model {
           type: Sequelize.STRING(50),
           allowNull: true,
         },
-        nick_name: {
+        user_name: {
           type: Sequelize.STRING(20),
-          allowNull: true,
           unique: true,
-        },
-        name: {
-          type: Sequelize.STRING(20),
           allowNull: false,
         },
         rank_point: {
