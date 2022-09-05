@@ -79,7 +79,7 @@ class QnaCommentController {
     const { name } = req.decoded;
     const { id } = req.params;
     try {
-      await this.qnaCommentService.LikeComment(id, user_name);
+      await this.qnaCommentService.LikeComment(id, name);
       return res.status(200).json({ success: true, message: '댓글 추천 완료' });
     } catch (err) {
       console.log(err);
@@ -95,7 +95,7 @@ class QnaCommentController {
     const { name } = req.decoded;
     const { id } = req.params;
     try {
-      await this.qnaCommentService.RemoveLikeComment(id, user_name);
+      await this.qnaCommentService.RemoveLikeComment(id, name);
       return res.status(200).json({ success: true, message: '댓글 삭제 완료' });
     } catch (err) {
       console.log(err);
