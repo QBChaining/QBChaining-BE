@@ -16,7 +16,7 @@ export default class QnaComment extends Sequelize.Model {
           allowNull: false,
         },
         user_name: {
-          type: Sequelize.INTEGER,
+          type: Sequelize.STRING(30),
           allowNull: false,
         },
       },
