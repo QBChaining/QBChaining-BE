@@ -7,6 +7,7 @@ import redis from 'redis';
 import passport from 'passport';
 import passportConfig from './passport/index.js';
 import connectRedis from 'connect-redis';
+import morgan from 'morgan';
 
 let RedisStore = connectRedis(session);
 const app = express();
@@ -19,8 +20,6 @@ const redisClient = redis.createClient({
   url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
   password: process.env.REDIS_PASSWORD,
 });
-
-app.use(cors());
 
 const sessionOption = {
   resave: false,
@@ -36,7 +35,8 @@ const sessionOption = {
 if (process.env.NODE_ENV === 'production') {
   sessionOption.proxy = true;
 }
-
+app.use(cors());
+app.use(morgan('dev'));
 app.use(session(sessionOption));
 app.use(passport.initialize());
 app.use(passport.session());
