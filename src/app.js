@@ -43,7 +43,7 @@ app.use(passport.session());
 
 import { sequelize } from './models/index.js';
 
-app.set('port', process.env.PORT || 80);
+app.set('port', process.env.PORT || 3000);
 
 sequelize
   .sync({ force: false })

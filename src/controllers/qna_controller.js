@@ -61,7 +61,7 @@ class QnaController {
   };
 
   AddBookMark = async (req, res, next) => {
-    const qna_id = req.params.id;
+    const qna_id = req.params.id * 1;
     const user_id = 1;
     try {
       await this.qnaService.AddBookMark(qna_id, user_id);
@@ -79,7 +79,7 @@ class QnaController {
   };
 
   RemoveBookMark = async (req, res, next) => {
-    const qna_id = req.params.id;
+    const qna_id = req.params.id * 1;
     const user_id = 1;
 
     try {
@@ -98,7 +98,7 @@ class QnaController {
   };
 
   LikeQna = async (req, res, next) => {
-    const qna_id = req.params.id;
+    const qna_id = req.params.id * 1;
     const user_id = 1;
     try {
       await this.qnaService.LikeQna(qna_id, user_id);
@@ -114,7 +114,7 @@ class QnaController {
   };
 
   RemoveLikeQna = async (req, res, next) => {
-    const qna_id = req.params.id;
+    const qna_id = req.params.id * 1;
     const user_id = 1;
     try {
       await this.qnaService.RemoveLikeQna(qna_id, user_id);

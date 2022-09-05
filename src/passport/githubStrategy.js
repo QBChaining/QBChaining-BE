@@ -3,7 +3,9 @@ import dotenv from "dotenv";
 
 dotenv.config({ path: "../.env" });
 
-import GitHubStrategy from "passport-github2";
+// const GitHubStrategy = require('passport-github').Strategy;
+
+import GitHubStrategy from "passport-github";
 
 import User from "../models/user.js";
 
@@ -18,7 +20,6 @@ const github = () => {
         clientID: `${id}`,
         clientSecret: `${secret}`,
         callbackURL: `${url}`,
-        scope: ["user:email"],
       },
       async (accessToken, refreshToken, profile, done) => {
         try {

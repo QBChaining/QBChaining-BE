@@ -17,7 +17,7 @@ import QnaBookmark from '../models/qna_bookmark.js';
 
 class QnaService {
   CreateQna = async (title, content, category, tags, user_id) => {
-    if ((!title || !content, !category)) {
+    if (!title || !content || !category) {
       throw new ConflictException(`null 값이 존재합니다.`);
     }
 
