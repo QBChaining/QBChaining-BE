@@ -4,21 +4,20 @@ import verifyToken from "../middlewares/authMiddleware.js";
 import jwt from "jsonwebtoken";
 import AuthController from "../controllers/auth_controller.js";
 
+
 const router = express.Router();
 
 const authController = new AuthController();
 
-// router.get("/github", passport.authenticate("github", { session: false }));
-
 router.get(
-  "/github",
-  passport.authenticate("github", { scope: ["user:email"] })
+  '/github',
+  passport.authenticate('github', { scope: ['user:email'], session: false })
 );
 
 router.get(
-  "/github/callback",
-  passport.authenticate("github", {
-    failureRedirect: "/",
+  '/github/callback',
+  passport.authenticate('github', {
+    failureRedirect: '/',
   }),
   (req, res) => {
     const token = jwt.sign(
@@ -26,7 +25,6 @@ router.get(
         id: req.user.id,
         name: req.user.user_name,
         is_new: req.user.is_new,
-        // new : true or false
       },
       process.env.JWT_SECRET,
       {
@@ -35,8 +33,8 @@ router.get(
       }
     );
 
-    // return res.redirect(`http://localhost:3001?token=${token}`);
-    return res.json({ response: req.user, token });
+    return res.redirect(`http://localhost:3001?token=${token}`);
+//     return res.json({ response: req.user, token });
   }
 );
 

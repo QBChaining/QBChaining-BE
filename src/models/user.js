@@ -1,6 +1,6 @@
-import Sequelize from "sequelize";
+import Sequelize from 'sequelize';
 
-import { sequelize } from "./sequelize.js";
+import { sequelize } from './sequelize.js';
 
 export default class User extends Sequelize.Model {
   static init(sequelize) {
@@ -31,9 +31,9 @@ export default class User extends Sequelize.Model {
         sequelize,
         timestamps: true,
         underscored: true,
-        tableName: "user",
-        charset: "utf8",
-        collate: "utf8_general_ci",
+        tableName: 'user',
+        charset: 'utf8',
+        collate: 'utf8_general_ci',
       }
     );
   }
