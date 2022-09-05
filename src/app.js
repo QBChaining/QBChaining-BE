@@ -20,7 +20,7 @@ const redisClient = redis.createClient({
   password: process.env.REDIS_PASSWORD,
 });
 
-// app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(cors());
 
 const sessionOption = {
   resave: false,
