@@ -13,7 +13,7 @@ router.get('/bookmark', qnaController.FindBookMark);
 router.get('/:id', qnaController.FindOneQna);
 router.get('/:id/comments', qnaCommentController.FindAllComment);
 
-router.use(auth);
+// router.use(auth);
 
 router.post('/', qnaController.CreateQna);
 router.post('/:id/bookmark', qnaController.AddBookMark);
