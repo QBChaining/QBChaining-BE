@@ -1,12 +1,12 @@
-import express from "express";
-import dotenv from "dotenv";
-import cors from "cors";
-import router from "./routes/index.js";
-import session from "express-session";
-import redis from "redis";
-import passport from "passport";
-import passportConfig from "./passport/index.js";
-import connectRedis from "connect-redis";
+import express from 'express';
+import dotenv from 'dotenv';
+import cors from 'cors';
+import router from './routes/index.js';
+import session from 'express-session';
+import redis from 'redis';
+import passport from 'passport';
+import passportConfig from './passport/index.js';
+import connectRedis from 'connect-redis';
 
 let RedisStore = connectRedis(session);
 const app = express();
@@ -33,7 +33,7 @@ const sessionOption = {
   store: new RedisStore({ client: redisClient }),
 };
 
-if (process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV === 'production') {
   sessionOption.proxy = true;
 }
 
@@ -41,22 +41,22 @@ app.use(session(sessionOption));
 app.use(passport.initialize());
 app.use(passport.session());
 
-import { sequelize } from "./models/index.js";
+import { sequelize } from './models/index.js';
 
-app.set("port", process.env.PORT || 3001);
+app.set('port', process.env.PORT || 80);
 
 sequelize
   .sync({ force: false })
-  .then(() => console.log("db connect"))
+  .then(() => console.log('db connect'))
   .catch((err) => console.error(err));
 
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-  res.setHeader("Access-Control-Allow-Credentials", true);
-  res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
   res.setHeader(
-    "Access-Control-Allow-Headers",
-    "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"
+    'Access-Control-Allow-Headers',
+    'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept'
   );
   next();
 });
@@ -64,7 +64,7 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/api", router);
+app.use('/api', router);
 
 app.use((req, res, next) => {
   const error = new Error(
@@ -81,4 +81,4 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(app.get("port"), () => console.log(3001));
+app.listen(app.get('port'), () => console.log('서버 ON'));

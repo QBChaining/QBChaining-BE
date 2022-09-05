@@ -38,7 +38,7 @@ class QnaService {
         { model: QnaLike, attributes: ['id'] },
       ],
     });
-
+    qnaLists.reverse();
     return qnaLists.map((list) => {
       const tag = [];
       for (let i = 0; i < list.QnaTags.length; i++) {
@@ -50,8 +50,8 @@ class QnaService {
         // content: list.content,
         is_resolve: list.is_resolve,
         createdAt: list.createdAt,
-        honey_tip: list.QnaLikes?.length,
-        cntcomment: list.QnaComments?.length,
+        honey_tip: list.QnaLikes.length,
+        cntcomment: list.QnaComments.length,
         category: list.category,
         tag,
         user: list.User,

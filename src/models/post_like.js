@@ -22,7 +22,12 @@ export default class PostLike extends Sequelize.Model {
     db.post_like.belongsTo(db.post, {
       foreignKey: 'post_id',
       targetKey: 'id',
+      onDelete: 'cascade',
     });
-    db.post_like.belongsTo(db.user);
+    db.post_like.belongsTo(db.user, {
+      foreignKey: 'user_id',
+      targetKey: 'id',
+      onDelete: 'cascade',
+    });
   }
 }
