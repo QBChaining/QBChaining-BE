@@ -41,7 +41,7 @@ class QnaService {
     return qnaLists.map((list) => {
       const tag = [];
       for (let i = 0; i < list.QnaTags.length; i++) {
-        tag.push(list.QnaTags[i].dataValues.tag);
+        tag.push(list.QnaTags[i]?.dataValues.tag);
       }
       return {
         id: list.id,
@@ -76,8 +76,8 @@ class QnaService {
       ],
     });
     const tag = [];
-    for (let i = 0; i < lists.QnaTags.length; i++)
-      tag.push(lists.QnaTags[i].dataValues.tag);
+    for (let i = 0; i < lists.QnaTags?.length; i++)
+      tag.push(lists.QnaTags[i]?.dataValues.tag);
 
     return {
       id: lists.id,

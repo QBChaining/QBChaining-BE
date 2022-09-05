@@ -18,7 +18,7 @@ import QnaCommentLike from '../models/qna_comment_like.js';
 
 class QnaCommentService {
   CreateQnaComment = async (qna_id, user_name, comment) => {
-    if (!comment) throw ConflictException('내용 입력은 필수');
+    if (!comment) throw new ConflictException('내용 입력은 필수');
 
     const existQna = await Qna.findOne({ where: { id: qna_id } });
     if (!existQna) throw NotFoundException('게시물이 존재 하지 않음');
