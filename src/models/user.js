@@ -16,8 +16,8 @@ export default class User extends Sequelize.Model {
         },
         user_name: {
           type: Sequelize.STRING(20),
-          allowNull: true,
           unique: true,
+          allowNull: false,
         },
         rank_point: {
           type: Sequelize.INTEGER,

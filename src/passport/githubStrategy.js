@@ -25,15 +25,17 @@ const github = () => {
         // console.log("git profile", profile);
         try {
           const exUser = await User.findOne({
-            where: { email: profile.profileUrl },
+            where: { user_name: profile.username },
+
           });
           if (exUser) {
             done(null, exUser);
           } else {
             const newUser = await User.create({
-              email: profile.profileUrl,
+              email: profile.emails[0].value,
+              profile_url: profile.profileUrl,
               user_name: profile.username,
-              rank_point: 0,
+              is_new: "true",
             });
             done(null, newUser);
           }
