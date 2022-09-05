@@ -5,7 +5,11 @@ import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
-router.get("/github", passport.authenticate("github", { session: false }));
+// router.get("/github", passport.authenticate("github", { session: false }));
+router.get(
+  "/github",
+  passport.authenticate("github", { scope: ["user:email"] })
+);
 
 router.get(
   "/github/callback",
@@ -13,18 +17,21 @@ router.get(
     failureRedirect: "/",
   }),
   (req, res) => {
-    const token = jwt.sign(
-      {
-        id: req.user.id,
-        name: req.user.user_name,
-      },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: "15m",
-        issuer: "jihun",
-      }
-    );
-    return res.redirect(`http://localhost:3000?token=${token}`);
+    // console.log(user);
+    // const token = jwt.sign(
+    //   {
+    //     id: req.user.id,
+    //     name: req.user.user_name,
+    //     // new : true or false
+    //   },
+    //   process.env.JWT_SECRET,
+    //   {
+    //     expiresIn: "15m",
+    //     issuer: "jihun",
+    //   }
+    // );
+    // return res.redirect(`http://localhost:3001?token=${token}`);
+    return res.json({ response: req.user });
   }
 );
 

@@ -5,7 +5,7 @@ dotenv.config({ path: "../.env" });
 
 // const GitHubStrategy = require('passport-github').Strategy;
 
-import GitHubStrategy from "passport-github";
+import GitHubStrategy from "passport-github2";
 
 import User from "../models/user.js";
 
@@ -18,22 +18,34 @@ const github = () => {
       {
         clientID: `${id}`,
         clientSecret: `${secret}`,
-        callbackURL: "http://13.125.180.179/api/auth/github/callback",
+        callbackURL: "http://localhost:3001/api/auth/github/callback",
+        scope: ["user:email"],
       },
       async (accessToken, refreshToken, profile, done) => {
-        // console.log("git profile", profile);
         try {
           const exUser = await User.findOne({
-            where: { email: profile.profileUrl },
+            where: { name: profile.username },
           });
+
           if (exUser) {
-            done(null, exUser);
+            if (exUser.is_new == "false") {
+              done(null, exUser);
+            } else if (exUser.is_new == "true") {
+              const updateUser = await User.update(
+                { is_new: "false" },
+                { where: { name: profile.username } }
+              );
+              done(null, updateUser);
+            } else {
+              console.error(error);
+              done(error);
+            }
           } else {
             const newUser = await User.create({
-              email: profile.profileUrl,
-              user_name: profile.username,
+              email: profile.emails[0].value,
+              profile_url: profile.profileUrl,
               name: profile.username,
-              rank_point: 0,
+              is_new: "true",
             });
             done(null, newUser);
           }
