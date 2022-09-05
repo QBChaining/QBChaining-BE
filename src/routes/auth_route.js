@@ -32,8 +32,8 @@ router.get(
       }
     );
 
-    // return res.redirect(`http://localhost:3001?token=${token}`);
-    return res.json({ response: req.user, token });
+    return res.redirect(`http://localhost:3000?token=${token}`);
+    // return res.json({ response: req.user, token });
   }
 );
 

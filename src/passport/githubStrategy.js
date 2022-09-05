@@ -1,13 +1,13 @@
-import passport from "passport";
-import dotenv from "dotenv";
+import passport from 'passport';
+import dotenv from 'dotenv';
 
-dotenv.config({ path: "../.env" });
+dotenv.config({ path: '../.env' });
 
 // const GitHubStrategy = require('passport-github').Strategy;
 
-import GitHubStrategy from "passport-github";
+import GitHubStrategy from 'passport-github2';
 
-import User from "../models/user.js";
+import User from '../models/user.js';
 
 let id = process.env.GIT_ID;
 let secret = process.env.GIT_SECRET;
@@ -20,6 +20,7 @@ const github = () => {
         clientID: `${id}`,
         clientSecret: `${secret}`,
         callbackURL: `${url}`,
+        scope: ['user:email'],
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
@@ -33,7 +34,7 @@ const github = () => {
               email: profile.emails[0].value,
               profile_url: profile.profileUrl,
               user_name: profile.username,
-              is_new: "true",
+              is_new: 'true',
             });
             done(null, newUser);
           }
