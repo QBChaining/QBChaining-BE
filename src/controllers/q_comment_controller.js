@@ -11,9 +11,15 @@ class QnaCommentController {
     const { name } = req.decoded;
 
     try {
-      await this.qnaCommentService.CreateQnaComment(qna_id, name, comment);
+      const data = await this.qnaCommentService.CreateQnaComment(
+        qna_id,
+        name,
+        comment
+      );
 
-      return res.status(201).json({ success: true, message: '댓글 작성 완료' });
+      return res
+        .status(201)
+        .json({ success: true, message: '댓글 작성 완료', data });
     } catch (err) {
       console.log(err);
       const exception = exceptionHandler(err);

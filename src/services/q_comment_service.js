@@ -21,9 +21,10 @@ class QnaCommentService {
     if (!comment) throw new ConflictException('내용 입력은 필수');
 
     const existQna = await Qna.findOne({ where: { id: qna_id } });
-    if (!existQna) throw NotFoundException('게시물이 존재 하지 않음');
+    if (!existQna) throw new NotFoundException('게시물이 존재 하지 않음');
 
-    await QnaComment.create({ qna_id, user_name, comment });
+    const commentdata = await QnaComment.create({ qna_id, user_name, comment });
+    return { id: commentdata.id, comment: commentdata.comment };
   };
 
   FindAllComment = async (qna_id) => {
