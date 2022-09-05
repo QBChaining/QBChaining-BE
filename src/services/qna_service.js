@@ -38,7 +38,7 @@ class QnaService {
         { model: QnaLike, attributes: ['id'] },
       ],
     });
-
+    qnaLists.reverse();
     return qnaLists.map((list) => {
       const tag = [];
       for (let i = 0; i < list.QnaTags.length; i++) {
