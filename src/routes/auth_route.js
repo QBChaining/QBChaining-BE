@@ -29,7 +29,7 @@ router.get(
         issuer: 'jihun',
       }
     );
-    return res.redirect(`http://localhost:3000?token=${token}`);
+    return res.redirect(`http://localhost:3000/login?token=${token}`);
   }
 );
 
