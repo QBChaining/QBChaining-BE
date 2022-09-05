@@ -1,22 +1,22 @@
-import express from "express";
-import passport from "passport";
-import verifyToken from "../middlewares/authMiddleware.js";
-import jwt from "jsonwebtoken";
-import AuthController from "../controllers/auth_controller.js";
+import express from 'express';
+import passport from 'passport';
+import verifyToken from '../middlewares/authMiddleware.js';
+import jwt from 'jsonwebtoken';
+import AuthController from '../controllers/auth_controller.js';
 
 const router = express.Router();
 
 const authController = new AuthController();
 
 router.get(
-  "/github",
-  passport.authenticate("github", { scope: ["user:email"], session: false })
+  '/github',
+  passport.authenticate('github', { scope: ['user:email'], session: false })
 );
 
 router.get(
-  "/github/callback",
-  passport.authenticate("github", {
-    failureRedirect: "/",
+  '/github/callback',
+  passport.authenticate('github', {
+    failureRedirect: '/',
   }),
   (req, res) => {
     const token = jwt.sign(
@@ -27,19 +27,19 @@ router.get(
       },
       process.env.JWT_SECRET,
       {
-        expiresIn: "15m",
-        issuer: "jihun",
+        expiresIn: '15m',
+        issuer: 'jihun',
       }
     );
 
-    return res.redirect(`http://localhost:3000?token=${token}`);
+    return res.redirect(`http://localhost:3000/login?token=${token}`);
     // return res.json({ response: req.user, token });
   }
 );
 
-router.put("/user/info", verifyToken, authController.updateInfo);
+router.put('/user/info', verifyToken, authController.updateInfo);
 
-router.get("/test", verifyToken, (req, res) => {
+router.get('/test', verifyToken, (req, res) => {
   res.json(req.decoded);
 });
 

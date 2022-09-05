@@ -1,5 +1,5 @@
-import jwt from "jsonwebtoken";
-import AuthService from "../services/auth_service.js";
+import jwt from 'jsonwebtoken';
+import AuthService from '../services/auth_service.js';
 
 export default class AuthController {
   authService = new AuthService();
@@ -17,8 +17,8 @@ export default class AuthController {
         },
         process.env.JWT_SECRET,
         {
-          expiresIn: "15m",
-          issuer: "jihun",
+          expiresIn: '15m',
+          issuer: 'jihun',
         }
       );
 
