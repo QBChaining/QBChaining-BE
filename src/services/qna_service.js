@@ -21,9 +21,9 @@ class QnaService {
       throw new ConflictException(`null 값이 존재합니다.`);
     }
 
-    await Qna.create({ title, content, category, user_id });
+    const qna = await Qna.create({ title, content, category, user_id });
     for (const tag of tags) {
-      await QnaTag.create({ qna_id, tag });
+      await QnaTag.create({ qna_id: qna.id, tag });
     }
   };
 
