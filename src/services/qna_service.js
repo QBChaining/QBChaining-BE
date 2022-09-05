@@ -22,7 +22,6 @@ class QnaService {
     }
 
     await Qna.create({ title, content, category, user_id });
-
     for (const tag of tags) {
       await QnaTag.create({ user_id, tag });
     }
