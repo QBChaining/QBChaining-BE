@@ -8,13 +8,12 @@ const router = express.Router();
 const qnaController = new QnaController();
 const qnaCommentController = new QnaCommentController();
 
+router.get('/bookmark', verifyToken, qnaController.FindBookMark);
 router.get('/', qnaController.FindAllQna);
 router.get('/:id', qnaController.FindOneQna);
 router.get('/:id/comments', qnaCommentController.FindAllComment);
 
 router.use(verifyToken);
-
-router.get('/bookmark', qnaController.FindBookMark);
 
 router.post('/', qnaController.CreateQna);
 router.post('/:id/bookmark', qnaController.AddBookMark);
