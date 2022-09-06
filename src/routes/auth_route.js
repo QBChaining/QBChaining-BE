@@ -27,7 +27,6 @@ router.get(
       },
       process.env.JWT_SECRET,
       {
-        expiresIn: '15m',
         issuer: 'jihun',
       }
     );
