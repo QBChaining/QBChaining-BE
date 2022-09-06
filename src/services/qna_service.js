@@ -17,14 +17,13 @@ import QnaBookmark from '../models/qna_bookmark.js';
 
 class QnaService {
   CreateQna = async (title, content, category, tags, user_id) => {
-    if ((!title || !content, !category)) {
+    if (!title || !content || !category) {
       throw new ConflictException(`null 값이 존재합니다.`);
     }
 
-    await Qna.create({ title, content, category, user_id });
-
+    const qna = await Qna.create({ title, content, category, user_id });
     for (const tag of tags) {
-      await QnaTag.create({ user_id, tag });
+      await QnaTag.create({ qna_id: qna.id, tag });
     }
   };
 
@@ -38,11 +37,11 @@ class QnaService {
         { model: QnaLike, attributes: ['id'] },
       ],
     });
-
+    qnaLists.reverse();
     return qnaLists.map((list) => {
       const tag = [];
       for (let i = 0; i < list.QnaTags.length; i++) {
-        tag.push(list.QnaTags[i].dataValues.tag);
+        tag.push(list.QnaTags[i]?.dataValues.tag);
       }
       return {
         id: list.id,
@@ -50,8 +49,8 @@ class QnaService {
         // content: list.content,
         is_resolve: list.is_resolve,
         createdAt: list.createdAt,
-        honey_tip: list.QnaLikes?.length,
-        cntcomment: list.QnaComments?.length,
+        honey_tip: list.QnaLikes.length,
+        cntcomment: list.QnaComments.length,
         category: list.category,
         tag,
         user: list.User,
@@ -77,8 +76,8 @@ class QnaService {
       ],
     });
     const tag = [];
-    for (let i = 0; i < lists.QnaTags.length; i++)
-      tag.push(lists.QnaTags[i].dataValues.tag);
+    for (let i = 0; i < lists.QnaTags?.length; i++)
+      tag.push(lists.QnaTags[i]?.dataValues.tag);
 
     return {
       id: lists.id,

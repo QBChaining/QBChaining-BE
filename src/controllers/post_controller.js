@@ -10,7 +10,7 @@ export default class PostController {
       console.log(postShowAll);
       return res.status(200).json({
         success: true,
-        message: '조회 성공',
+        message: "조회 성공",
         data: postShowAll,
       });
     } catch (error) {
@@ -25,7 +25,7 @@ export default class PostController {
 
       return res.status(200).json({
         success: true,
-        message: '조회 성공',
+        message: "조회 성공",
         data: postShowOne,
       });
     } catch (error) {
@@ -63,7 +63,7 @@ export default class PostController {
 
       return res.status(200).json({
         success: true,
-        message: '작성 성공',
+        message: "작성 성공",
       });
     } catch (error) {
       const errorhandler = exceptionHandler(error);
@@ -94,7 +94,7 @@ export default class PostController {
 
       return res.status(200).json({
         success: true,
-        message: '수정 성공',
+        message: "수정 성공",
       });
     } catch (error) {
       console.log(error);
@@ -114,7 +114,7 @@ export default class PostController {
       const postDelete = await this.postService.PostDelete(post_id, user_id);
       return res.status(200).json({
         success: true,
-        message: '삭제 성공',
+        message: "삭제 성공",
       });
     } catch (error) {
       return next(error);

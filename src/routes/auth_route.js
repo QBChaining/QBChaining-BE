@@ -17,21 +17,22 @@ router.get(
       {
         id: req.user.id,
         name: req.user.user_name,
+        is_new: req.user.is_new,
       },
       process.env.JWT_SECRET,
       {
         issuer: 'QUBE',
       }
     );
-    return res.redirect(`http://localhost:3000?token=${token}`);
+
+    return res.redirect(`http://localhost:3000/login?token=${token}`);
   }
 );
+
+router.put('/user/info', verifyToken, authController.updateInfo);
 
 router.get('/test', verifyToken, (req, res) => {
   res.json(req.decoded);
 });
-// router.get("/logout", verifyToken, (req, res) => {
-//   res.json({ message: "logout" });
-// });
 
 export default router;

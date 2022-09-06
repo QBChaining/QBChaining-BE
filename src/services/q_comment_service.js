@@ -18,12 +18,13 @@ import QnaCommentLike from '../models/qna_comment_like.js';
 
 class QnaCommentService {
   CreateQnaComment = async (qna_id, user_name, comment) => {
-    if (!comment) throw ConflictException('내용 입력은 필수');
+    if (!comment) throw new ConflictException('내용 입력은 필수');
 
     const existQna = await Qna.findOne({ where: { id: qna_id } });
-    if (!existQna) throw NotFoundException('게시물이 존재 하지 않음');
+    if (!existQna) throw new NotFoundException('게시물이 존재 하지 않음');
 
-    await QnaComment.create({ qna_id, user_name, comment });
+    const commentdata = await QnaComment.create({ qna_id, user_name, comment });
+    return { id: commentdata.id, comment: commentdata.comment };
   };
 
   FindAllComment = async (qna_id) => {
@@ -76,7 +77,7 @@ class QnaCommentService {
       where: { qna_comment_id, user_name },
     });
     if (existLike) throw new ConflictException('반복해서 눌렀습니다.');
-    else await QnaCommentLike.create({ qna_comment_id, user_id });
+    else await QnaCommentLike.create({ qna_comment_id, user_name });
   };
 
   RemoveLikeComment = async (qna_comment_id, user_name) => {
@@ -84,7 +85,7 @@ class QnaCommentService {
       where: { qna_comment_id, user_name },
     });
     if (!existLike) throw new ConflictException('반복해서 눌렀습니다.');
-    else await QnaCommentLike.destroy({ where: { qna_comment_id, user_id } });
+    else await QnaCommentLike.destroy({ where: { qna_comment_id, user_name } });
   };
 
   ChooseComment = async (qna_comment_id, user_id) => {
@@ -94,7 +95,13 @@ class QnaCommentService {
     const qna = await existComment.getQna();
     if (qna.user_id !== user_id)
       throw new ConflictException('채택은 게시글 작성자만 가능합니다.');
-    else await Qna.update({ is_resolve: true }, { where: { id: qna.id } });
+    else {
+      await Qna.update({ is_resolve: true }, { where: { id: qna.id } });
+      await QnaComment.update(
+        { is_choose: true },
+        { where: { id: qna_comment_id } }
+      );
+    }
   };
 }
 

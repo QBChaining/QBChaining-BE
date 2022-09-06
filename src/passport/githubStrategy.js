@@ -1,16 +1,17 @@
-import passport from "passport";
-import dotenv from "dotenv";
+import passport from 'passport';
+import dotenv from 'dotenv';
 
-dotenv.config({ path: "../.env" });
+dotenv.config({ path: '../.env' });
 
 // const GitHubStrategy = require('passport-github').Strategy;
 
-import GitHubStrategy from "passport-github";
+import GitHubStrategy from 'passport-github2';
 
-import User from "../models/user.js";
+import User from '../models/user.js';
 
 let id = process.env.GIT_ID;
 let secret = process.env.GIT_SECRET;
+let url = process.env.GIT_URL;
 
 const github = () => {
   passport.use(
@@ -18,22 +19,22 @@ const github = () => {
       {
         clientID: `${id}`,
         clientSecret: `${secret}`,
-        callbackURL: "http://13.125.180.179/api/auth/github/callback",
+        callbackURL: `${url}`,
+        scope: ['user:email'],
       },
       async (accessToken, refreshToken, profile, done) => {
-        // console.log("git profile", profile);
         try {
           const exUser = await User.findOne({
-            where: { email: profile.profileUrl },
+            where: { user_name: profile.username },
           });
           if (exUser) {
             done(null, exUser);
           } else {
             const newUser = await User.create({
-              email: profile.profileUrl,
+              email: profile.emails[0].value,
+              profile_url: profile.profileUrl,
               user_name: profile.username,
-              name: profile.username,
-              rank_point: 0,
+              is_new: 'true',
             });
             done(null, newUser);
           }

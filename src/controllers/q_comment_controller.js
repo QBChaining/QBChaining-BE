@@ -8,12 +8,18 @@ class QnaCommentController {
   CreateQnaComment = async (req, res, next) => {
     const qna_id = req.params.id;
     const { comment } = req.body;
-    const { user_name } = req.user;
+    const { name } = req.decoded;
 
     try {
-      await this.qnaCommentService.CreateQnaComment(qna_id, user_name, comment);
+      const data = await this.qnaCommentService.CreateQnaComment(
+        qna_id,
+        name,
+        comment
+      );
 
-      return res.status(201).json({ success: true, message: '댓글 작성 완료' });
+      return res
+        .status(201)
+        .json({ success: true, message: '댓글 작성 완료', data });
     } catch (err) {
       console.log(err);
       const exception = exceptionHandler(err);
@@ -44,9 +50,9 @@ class QnaCommentController {
   UpdateComment = async (req, res, next) => {
     const { id } = req.params;
     const { comment } = req.body;
-    const { user_name } = req.user;
+    const { name } = req.decoded;
     try {
-      await this.qnaCommentService.UpdateComment(id, comment, user_name);
+      await this.qnaCommentService.UpdateComment(id, comment, name);
       return res.status(200).json({ success: true, message: '댓글 수정 완료' });
     } catch (err) {
       console.log(err);
@@ -61,9 +67,9 @@ class QnaCommentController {
   RemoveComment = async (req, res, next) => {
     const { id } = req.params;
     const { comment } = req.body;
-    const { user_name } = req.user;
+    const { name } = req.decoded;
     try {
-      await this.qnaCommentService.RemoveComment(id, comment, user_name);
+      await this.qnaCommentService.RemoveComment(id, comment, name);
       return res.status(200).json({ success: true, message: '댓글 삭제 완료' });
     } catch (err) {
       console.log(err);
@@ -76,10 +82,10 @@ class QnaCommentController {
   };
 
   LikeComment = async (req, res, next) => {
-    const { user_name } = req.user;
+    const { name } = req.decoded;
     const { id } = req.params;
     try {
-      await this.qnaCommentService.LikeComment(id, user_name);
+      await this.qnaCommentService.LikeComment(id, name);
       return res.status(200).json({ success: true, message: '댓글 추천 완료' });
     } catch (err) {
       console.log(err);
@@ -92,10 +98,10 @@ class QnaCommentController {
   };
 
   RemoveLikeComment = async (req, res, next) => {
-    const { user_name } = req.user;
+    const { name } = req.decoded;
     const { id } = req.params;
     try {
-      await this.qnaCommentService.RemoveLikeComment(id, user_name);
+      await this.qnaCommentService.RemoveLikeComment(id, name);
       return res.status(200).json({ success: true, message: '댓글 삭제 완료' });
     } catch (err) {
       console.log(err);
@@ -109,7 +115,7 @@ class QnaCommentController {
 
   ChooseComment = async (req, res, next) => {
     const comment_id = req.params.id;
-    const user_id = req.user.id;
+    const user_id = req.decoded.id;
 
     try {
       await this.qnaCommentService.ChooseComment(comment_id, user_id);

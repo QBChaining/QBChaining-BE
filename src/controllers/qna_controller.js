@@ -5,7 +5,7 @@ class QnaController {
   qnaService = new QnaService();
 
   CreateQna = async (req, res, next) => {
-    const user_id = res.user.id;
+    const user_id = req.decoded.id;
 
     const { title, content, category, tag } = req.body;
 
@@ -31,7 +31,7 @@ class QnaController {
 
       return res
         .status(200)
-        .json({ succses: true, message: '전체 조회 성공', data });
+        .json({ success: true, message: '전체 조회 성공', data });
     } catch (err) {
       console.log(err);
       const exception = exceptionHandler(err);
@@ -61,8 +61,8 @@ class QnaController {
   };
 
   AddBookMark = async (req, res, next) => {
-    const qna_id = req.params.id;
-    const user_id = req.user.id;
+    const qna_id = req.params.id * 1;
+    const user_id = req.decoded.id;
     try {
       await this.qnaService.AddBookMark(qna_id, user_id);
       return res
@@ -79,8 +79,8 @@ class QnaController {
   };
 
   RemoveBookMark = async (req, res, next) => {
-    const qna_id = req.params.id;
-    const user_id = req.user.id;
+    const qna_id = req.params.id * 1;
+    const user_id = req.decoded.id;
 
     try {
       await this.qnaService.RemoveBookMark(qna_id, user_id);
@@ -98,8 +98,8 @@ class QnaController {
   };
 
   LikeQna = async (req, res, next) => {
-    const qna_id = req.params.id;
-    const user_id = req.user.id;
+    const qna_id = req.params.id * 1;
+    const user_id = req.decoded.id;
     try {
       await this.qnaService.LikeQna(qna_id, user_id);
       return res.status(200).json({ success: true, message: '추천 완료' });
@@ -114,8 +114,8 @@ class QnaController {
   };
 
   RemoveLikeQna = async (req, res, next) => {
-    const qna_id = req.params.id;
-    const user_id = req.user.id;
+    const qna_id = req.params.id * 1;
+    const user_id = req.decoded.id;
     try {
       await this.qnaService.RemoveLikeQna(qna_id, user_id);
       return res.status(200).json({ success: true, message: '추천 최소' });
@@ -130,7 +130,7 @@ class QnaController {
   };
 
   FindBookMark = async (req, res, next) => {
-    const { id } = req.user;
+    const { id } = req.decoded.id;
     try {
       const data = await this.qnaService.FindBookMark(id);
 
