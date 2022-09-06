@@ -1,6 +1,8 @@
+
 import Sequelize from "sequelize";
 
 import { sequelize } from "./sequelize.js";
+
 
 export default class Post extends Sequelize.Model {
   static init(sequelize) {
@@ -12,7 +14,7 @@ export default class Post extends Sequelize.Model {
           allowNull: false,
         },
         content: {
-          type: Sequelize.STRING(200),
+          type: Sequelize.STRING(10000),
           allowNull: false,
         },
         tag: {

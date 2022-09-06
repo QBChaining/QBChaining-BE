@@ -10,7 +10,6 @@ export default class PostCommentController {
       const postcomment = await this.postCommentServices.CommentShowAll(
         post_id
       );
-      console.log(postcomment);
 
       return res.status(200).json({
         success: true,
@@ -19,7 +18,6 @@ export default class PostCommentController {
       });
     } catch (error) {
       const errorhandler = exceptionHandler(error);
-      console.log(errorhandler);
 
       res.status(errorhandler.statusCode).json({
         success: errorhandler.success,
@@ -38,13 +36,11 @@ export default class PostCommentController {
         user_name,
         post_id
       );
-      console.log(commentcreate);
       return res.status(200).json({
         success: true,
       });
     } catch (error) {
       const errorhandler = exceptionHandler(error);
-      console.log(errorhandler);
 
       res.status(errorhandler.statusCode).json({
         success: errorhandler.success,
@@ -68,7 +64,6 @@ export default class PostCommentController {
       });
     } catch (error) {
       const errorhandler = exceptionHandler(error);
-      console.log(errorhandler);
 
       res.status(errorhandler.statusCode).json({
         success: errorhandler.success,

@@ -9,7 +9,7 @@ export default class PostComment extends Sequelize.Model {
       // 문자열이며 100자 제한, allowNull은 false
       {
         comment: {
-          type: Sequelize.STRING(100),
+          type: Sequelize.STRING(1000),
           allowNull: false,
         },
         user_name: {

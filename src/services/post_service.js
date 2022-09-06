@@ -14,6 +14,7 @@ import {
 } from '../exception/customException.js';
 
 export default class PostServices {
+  // 최신순 정렬
   PostShowAll = async () => {
     const post = await Post.findAll({
       where: {},
@@ -24,9 +25,93 @@ export default class PostServices {
       ],
     });
 
-    console.log(post);
+    return post
+      .map((currentValue) => {
+        return {
+          id: currentValue.id,
+          title: currentValue.title,
+          content: currentValue.content,
+          tag: currentValue.tag,
+          created_at: currentValue.createdAt,
+          updated_at: currentValue.updatedAt,
+          user: currentValue.User,
+          cmtNum: currentValue.PostComments.length,
+          like: currentValue.PostLikes.length,
+        };
+      })
+      .reverse();
+  };
 
-    return post.map((currentValue) => {
+  // 댓글순 정렬
+  PostShowComment = async () => {
+    const postcmt = await Post.findAll({
+      where: {},
+      include: [
+        { model: User, attributes: ['user_name'] },
+        { model: PostComment, attributes: ['user_name', 'comment'] },
+        { model: PostLike },
+      ],
+    });
+    return postcmt
+      .map((currentValue) => {
+        return {
+          id: currentValue.id,
+          title: currentValue.title,
+          content: currentValue.content,
+          tag: currentValue.tag,
+          created_at: currentValue.createdAt,
+          updated_at: currentValue.updatedAt,
+          user: currentValue.User,
+          cmtNum: currentValue.PostComments.length,
+          like: currentValue.PostLikes.length,
+        };
+      })
+      .sort(function (a, b) {
+        return b.cmtNum - a.cmtNum;
+      });
+  };
+
+  // 추천순 정렬
+  PostShowLike = async () => {
+    const postshowlike = await Post.findAll({
+      where: {},
+      include: [
+        { model: User, attributes: ['user_name'] },
+        { model: PostComment, attributes: ['user_name', 'comment'] },
+        { model: PostLike },
+      ],
+    });
+
+    return postshowlike
+      .map((currentValue) => {
+        return {
+          id: currentValue.id,
+          title: currentValue.title,
+          content: currentValue.content,
+          tag: currentValue.tag,
+          created_at: currentValue.createdAt,
+          updated_at: currentValue.updatedAt,
+          user: currentValue.User,
+          cmtNum: currentValue.PostComments.length,
+          like: currentValue.PostLikes.length,
+        };
+      })
+      .sort((a, b) => {
+        return b.like - a.like;
+      });
+  };
+
+  PostShowhit = async () => {
+    const posthit = await Post.findAll({
+      where: {},
+      include: [
+        { model: User, attributes: ['user_name'] },
+        { model: PostComment, attributes: ['user_name', 'comment'] },
+        { model: PostLike },
+      ],
+    });
+
+    const posthitmap = posthit.map((currentValue) => {
       return {
         id: currentValue.id,
         title: currentValue.title,
@@ -38,6 +123,25 @@ export default class PostServices {
         cmtNum: currentValue.PostComments.length,
         like: currentValue.PostLikes.length,
       };
+    });
+
+    let posthits = [];
+    let answer = [];
+    let now = new Date();
+    for (let i = 0; i < posthitmap.length; i++) {
+      const datecompare =
+        now.getTime() - new Date(posthitmap[i].created_at).getTime();
+      const inttime = datecompare / 1000 / 60 / 60;
+      if (parseInt(inttime) < 12) {
+        posthits.push(i);
+      }
+    }
+    for (let i = 0; i < posthits.length; i++) {
+      answer.push(posthitmap[i]);
+    }
+
+    return answer.sort((a, b) => {
+      return b.like - a.like;
     });
   };
 
@@ -60,7 +164,6 @@ export default class PostServices {
   };
 
   PostCreate = async (title, content, tag, user_id) => {
-    // console.log(content.length);
     if (content.length !== 0) {
       const post = await Post.create({
         title,
@@ -68,7 +171,6 @@ export default class PostServices {
         tag,
         user_id,
       });
-      console.log(user_id);
       return post;
     } else {
       throw new ConflictException('내용을 입력해주세요');
@@ -102,9 +204,6 @@ export default class PostServices {
     const findLike = await PostLike.findOne({
       where: { user_id: user_id, post_id: post_id },
     });
-    console.log(post_id);
-    console.log(user_id);
-    console.log(findLike);
     if (findLike === null) {
       const like = await PostLike.create({ user_id, post_id });
     } else {
@@ -116,7 +215,6 @@ export default class PostServices {
     const findLike = await PostLike.findOne({
       where: { user_id: user_id, post_id: post_id },
     });
-    console.log(findLike);
     if (findLike === null) {
       throw new ConflictException('좋아요를 하지 않았습니다');
     } else {
@@ -139,7 +237,6 @@ export default class PostServices {
     const findBookMark = await PostBookmark.findOne({
       where: { user_id: user_id, post_id: post_id },
     });
-    // console.log(findBookMark.user_id);
 
     if (findBookMark === null) {
       const bookmark = await PostBookmark.create({
