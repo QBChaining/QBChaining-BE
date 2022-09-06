@@ -95,7 +95,13 @@ class QnaCommentService {
     const qna = await existComment.getQna();
     if (qna.user_id !== user_id)
       throw new ConflictException('채택은 게시글 작성자만 가능합니다.');
-    else await Qna.update({ is_resolve: true }, { where: { id: qna.id } });
+    else {
+      await Qna.update({ is_resolve: true }, { where: { id: qna.id } });
+      await QnaComment.update(
+        { is_choose: true },
+        { where: { id: qna_comment_id } }
+      );
+    }
   };
 }
 
