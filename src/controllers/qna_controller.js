@@ -16,7 +16,6 @@ class QnaController {
         .status(201)
         .json({ success: true, message: '게시글 작성 되었습니다.' });
     } catch (err) {
-      console.log(err);
       const exception = exceptionHandler(err);
 
       res
@@ -33,7 +32,6 @@ class QnaController {
         .status(200)
         .json({ succses: true, message: '전체 조회 성공', data });
     } catch (err) {
-      console.log(err);
       const exception = exceptionHandler(err);
 
       return res
@@ -51,7 +49,6 @@ class QnaController {
         .status(200)
         .json({ success: true, message: '상세 조회 완료', data });
     } catch (err) {
-      console.log(err);
       const exception = exceptionHandler(err);
 
       return res
@@ -69,7 +66,6 @@ class QnaController {
         .status(200)
         .json({ success: true, message: '즐겨찾기 추가 되었습니다.' });
     } catch (err) {
-      console.log(err);
       const exception = exceptionHandler(err);
 
       return res
@@ -88,7 +84,6 @@ class QnaController {
         .status(200)
         .json({ success: true, message: '즐겨찾기 삭제 되었습니다.' });
     } catch (err) {
-      console.log(err);
       const exception = exceptionHandler(err);
 
       return res
@@ -104,7 +99,6 @@ class QnaController {
       await this.qnaService.LikeQna(qna_id, user_id);
       return res.status(200).json({ success: true, message: '추천 완료' });
     } catch (err) {
-      console.log(err);
       const exception = exceptionHandler(err);
 
       return res
@@ -120,7 +114,6 @@ class QnaController {
       await this.qnaService.RemoveLikeQna(qna_id, user_id);
       return res.status(200).json({ success: true, message: '추천 최소' });
     } catch (err) {
-      console.log(err);
       const exception = exceptionHandler(err);
 
       return res
@@ -138,7 +131,6 @@ class QnaController {
         .status(200)
         .json({ success: true, message: '즐겨찾기 조회 완료', data });
     } catch (err) {
-      console.log(err);
       const exception = exceptionHandler(err);
 
       return res

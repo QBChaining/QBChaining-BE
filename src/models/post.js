@@ -1,5 +1,5 @@
 import Sequelize from 'sequelize';
-
+import PostBookmark from './post_bookmark.js';
 import { sequelize } from './sequelize.js';
 
 export default class Post extends Sequelize.Model {
@@ -12,7 +12,7 @@ export default class Post extends Sequelize.Model {
           allowNull: false,
         },
         content: {
-          type: Sequelize.STRING(200),
+          type: Sequelize.STRING(10000),
           allowNull: false,
         },
         tag: {

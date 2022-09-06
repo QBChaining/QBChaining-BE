@@ -7,11 +7,49 @@ export default class PostController {
   PostShowAll = async (req, res, next) => {
     try {
       const postShowAll = await this.postService.PostShowAll();
-      console.log(postShowAll);
       return res.status(200).json({
         success: true,
         message: '조회 성공',
         data: postShowAll,
+      });
+    } catch (error) {
+      return next(error);
+    }
+  };
+
+  PostShowComment = async (req, res, next) => {
+    try {
+      const postShowComment = await this.postService.PostShowComment();
+      return res.status(200).json({
+        success: true,
+        message: '조회 성공1',
+        data: postShowComment,
+      });
+    } catch (error) {
+      return next(error);
+    }
+  };
+
+  PostShowLike = async (req, res, next) => {
+    try {
+      const postShowAll = await this.postService.PostShowLike();
+      return res.status(200).json({
+        success: true,
+        message: '조회 성공',
+        data: postShowAll,
+      });
+    } catch (error) {
+      return next(error);
+    }
+  };
+
+  PostShowhit = async (req, res, next) => {
+    try {
+      const postShowhit = await this.postService.PostShowhit();
+      return res.status(200).json({
+        success: true,
+        message: '히트상품조회성공',
+        data: postShowhit,
       });
     } catch (error) {
       return next(error);
@@ -67,7 +105,6 @@ export default class PostController {
       });
     } catch (error) {
       const errorhandler = exceptionHandler(error);
-      console.log(errorhandler);
 
       res.status(errorhandler.statusCode).json({
         success: errorhandler.success,
@@ -97,7 +134,6 @@ export default class PostController {
         message: '수정 성공',
       });
     } catch (error) {
-      console.log(error);
       const errorhandler = exceptionHandler(error);
 
       res.status(errorhandler.statusCode).json({
@@ -131,7 +167,6 @@ export default class PostController {
         message: '좋아요 성공',
       });
     } catch (error) {
-      console.log(error);
       const errorhandler = exceptionHandler(error);
 
       res.status(errorhandler.statusCode).json({
@@ -154,7 +189,6 @@ export default class PostController {
         message: '좋아요 삭제 성공',
       });
     } catch (error) {
-      console.log(error);
       const errorhandler = exceptionHandler(error);
 
       res.status(errorhandler.statusCode).json({
@@ -167,6 +201,7 @@ export default class PostController {
   PostBookMark = async (req, res, next) => {
     const user_id = 2;
     const post_id = req.params.post_id;
+    const target_id = post_id.user_name;
 
     try {
       const PostBookMark = await this.postService.PostBookMark(
@@ -178,7 +213,6 @@ export default class PostController {
         message: '즐겨찾기 성공',
       });
     } catch (error) {
-      console.log(error);
       const errorhandler = exceptionHandler(error);
 
       res.status(errorhandler.statusCode).json({
@@ -202,7 +236,6 @@ export default class PostController {
         message: '즐겨찾기 삭제 성공',
       });
     } catch (error) {
-      console.log(error);
       const errorhandler = exceptionHandler(error);
 
       res.status(errorhandler.statusCode).json({
@@ -221,14 +254,12 @@ export default class PostController {
         post_id,
         user_id
       );
-      console.log(PostBookMarkView);
       return res.status(200).json({
         success: true,
         message: '즐겨찾기 한 게시물',
         data: PostBookMarkView,
       });
     } catch (error) {
-      console.log(error);
       const errorhandler = exceptionHandler(error);
 
       res.status(errorhandler.statusCode).json({
