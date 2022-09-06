@@ -90,7 +90,7 @@ export default class PostController {
     const title = req.body.title;
     const content = req.body.content;
     const tag = req.body.tag;
-    const user_id = 2;
+    const user_id = req.decoded.id;
     try {
       const postCreate = await this.postService.PostCreate(
         title,
@@ -114,7 +114,7 @@ export default class PostController {
   };
 
   PostUpdate = async (req, res, next) => {
-    const user_id = 2;
+    const user_id = req.decoded.id;
     const title = req.body.title;
     const content = req.body.content;
     const tag = req.body.tag;
@@ -144,7 +144,7 @@ export default class PostController {
   };
 
   PostDelete = async (req, res, next) => {
-    const user_id = 2;
+    const user_id = req.decoded.id;
     const post_id = req.params.post_id;
     try {
       const postDelete = await this.postService.PostDelete(post_id, user_id);
@@ -158,7 +158,7 @@ export default class PostController {
   };
 
   PostLike = async (req, res, next) => {
-    const user_id = 2;
+    const user_id = req.decoded.id;
     const post_id = req.params.post_id;
     try {
       const postLike = await this.postService.PostLike(post_id, user_id);
@@ -177,7 +177,7 @@ export default class PostController {
   };
 
   PostLikeDelete = async (req, res, next) => {
-    const user_id = 2;
+    const user_id = req.decoded.id;
     const post_id = req.params.post_id;
     try {
       const postLikeDelete = await this.postService.PostLikeDelete(
@@ -199,14 +199,15 @@ export default class PostController {
   };
 
   PostBookMark = async (req, res, next) => {
-    const user_id = 2;
+    const user_id = req.decoded.id;
     const post_id = req.params.post_id;
-    const target_id = post_id.user_name;
+    const target_id = req.params.user_id;
 
     try {
       const PostBookMark = await this.postService.PostBookMark(
         post_id,
-        user_id
+        user_id,
+        target_id
       );
       return res.status(200).json({
         success: true,
@@ -223,7 +224,7 @@ export default class PostController {
   };
 
   PostBookMarkDelete = async (req, res, next) => {
-    const user_id = 2;
+    const user_id = req.decoded.id;
     const post_id = req.params.post_id;
 
     try {
@@ -246,7 +247,7 @@ export default class PostController {
   };
 
   PostBookMarkView = async (req, res, next) => {
-    const user_id = 2;
+    const user_id = req.decoded.id;
     const post_id = req.params.post_id;
 
     try {

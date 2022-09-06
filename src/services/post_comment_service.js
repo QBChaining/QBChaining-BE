@@ -15,7 +15,6 @@ export default class PostCommentServices {
     const postcomment = await PostComment.findAll({
       where: { post_id: post_id },
       attributes: ['id', 'comment', 'user_name', 'createdAt', 'updatedAt'],
-      // 인크루드
     });
     if (postcomment) {
       return postcomment;
@@ -27,7 +26,6 @@ export default class PostCommentServices {
   CommentShowOne = async (comment_id) => {
     const postcomment = await PostComment.findOne({
       where: { id: comment_id },
-      // 인크루드
     });
 
     return postcomment;
@@ -40,7 +38,6 @@ export default class PostCommentServices {
         user_name,
         post_id,
       });
-      console.log(user_name);
       return postcomment;
     } else {
       throw new BadRequestException('내용을 입력해주세요');

@@ -23,23 +23,23 @@ export default class PostServices {
         { model: PostComment, attributes: ['user_name', 'comment'] },
         { model: PostLike },
       ],
+      order: [['created_at', 'DESC']],
     });
+    console.log(post);
 
-    return post
-      .map((currentValue) => {
-        return {
-          id: currentValue.id,
-          title: currentValue.title,
-          content: currentValue.content,
-          tag: currentValue.tag,
-          created_at: currentValue.createdAt,
-          updated_at: currentValue.updatedAt,
-          user: currentValue.User,
-          cmtNum: currentValue.PostComments.length,
-          like: currentValue.PostLikes.length,
-        };
-      })
-      .reverse();
+    return post.map((currentValue) => {
+      return {
+        id: currentValue.id,
+        title: currentValue.title,
+        content: currentValue.content,
+        tag: currentValue.tag,
+        created_at: currentValue.createdAt,
+        updated_at: currentValue.updatedAt,
+        user: currentValue.User,
+        cmtNum: currentValue.PostComments.length,
+        like: currentValue.PostLikes.length,
+      };
+    });
   };
 
   // 댓글순 정렬
@@ -233,15 +233,16 @@ export default class PostServices {
     return findBookMark;
   };
 
-  PostBookMark = async (post_id, user_id) => {
+  PostBookMark = async (post_id, user_id, target_id) => {
     const findBookMark = await PostBookmark.findOne({
-      where: { user_id: user_id, post_id: post_id },
+      where: { user_id: user_id, post_id: post_id, target_id: target_id },
     });
 
     if (findBookMark === null) {
       const bookmark = await PostBookmark.create({
         user_id,
         post_id,
+        target_id,
       });
     } else {
       throw new BadRequestException('북마크를 이미 하였습니다');
