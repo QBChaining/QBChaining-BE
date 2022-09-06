@@ -130,9 +130,9 @@ class QnaController {
   };
 
   FindBookMark = async (req, res, next) => {
-    const { id } = req.decoded.id;
+    const user_id = req.decoded.id;
     try {
-      const data = await this.qnaService.FindBookMark(id);
+      const data = await this.qnaService.FindBookMark(user_id);
 
       return res
         .status(200)
