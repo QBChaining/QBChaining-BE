@@ -10,18 +10,21 @@ export default class User extends Sequelize.Model {
           type: Sequelize.STRING(50),
           allowNull: true,
         },
+        profile_url: {
+          type: Sequelize.STRING(50),
+          allowNull: true,
+        },
         user_name: {
           type: Sequelize.STRING(20),
-          allowNull: false,
           unique: true,
-        },
-        name: {
-          type: Sequelize.STRING(20),
           allowNull: false,
         },
         rank_point: {
           type: Sequelize.INTEGER,
-          allowNull: false,
+          allowNull: true,
+        },
+        is_new: {
+          type: Sequelize.STRING(10),
         },
       },
       {
