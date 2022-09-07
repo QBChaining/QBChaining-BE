@@ -17,11 +17,11 @@ export default class PostCommentController {
         data: postcomment,
       });
     } catch (error) {
-      const errorhandler = exceptionHandler(error);
+      const exceptionHandler = exceptionHandler(error);
 
-      res.status(errorhandler.statusCode).json({
-        success: errorhandler.success,
-        message: errorhandler.message,
+      res.status(exceptionHandler.statusCode).json({
+        success: exceptionHandler.success,
+        message: exceptionHandler.message,
       });
     }
   };
@@ -40,11 +40,11 @@ export default class PostCommentController {
         success: true,
       });
     } catch (error) {
-      const errorhandler = exceptionHandler(error);
+      const exceptionHandler = exceptionHandler(error);
 
-      res.status(errorhandler.statusCode).json({
-        success: errorhandler.success,
-        message: errorhandler.message,
+      res.status(exceptionHandler.statusCode).json({
+        success: exceptionHandler.success,
+        message: exceptionHandler.message,
       });
     }
   };
@@ -64,11 +64,11 @@ export default class PostCommentController {
         comment,
       });
     } catch (error) {
-      const errorhandler = exceptionHandler(error);
+      const exceptionHandler = exceptionHandler(error);
 
-      res.status(errorhandler.statusCode).json({
-        success: errorhandler.success,
-        message: errorhandler.message,
+      res.status(exceptionHandler.statusCode).json({
+        success: exceptionHandler.success,
+        message: exceptionHandler.message,
       });
     }
   };
@@ -85,11 +85,11 @@ export default class PostCommentController {
         success: true,
       });
     } catch (error) {
-      const errorhandler = exceptionHandler(error);
+      const exceptionHandler = exceptionHandler(error);
 
-      res.status(errorhandler.statusCode).json({
-        success: errorhandler.success,
-        message: errorhandler.message,
+      res.status(exceptionHandler.statusCode).json({
+        success: exceptionHandler.success,
+        message: exceptionHandler.message,
       });
     }
   };

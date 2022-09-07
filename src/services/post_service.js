@@ -204,7 +204,7 @@ export default class PostServices {
     });
     console.log(user_id);
     if (find.user_id !== user_id) {
-      throw new NotFoundException('작성자가 달라서 어쩌구 저쩌구');
+      throw new NotFoundException('본인의 글만 삭제 가능합니다');
     } else {
       const post = await Post.destroy({
         where: { id: post_id, user_id: user_id },
