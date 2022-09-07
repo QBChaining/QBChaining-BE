@@ -36,7 +36,7 @@ router.get(
   }
 );
 
-router.put('/user/info', verifyToken, authController.updateInfo);
+router.put('/user/isnew', verifyToken, authController.updateInfo);
 
 router.get('/test', verifyToken, (req, res) => {
   res.json(req.decoded);

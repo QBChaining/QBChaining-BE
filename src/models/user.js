@@ -23,6 +23,10 @@ export default class User extends Sequelize.Model {
           type: Sequelize.INTEGER,
           allowNull: true,
         },
+        profile_img: {
+          type: Sequelize.STRING(50),
+          allowNull: false,
+        },
         is_new: {
           type: Sequelize.STRING(10),
         },

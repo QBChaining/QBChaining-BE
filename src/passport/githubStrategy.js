@@ -24,6 +24,7 @@ const github = () => {
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
+          console.log(profile._json.avatar_url);
           const exUser = await User.findOne({
             where: { user_name: profile.username },
           });
@@ -34,6 +35,7 @@ const github = () => {
               email: profile.emails[0].value,
               profile_url: profile.profileUrl,
               user_name: profile.username,
+              profile_img: profile._json.avatar_url,
               is_new: 'true',
             });
             done(null, newUser);
