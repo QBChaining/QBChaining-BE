@@ -69,7 +69,7 @@ class QnaService {
         createdAt: list.createdAt,
         honey_tip: list.QnaLikes.length,
         is_honey_tip: list.QnaLikes[0]?.user_id === user_id,
-        is_bookmark: list.QnaBookmarks?.user_id === user_id,
+        is_bookmark: list.QnaBookmarks[0]?.user_id === user_id,
         cntcomment: list.QnaComments.length,
         category: list.category,
         tag,
