@@ -24,7 +24,6 @@ const github = () => {
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
-          console.log(profile._json.avatar_url);
           const exUser = await User.findOne({
             where: { user_name: profile.username },
           });

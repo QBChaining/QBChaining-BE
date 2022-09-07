@@ -202,7 +202,6 @@ export default class PostServices {
     const find = await Post.findOne({
       where: { id: post_id },
     });
-    console.log(find.user_id);
     if (find.user_id !== user_id) {
       throw new NotFoundException('본인의 글만 삭제 가능합니다');
     } else {
@@ -215,7 +214,6 @@ export default class PostServices {
     const findLike = await PostLike.findAll({
       where: { user_id: 1 },
     });
-    console.log(findLike);
 
     return findLike;
   };
