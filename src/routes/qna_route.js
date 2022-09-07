@@ -1,0 +1,34 @@
+import express from 'express';
+
+import QnaController from '../controllers/qna_controller.js';
+import QnaCommentController from '../controllers/q_comment_controller.js';
+import check_signin from '../middlewares/check_signin.js';
+import verifyToken from '../middlewares/auth.js';
+
+const router = express.Router();
+const qnaController = new QnaController();
+const qnaCommentController = new QnaCommentController();
+
+router.use(check_signin);
+
+router.get('/bookmark', verifyToken, qnaController.FindBookMark);
+router.get('/', qnaController.FindAllQna);
+router.get('/:id', qnaController.FindOneQna);
+router.get('/:id/comments', qnaCommentController.FindAllComment);
+
+router.use(verifyToken);
+
+router.post('/', qnaController.CreateQna);
+router.post('/:id/bookmark', qnaController.AddBookMark);
+router.delete('/:id/bookmark', qnaController.RemoveBookMark);
+router.post('/:id/like', qnaController.LikeQna);
+router.delete('/:id/like', qnaController.RemoveLikeQna);
+
+router.post('/:id/comments', qnaCommentController.CreateQnaComment);
+router.put('/comments/:id', qnaCommentController.UpdateComment);
+router.delete('/comments/:id', qnaCommentController.RemoveComment);
+router.post('/comments/:id/like', qnaCommentController.LikeComment);
+router.delete('/comments/:id/like', qnaCommentController.RemoveLikeComment);
+router.post('/comments/:id/choice', qnaCommentController.ChooseComment);
+
+export default router;
