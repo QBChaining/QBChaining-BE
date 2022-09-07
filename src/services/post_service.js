@@ -23,23 +23,22 @@ export default class PostServices {
         { model: PostComment, attributes: ['user_name', 'comment'] },
         { model: PostLike },
       ],
+      order: [['created_at', 'DESC']],
     });
 
-    return post
-      .map((currentValue) => {
-        return {
-          id: currentValue.id,
-          title: currentValue.title,
-          content: currentValue.content,
-          tag: currentValue.tag,
-          created_at: currentValue.createdAt,
-          updated_at: currentValue.updatedAt,
-          user: currentValue.User,
-          cmtNum: currentValue.PostComments.length,
-          like: currentValue.PostLikes.length,
-        };
-      })
-      .reverse();
+    return post.map((currentValue) => {
+      return {
+        id: currentValue.id,
+        title: currentValue.title,
+        content: currentValue.content,
+        tag: currentValue.tag,
+        created_at: currentValue.createdAt,
+        updated_at: currentValue.updatedAt,
+        user: currentValue.User,
+        cmtNum: currentValue.PostComments.length,
+        like: currentValue.PostLikes.length,
+      };
+    });
   };
 
   // 댓글순 정렬
@@ -179,12 +178,20 @@ export default class PostServices {
   };
 
   PostUpdate = async (title, content, tag, user_id, post_id) => {
+    const post1 = await Post.findOne({
+      where: { id: post_id },
+    });
+
+    if (user_id !== post1.user_id) {
+      throw new ConflictException('본인의 글만 수정이 가능합니다');
+    }
+
     if (content.length !== 0) {
       const post = await Post.update(
         { title, content, tag, user_id },
         { where: { id: post_id, user_id: user_id } }
       );
-      return post;
+      return { title, content, tag };
     } else {
       throw new ConflictException('내용을 입력해주세요');
     }
@@ -192,12 +199,28 @@ export default class PostServices {
   };
 
   PostDelete = async (post_id, user_id) => {
-    const post = await Post.destroy({
-      where: { id: post_id, user_id: user_id },
+    const findpost = await Post.findOne({
+      where: { id: post_id },
     });
+    // console.log(findpost);
 
-    return post;
-    // if문써서 user_id 비교해서 내꺼아니면 삭제불가처리해야댐
+    if (user_id !== findpost.user_id) {
+      throw new ConflictException('본인의 글만 삭제 할 수 있습니다');
+    } else {
+      const post = await Post.destroy({
+        where: { id: post_id, user_id: user_id },
+      });
+
+      return;
+    }
+  };
+  PostLikeShow = async (post_id, user_id) => {
+    const findLike = await PostLike.findAll({
+      where: { user_id: 1 },
+    });
+    console.log(findLike);
+
+    return findLike;
   };
 
   PostLike = async (post_id, user_id) => {
@@ -233,15 +256,16 @@ export default class PostServices {
     return findBookMark;
   };
 
-  PostBookMark = async (post_id, user_id) => {
+  PostBookMark = async (post_id, user_id, target_id) => {
     const findBookMark = await PostBookmark.findOne({
-      where: { user_id: user_id, post_id: post_id },
+      where: { user_id: user_id, post_id: post_id, target_id: target_id },
     });
 
     if (findBookMark === null) {
       const bookmark = await PostBookmark.create({
         user_id,
         post_id,
+        target_id,
       });
     } else {
       throw new BadRequestException('북마크를 이미 하였습니다');

@@ -1,5 +1,7 @@
 import express from 'express';
 import PostController from '../controllers/post_controller.js';
+import verifyToken from '../middlewares/auth.js';
+import check_signin from '../middlewares/check_signin.js';
 
 const router = express.Router();
 
@@ -21,16 +23,26 @@ router.get('/hits', postController.PostShowhit);
 router.get('/:post_id', postController.PostShowOne);
 
 // 나의 게시물 조회
-router.get('/my/:user_id', postController.PostShowMy);
+router.get('/my/:user_id', verifyToken, postController.PostShowMy);
 
-router.post('/', postController.PostCreate);
-router.put('/:post_id', postController.PostUpdate);
-router.delete('/:post_id', postController.PostDelete);
+router.post('/', verifyToken, postController.PostCreate);
+router.put('/:post_id', verifyToken, postController.PostUpdate);
+router.delete('/:post_id', verifyToken, postController.PostDelete);
 
-router.post('/like/:post_id', postController.PostLike);
-router.delete('/like/:post_id', postController.PostLikeDelete);
-router.post('/bookmark/:post_id', postController.PostBookMark);
-router.delete('/bookmark/:post_id', postController.PostBookMarkDelete);
-router.get('/bookmark/:post_id', postController.PostBookMarkView);
+router.post('/like/:post_id', verifyToken, postController.PostLike);
+// 여기추가
+router.get('/like/test', verifyToken, postController.PostLikeShow);
+router.delete('/like/:post_id', verifyToken, postController.PostLikeDelete);
+router.post(
+  '/bookmark/:post_id/:user_id',
+  verifyToken,
+  postController.PostBookMark
+);
+router.delete(
+  '/bookmark/:post_id',
+  verifyToken,
+  postController.PostBookMarkDelete
+);
+router.get('/bookmark/:post_id', verifyToken, postController.PostBookMarkView);
 
 export default router;

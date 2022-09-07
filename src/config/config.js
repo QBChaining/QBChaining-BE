@@ -6,8 +6,10 @@ const config = {
   development: {
     username: process.env.DB_ID,
     password: process.env.DB_PW,
+    // password: 'test',
     database: process.env.DB,
     host: process.env.DB_HOST,
+    // host: '127.0.0.1',
     dialect: 'mysql',
     logging: false,
     timezone: '+09:00',

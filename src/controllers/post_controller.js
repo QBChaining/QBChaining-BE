@@ -9,7 +9,7 @@ export default class PostController {
       const postShowAll = await this.postService.PostShowAll();
       return res.status(200).json({
         success: true,
-        message: "조회 성공",
+        message: '조회 성공',
         data: postShowAll,
       });
     } catch (error) {
@@ -63,7 +63,7 @@ export default class PostController {
 
       return res.status(200).json({
         success: true,
-        message: "조회 성공",
+        message: '조회 성공',
         data: postShowOne,
       });
     } catch (error) {
@@ -90,7 +90,7 @@ export default class PostController {
     const title = req.body.title;
     const content = req.body.content;
     const tag = req.body.tag;
-    const user_id = 2;
+    const user_id = req.decoded.id;
     try {
       const postCreate = await this.postService.PostCreate(
         title,
@@ -101,7 +101,7 @@ export default class PostController {
 
       return res.status(200).json({
         success: true,
-        message: "작성 성공",
+        message: '작성 성공',
       });
     } catch (error) {
       const errorhandler = exceptionHandler(error);
@@ -114,7 +114,7 @@ export default class PostController {
   };
 
   PostUpdate = async (req, res, next) => {
-    const user_id = 2;
+    const user_id = req.decoded.id;
     const title = req.body.title;
     const content = req.body.content;
     const tag = req.body.tag;
@@ -131,7 +131,8 @@ export default class PostController {
 
       return res.status(200).json({
         success: true,
-        message: "수정 성공",
+        message: '수정 성공',
+        data: { title, content, tag },
       });
     } catch (error) {
       const errorhandler = exceptionHandler(error);
@@ -144,21 +145,35 @@ export default class PostController {
   };
 
   PostDelete = async (req, res, next) => {
-    const user_id = 2;
+    const user_id = req.decoded.id;
     const post_id = req.params.post_id;
     try {
       const postDelete = await this.postService.PostDelete(post_id, user_id);
       return res.status(200).json({
         success: true,
-        message: "삭제 성공",
+        message: '삭제 성공',
       });
     } catch (error) {
       return next(error);
     }
   };
+  PostLikeShow = async (req, res, next) => {
+    const user_id = req.decoded.id;
+    // const post_id = req.params.post_id;
+    try {
+      const post = await this.postService.PostLikeShow(user_id);
+      return res.status(200).json({
+        success: true,
+        message: 'success',
+        data: post,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 
   PostLike = async (req, res, next) => {
-    const user_id = 2;
+    const user_id = req.decoded.id;
     const post_id = req.params.post_id;
     try {
       const postLike = await this.postService.PostLike(post_id, user_id);
@@ -177,7 +192,7 @@ export default class PostController {
   };
 
   PostLikeDelete = async (req, res, next) => {
-    const user_id = 2;
+    const user_id = req.decoded.id;
     const post_id = req.params.post_id;
     try {
       const postLikeDelete = await this.postService.PostLikeDelete(
@@ -199,14 +214,15 @@ export default class PostController {
   };
 
   PostBookMark = async (req, res, next) => {
-    const user_id = 2;
+    const user_id = req.decoded.id;
     const post_id = req.params.post_id;
-    const target_id = post_id.user_name;
+    const target_id = req.params.user_id;
 
     try {
       const PostBookMark = await this.postService.PostBookMark(
         post_id,
-        user_id
+        user_id,
+        target_id
       );
       return res.status(200).json({
         success: true,
@@ -223,7 +239,7 @@ export default class PostController {
   };
 
   PostBookMarkDelete = async (req, res, next) => {
-    const user_id = 2;
+    const user_id = req.decoded.id;
     const post_id = req.params.post_id;
 
     try {
@@ -246,7 +262,7 @@ export default class PostController {
   };
 
   PostBookMarkView = async (req, res, next) => {
-    const user_id = 2;
+    const user_id = req.decoded.id;
     const post_id = req.params.post_id;
 
     try {

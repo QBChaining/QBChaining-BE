@@ -22,7 +22,7 @@ dotenv.config({ path: '../.env' });
 
 const verifyToken = (req, res, next) => {
   try {
-    const [type, value] = req.headers.authorization.split(" ");
+    const [type, value] = req.headers.authorization.split(' ');
     req.decoded = jwt.verify(value, process.env.JWT_SECRET);
     return next();
   } catch (error) {

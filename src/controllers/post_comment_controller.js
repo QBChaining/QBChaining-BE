@@ -28,7 +28,7 @@ export default class PostCommentController {
 
   CommentCreate = async (req, res, next) => {
     const comment = req.body.comment;
-    const user_name = 2;
+    const user_name = req.decoded.name;
     const post_id = req.params.post_id;
     try {
       const commentcreate = await this.postCommentServices.CommentCreate(
@@ -52,7 +52,7 @@ export default class PostCommentController {
   CommentUpdate = async (req, res, next) => {
     const comment = req.body.comment;
     const comment_id = req.params.comment_id;
-    const user_name = 2;
+    const user_name = req.decoded.name;
     try {
       const commentUpdate = await this.postCommentServices.CommentUpdate(
         comment,
@@ -61,6 +61,7 @@ export default class PostCommentController {
       );
       return res.status(200).json({
         success: true,
+        comment,
       });
     } catch (error) {
       const errorhandler = exceptionHandler(error);
@@ -74,7 +75,7 @@ export default class PostCommentController {
 
   CommentDelete = async (req, res, next) => {
     const comment_id = req.params.comment_id;
-    const user_name = 2;
+    const user_name = req.decoded.name;
     try {
       const commentDelete = await this.postCommentServices.CommentDelete(
         comment_id,

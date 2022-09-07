@@ -1,8 +1,6 @@
+import Sequelize from 'sequelize';
 
-import Sequelize from "sequelize";
-
-import { sequelize } from "./sequelize.js";
-
+import { sequelize } from './sequelize.js';
 
 export default class Post extends Sequelize.Model {
   static init(sequelize) {
@@ -26,9 +24,9 @@ export default class Post extends Sequelize.Model {
         sequelize,
         timestamps: true,
         underscored: true,
-        tableName: "post",
-        charset: "utf8",
-        collate: "utf8_general_ci",
+        tableName: 'post',
+        charset: 'utf8',
+        collate: 'utf8_general_ci',
       }
     );
   }
@@ -36,8 +34,8 @@ export default class Post extends Sequelize.Model {
   // User의 id값을 외래키로 사용하기때문에 belongsTo 사용
   static associate(db) {
     db.post.hasMany(db.post_comment, {
-      onDelete: "cascade",
-      onUpdate: "cascade",
+      onDelete: 'cascade',
+      onUpdate: 'cascade',
     });
     db.post.belongsTo(db.user, {
       foreignKey: 'user_id',
