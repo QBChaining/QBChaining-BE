@@ -45,6 +45,13 @@ export default class PostCommentServices {
   };
 
   CommentUpdate = async (comment, comment_id, user_name) => {
+    const find = await PostComment.findOne({
+      where: { id: comment_id, user_name: user_name },
+    });
+
+    if (find === null) {
+      throw new NotFoundException('수정할 수 없습니다');
+    }
     if (comment.length !== 0) {
       const postcomment = await PostComment.update(
         { comment },
@@ -59,10 +66,16 @@ export default class PostCommentServices {
   };
 
   CommentDelete = async (comment_id, user_name) => {
-    const postcomment = await PostComment.destroy({
+    const find = await PostComment.findOne({
       where: { id: comment_id, user_name: user_name },
     });
 
-    return postcomment;
+    if (find === null) {
+      throw new NotFoundException('삭제할 수 없습니다');
+    } else {
+      const postcomment = await PostComment.destroy({
+        where: { id: comment_id, user_name: user_name },
+      });
+    }
   };
 }

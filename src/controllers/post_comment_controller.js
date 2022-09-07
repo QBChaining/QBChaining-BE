@@ -85,7 +85,12 @@ export default class PostCommentController {
         success: true,
       });
     } catch (error) {
-      return next(error);
+      const errorhandler = exceptionHandler(error);
+
+      res.status(errorhandler.statusCode).json({
+        success: errorhandler.success,
+        message: errorhandler.message,
+      });
     }
   };
 }

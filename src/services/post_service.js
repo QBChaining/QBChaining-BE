@@ -199,19 +199,16 @@ export default class PostServices {
   };
 
   PostDelete = async (post_id, user_id) => {
-    const findpost = await Post.findOne({
+    const find = await Post.findOne({
       where: { id: post_id },
     });
-    // console.log(findpost);
-
-    if (user_id !== findpost.user_id) {
-      throw new ConflictException('본인의 글만 삭제 할 수 있습니다');
+    console.log(user_id);
+    if (find.user_id !== user_id) {
+      throw new NotFoundException('작성자가 달라서 어쩌구 저쩌구');
     } else {
       const post = await Post.destroy({
         where: { id: post_id, user_id: user_id },
       });
-
-      return;
     }
   };
   PostLikeShow = async (post_id, user_id) => {
