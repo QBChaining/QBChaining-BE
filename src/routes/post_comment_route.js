@@ -1,6 +1,6 @@
 import express from 'express';
 import PostCommentController from '../controllers/post_comment_controller.js';
-import verifyToken from '../middlewares/authMiddleware.js';
+import verifyToken from '../middlewares/auth.js';
 
 const router = express.Router();
 
