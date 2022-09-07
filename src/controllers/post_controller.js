@@ -102,6 +102,7 @@ export default class PostController {
       return res.status(200).json({
         success: true,
         message: '작성 성공',
+        data: { title, content },
       });
     } catch (error) {
       const errorhandler = exceptionHandler(error);
