@@ -17,7 +17,6 @@ export default class AuthController {
         },
         process.env.JWT_SECRET,
         {
-          expiresIn: '15m',
           issuer: 'jihun',
         }
       );
