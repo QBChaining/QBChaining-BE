@@ -16,33 +16,51 @@ import QnaLike from '../models/qna_like.js';
 import QnaBookmark from '../models/qna_bookmark.js';
 
 class QnaService {
-  CreateQna = async (title, content, category, tags, user_id) => {
+  CreateQna = async (title, content, category, tags, user_id, user_name) => {
     if (!title || !content || !category) {
       throw new ConflictException(`null 값이 존재합니다.`);
     }
 
+    const qnaTag = [];
     const qna = await Qna.create({ title, content, category, user_id });
     for (const tag of tags) {
-      await QnaTag.create({ qna_id: qna.id, tag });
+      const tagdata = await QnaTag.create({ qna_id: qna.id, tag });
+      qnaTag.push(tagdata.tag);
     }
+
+    return {
+      is_resolve: qna.is_resolve,
+      id: qna.id,
+      title: qna.title,
+      content: qna.content,
+      category: qna.category,
+      updatedAt: qna.updatedAt,
+      honey_tip: 0,
+      qnaTag,
+      user_name,
+    };
   };
 
-  FindAllQna = async () => {
+  FindAllQna = async (user_id) => {
     const qnaLists = await Qna.findAll({
       attributes: ['id', 'title', 'is_resolve', 'createdAt', 'category'],
       include: [
         { model: User, attributes: ['id', 'user_name'] },
         { model: QnaComment, attributes: ['id'] },
         { model: QnaTag, attributes: ['tag'], raw: true },
-        { model: QnaLike, attributes: ['id'] },
+        { model: QnaLike, attributes: ['id', 'user_id'] },
+        { model: QnaBookmark, attributes: ['user_id'] },
       ],
     });
     qnaLists.reverse();
+
     return qnaLists.map((list) => {
       const tag = [];
+
       for (let i = 0; i < list.QnaTags.length; i++) {
-        tag.push(list.QnaTags[i]?.dataValues.tag);
+        tag.push(list.QnaTags[i]?.tag);
       }
+
       return {
         id: list.id,
         title: list.title,
@@ -50,6 +68,8 @@ class QnaService {
         is_resolve: list.is_resolve,
         createdAt: list.createdAt,
         honey_tip: list.QnaLikes.length,
+        is_honey_tip: list.QnaLikes[0]?.user_id === user_id,
+        is_bookmark: list.QnaBookmarks?.user_id === user_id,
         cntcomment: list.QnaComments.length,
         category: list.category,
         tag,
@@ -58,7 +78,7 @@ class QnaService {
     });
   };
 
-  FindOneQna = async (id) => {
+  FindOneQna = async (id, user_id) => {
     const lists = await Qna.findOne({
       where: { id },
       attributes: [
@@ -72,12 +92,16 @@ class QnaService {
       include: [
         { model: User, attributes: ['id', 'user_name'] },
         { model: QnaTag, attributes: ['tag'], raw: true },
-        { model: QnaLike, attributes: ['id'] },
+        { model: QnaLike, attributes: ['id', 'user_id', 'qna_id'] },
       ],
     });
     const tag = [];
     for (let i = 0; i < lists.QnaTags?.length; i++)
       tag.push(lists.QnaTags[i]?.dataValues.tag);
+
+    let is_honey_tip = false;
+    for (let i = 0; i < lists.QnaLikes?.length; i++)
+      if (lists.QnaLikes[i].user_id === user_id) is_honey_tip = true;
 
     return {
       id: lists.id,
@@ -85,6 +109,7 @@ class QnaService {
       content: lists.content,
       is_resolve: lists.is_resolve,
       honey_tip: lists.QnaLikes.length,
+      is_honey_tip,
       createdAt: lists.createdAt,
       category: lists.category,
       tag,

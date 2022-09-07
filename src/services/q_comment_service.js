@@ -27,15 +27,16 @@ class QnaCommentService {
     return { id: commentdata.id, comment: commentdata.comment };
   };
 
-  FindAllComment = async (qna_id) => {
+  FindAllComment = async (qna_id, user_name) => {
     const commentLists = await QnaComment.findAll({
       attributes: ['id', 'comment', 'is_choose', 'user_name', 'createdAt'],
       where: { qna_id },
-      include: [{ model: QnaCommentLike }],
+      include: [{ model: QnaCommentLike, attributes: ['user_name'] }],
     });
 
     return commentLists
       .map((list) => {
+        console.log(user_name);
         return {
           id: list.id,
           comment: list.comment,
@@ -43,6 +44,7 @@ class QnaCommentService {
           user_name: list.user_name,
           createdAt: list.createdAt,
           honey_tip: list.QnaCommentLikes.length,
+          is_honey_tip: list.QnaCommentLikes[0]?.user_name === user_name,
         };
       })
       .sort((a, b) => {

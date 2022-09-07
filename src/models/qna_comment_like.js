@@ -4,11 +4,10 @@ import { sequelize } from './sequelize.js';
 
 export default class QnaCommentLike extends Sequelize.Model {
   static init(sequelize) {
-    // like를 BOOLEAN 값으로 설정
     return super.init(
       {
         user_name: {
-          type: Sequelize.INTEGER,
+          type: Sequelize.STRING(30),
           allowNull: false,
         },
       },

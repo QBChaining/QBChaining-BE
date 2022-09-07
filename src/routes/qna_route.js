@@ -2,11 +2,14 @@ import express from 'express';
 
 import QnaController from '../controllers/qna_controller.js';
 import QnaCommentController from '../controllers/q_comment_controller.js';
-import verifyToken from '../middlewares/authMiddleware.js';
+import check_signin from '../middlewares/check_signin.js';
+import verifyToken from '../middlewares/auth.js';
 
 const router = express.Router();
 const qnaController = new QnaController();
 const qnaCommentController = new QnaCommentController();
+
+router.use(check_signin);
 
 router.get('/bookmark', verifyToken, qnaController.FindBookMark);
 router.get('/', qnaController.FindAllQna);
