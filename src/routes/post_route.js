@@ -1,6 +1,7 @@
 import express from 'express';
 import PostController from '../controllers/post_controller.js';
-import verifyToken from '../middlewares/authMiddleware.js';
+import verifyToken from '../middlewares/auth.js';
+import check_signin from '../middlewares/check_signin.js';
 
 const router = express.Router();
 
