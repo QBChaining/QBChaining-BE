@@ -1,6 +1,6 @@
 import express from 'express';
 import passport from 'passport';
-import verifyToken from '../middlewares/authMiddleware.js';
+import verifyToken from '../middlewares/auth.js';
 import jwt from 'jsonwebtoken';
 import AuthController from '../controllers/auth_controller.js';
 
