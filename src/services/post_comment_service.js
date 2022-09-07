@@ -52,7 +52,7 @@ export default class PostCommentServices {
           where: { id: comment_id, user_name: user_name },
         }
       );
-      return postcomment;
+      return comment;
     } else {
       throw new BadRequestException('내용을 입력해주세요');
     }

@@ -132,6 +132,7 @@ export default class PostController {
       return res.status(200).json({
         success: true,
         message: '수정 성공',
+        data: { title, content, tag },
       });
     } catch (error) {
       const errorhandler = exceptionHandler(error);
@@ -154,6 +155,20 @@ export default class PostController {
       });
     } catch (error) {
       return next(error);
+    }
+  };
+  PostLikeShow = async (req, res, next) => {
+    const user_id = req.decoded.id;
+    // const post_id = req.params.post_id;
+    try {
+      const post = await this.postService.PostLikeShow(user_id);
+      return res.status(200).json({
+        success: true,
+        message: 'success',
+        data: post,
+      });
+    } catch (error) {
+      next(error);
     }
   };
 

@@ -29,6 +29,8 @@ router.put('/:post_id', verifyToken, postController.PostUpdate);
 router.delete('/:post_id', verifyToken, postController.PostDelete);
 
 router.post('/like/:post_id', verifyToken, postController.PostLike);
+// 여기추가
+router.get('/like/test', verifyToken, postController.PostLikeShow);
 router.delete('/like/:post_id', verifyToken, postController.PostLikeDelete);
 router.post(
   '/bookmark/:post_id/:user_id',
