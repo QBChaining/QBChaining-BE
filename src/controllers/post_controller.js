@@ -132,7 +132,7 @@ export default class PostController {
       return res.status(200).json({
         success: true,
         message: '수정 성공',
-        data: { title, content, tag },
+        data: { title, content },
       });
     } catch (error) {
       const errorhandler = exceptionHandler(error);
@@ -154,7 +154,12 @@ export default class PostController {
         message: '삭제 성공',
       });
     } catch (error) {
-      return next(error);
+      const errorhandler = exceptionHandler(error);
+
+      res.status(errorhandler.statusCode).json({
+        success: errorhandler.success,
+        message: errorhandler.message,
+      });
     }
   };
   PostLikeShow = async (req, res, next) => {
