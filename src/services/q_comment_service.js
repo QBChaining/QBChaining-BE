@@ -36,7 +36,6 @@ class QnaCommentService {
 
     return commentLists
       .map((list) => {
-        console.log(user_name);
         return {
           id: list.id,
           comment: list.comment,
