@@ -191,7 +191,21 @@ export default class PostServices {
         { title, content, tag, user_id },
         { where: { id: post_id, user_id: user_id } }
       );
-      return { title, content, tag };
+      const find = await Post.findAll({
+        where: { id: post_id },
+        attributes: { exclude: ['UserId'] },
+      });
+      return find.map((currentValue) => {
+        return {
+          id: currentValue.id,
+          title: currentValue.title,
+          content: currentValue.content,
+          tag: currentValue.tag,
+          user_id: currentValue.user_id,
+          created_at: currentValue.createdAt,
+          updated_at: currentValue.updatedAt,
+        };
+      });
     } else {
       throw new ConflictException('내용을 입력해주세요');
     }

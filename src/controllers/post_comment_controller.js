@@ -38,7 +38,7 @@ export default class PostCommentController {
       );
       return res.status(200).json({
         success: true,
-        comment,
+        data: commentcreate,
       });
     } catch (error) {
       const exceptionHandler = exceptionHandler(error);
@@ -62,7 +62,7 @@ export default class PostCommentController {
       );
       return res.status(200).json({
         success: true,
-        comment,
+        data: commentUpdate,
       });
     } catch (error) {
       const exceptionHandler = exceptionHandler(error);
