@@ -31,7 +31,9 @@ router.get(
       }
     );
 
-    return res.redirect(`http://localhost:3000/login?token=${token}`);
+    return res.redirect(
+      `http://qb-chaning.s3-website.ap-northeast-2.amazonaws.com/login?token=${token}`
+    );
     // return res.json({ response: req.user, token });
   }
 );
