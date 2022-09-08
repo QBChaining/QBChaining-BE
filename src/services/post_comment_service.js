@@ -59,20 +59,10 @@ export default class PostCommentServices {
           where: { id: comment_id, user_name: user_name },
         }
       );
-      const find = await PostComment.findAll({
+      const find = await PostComment.findOne({
         where: { id: comment_id },
       });
-      console.log(find);
-      return find.map((currentValue) => {
-        return {
-          id: currentValue.id,
-          comment: currentValue.comment,
-          user_name: currentValue.user_name,
-          post_id: currentValue.post_id,
-          created_at: currentValue.createdAt,
-          updated_at: currentValue.updatedAt,
-        };
-      });
+      return find;
     } else {
       throw new BadRequestException('내용을 입력해주세요');
     }
