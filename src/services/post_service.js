@@ -192,7 +192,7 @@ export default class PostServices {
         { where: { id: post_id, user_id: user_id } }
       );
       if (post) {
-        return { title, content, tag, user_id, id: post_id };
+        return { title, content, tag, user_id, id: parseInt(post_id) };
       }
     } else {
       throw new ConflictException('내용을 입력해주세요');
