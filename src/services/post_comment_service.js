@@ -59,10 +59,9 @@ export default class PostCommentServices {
           where: { id: comment_id, user_name: user_name },
         }
       );
-      const find = await PostComment.findOne({
-        where: { id: comment_id },
-      });
-      return find;
+      if (postcomment) {
+        return { comment, id: comment_id, user_name };
+      }
     } else {
       throw new BadRequestException('내용을 입력해주세요');
     }
