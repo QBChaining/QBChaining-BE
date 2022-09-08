@@ -30,11 +30,13 @@ export default class PostCommentController {
     const comment = req.body.comment;
     const user_name = req.decoded.name;
     const post_id = req.params.post_id;
+    const user_id = req.decoded.id;
     try {
       const commentcreate = await this.postCommentServices.CommentCreate(
         comment,
         user_name,
-        post_id
+        post_id,
+        user_id
       );
       return res.status(200).json({
         success: true,

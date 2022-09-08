@@ -28,21 +28,17 @@ router.get('/my/:user_id', verifyToken, postController.PostShowMy);
 router.post('/', verifyToken, postController.PostCreate);
 router.put('/:post_id', verifyToken, postController.PostUpdate);
 router.delete('/:post_id', verifyToken, postController.PostDelete);
-
 router.post('/like/:post_id', verifyToken, postController.PostLike);
 // 여기추가
 router.get('/like/test', verifyToken, postController.PostLikeShow);
 router.delete('/like/:post_id', verifyToken, postController.PostLikeDelete);
-router.post(
-  '/bookmark/:post_id/:user_id',
-  verifyToken,
-  postController.PostBookMark
-);
+router.post('/bookmark/:post_id', verifyToken, postController.PostBookMark);
 router.delete(
   '/bookmark/:post_id',
   verifyToken,
   postController.PostBookMarkDelete
 );
 router.get('/bookmark/:post_id', verifyToken, postController.PostBookMarkView);
+router.post('/noti/:post_id/:noti_id', verifyToken, postController.NotiCheck);
 
 export default router;

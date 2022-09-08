@@ -9,6 +9,8 @@ import {
   UnauthorizedException,
   UnkownException,
 } from '../exception/customException.js';
+import PostBookmark from '../models/post_bookmark.js';
+import Notification from '../models/noti.js';
 
 export default class PostCommentServices {
   CommentShowAll = async (post_id) => {
@@ -31,17 +33,28 @@ export default class PostCommentServices {
     return postcomment;
   };
 
-  CommentCreate = async (comment, user_name, post_id) => {
-    if (comment.length !== 0) {
-      const postcomment = await PostComment.create({
-        comment,
-        user_name,
-        post_id,
-      });
-      return postcomment;
-    } else {
+  CommentCreate = async (comment, user_name, post_id, user_id) => {
+    if (comment.length === 0) {
       throw new BadRequestException('내용을 입력해주세요');
     }
+    const postcomment = await PostComment.create({
+      comment,
+      user_name,
+      post_id,
+    });
+
+    const findBookMark = await PostBookmark.findOne({
+      where: { post_id: post_id, user_id: user_id },
+    });
+    if (findBookMark) {
+      const noti = await Notification.create({
+        data: 'comment',
+        check: false,
+        post_id,
+        user_id,
+      });
+    }
+    return postcomment;
   };
 
   CommentUpdate = async (comment, comment_id, user_name) => {

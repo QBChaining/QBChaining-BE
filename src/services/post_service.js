@@ -12,6 +12,7 @@ import {
   UnauthorizedException,
   UnkownException,
 } from '../exception/customException.js';
+import Notification from '../models/noti.js';
 
 export default class PostServices {
   // 최신순 정렬
@@ -163,17 +164,17 @@ export default class PostServices {
   };
 
   PostCreate = async (title, content, tag, user_id) => {
-    if (content.length !== 0) {
-      const post = await Post.create({
-        title,
-        content,
-        tag,
-        user_id,
-      });
-      return post;
-    } else {
+    if (content.length === 0) {
       throw new ConflictException('내용을 입력해주세요');
     }
+
+    const post = await Post.create({
+      title,
+      content,
+      tag,
+      user_id,
+    });
+
     // 로그인 안했으면 생성불가처리 해주기
   };
 
@@ -253,16 +254,15 @@ export default class PostServices {
     return findBookMark;
   };
 
-  PostBookMark = async (post_id, user_id, target_id) => {
+  PostBookMark = async (post_id, user_id) => {
     const findBookMark = await PostBookmark.findOne({
-      where: { user_id: user_id, post_id: post_id, target_id: target_id },
+      where: { user_id: user_id, post_id: post_id },
     });
 
     if (findBookMark === null) {
       const bookmark = await PostBookmark.create({
         user_id,
         post_id,
-        target_id,
       });
     } else {
       throw new BadRequestException('북마크를 이미 하였습니다');
@@ -281,5 +281,22 @@ export default class PostServices {
         where: { post_id: post_id, user_id: user_id },
       });
     }
+  };
+
+  NotiCheck = async (noti_id, post_id, user_id) => {
+    const findNoti = await Notification.findOne({
+      where: { id: noti_id, post_id: post_id, user_id: user_id },
+    });
+
+    if (findNoti.check === false) {
+      await Notification.update({ check: true }, { where: { id: noti_id } });
+      console.log('안읽은거를 읽었다요');
+      // 이부분은 업데이트보다 딜리트를 쓰는건 어떠한가? db삭제하면 공간이 계속늘어나지는않음
+    }
+    if (findNoti.check === true) {
+      console.log('읽은거임');
+    }
+
+    return findNoti;
   };
 }

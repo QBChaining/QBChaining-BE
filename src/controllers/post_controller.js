@@ -222,13 +222,11 @@ export default class PostController {
   PostBookMark = async (req, res, next) => {
     const user_id = req.decoded.id;
     const post_id = req.params.post_id;
-    const target_id = req.params.user_id;
 
     try {
       const PostBookMark = await this.postService.PostBookMark(
         post_id,
-        user_id,
-        target_id
+        user_id
       );
       return res.status(200).json({
         success: true,
@@ -288,6 +286,26 @@ export default class PostController {
         success: errorhandler.success,
         message: errorhandler.message,
       });
+    }
+  };
+
+  NotiCheck = async (req, res, next) => {
+    const noti_id = req.params.noti_id;
+    const post_id = req.params.post_id;
+    const user_id = req.decoded.id;
+
+    try {
+      const NotiCheck = await this.postService.NotiCheck(
+        noti_id,
+        post_id,
+        user_id
+      );
+      return res.status(200).json({
+        success: true,
+        message: '읽었다면 참 안읽었다면 거짓',
+      });
+    } catch (error) {
+      next(error);
     }
   };
 }
