@@ -60,7 +60,7 @@ export default class PostCommentServices {
         }
       );
       if (postcomment) {
-        return { comment, id: comment_id, user_name };
+        return { comment, id: parseInt(comment_id), user_name };
       }
     } else {
       throw new BadRequestException('내용을 입력해주세요');
