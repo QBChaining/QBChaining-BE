@@ -191,11 +191,9 @@ export default class PostServices {
         { title, content, tag, user_id },
         { where: { id: post_id, user_id: user_id } }
       );
-      const find = await Post.findOne({
-        where: { id: post_id },
-        attributes: { exclude: ['UserId'] },
-      });
-      return find;
+      if (post) {
+        return { title, content, tag, user_id, id: post_id };
+      }
     } else {
       throw new ConflictException('내용을 입력해주세요');
     }
