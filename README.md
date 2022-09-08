@@ -24,7 +24,6 @@
     <img src="https://img.shields.io/badge/Passport-34E27A?style=flat&logo=Passport&logoColor=white">
     <img src="https://img.shields.io/badge/.ENV-ECD53F?style=flat&logo=dotenv&logoColor=white">
     <img src="https://img.shields.io/badge/redis-DC382D?style=flat&logo=redis&logoColor=white">
-    <img src="https://img.shields.io/badge/react-DC382D?style=flat&logo=react&logoColor=white">
     
 </div>
 NODEJS, EXPRESS, SQL, Passport, dotenv, redis
