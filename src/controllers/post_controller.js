@@ -102,7 +102,7 @@ export default class PostController {
       return res.status(200).json({
         success: true,
         message: '작성 성공',
-        data: { title, content },
+        data: postCreate,
       });
     } catch (error) {
       const errorhandler = exceptionHandler(error);
@@ -133,7 +133,7 @@ export default class PostController {
       return res.status(200).json({
         success: true,
         message: '수정 성공',
-        data: { title, content },
+        data: postUpdate,
       });
     } catch (error) {
       const errorhandler = exceptionHandler(error);
