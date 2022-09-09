@@ -32,7 +32,7 @@ class QnaCommentController {
 
   FindAllComment = async (req, res, next) => {
     const { id } = req.params;
-    const user_name = req.user.name;
+    const user_name = req.user?.name;
     try {
       const data = await this.qnaCommentService.FindAllComment(id, user_name);
       return res
