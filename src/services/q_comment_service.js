@@ -43,7 +43,9 @@ class QnaCommentService {
           user_name: list.user_name,
           createdAt: list.createdAt,
           honey_tip: list.QnaCommentLikes.length,
-          is_honey_tip: list.QnaCommentLikes[0]?.user_name === user_name,
+          is_honey_tip: list.QnaCommentLikes[0]?.user_name
+            ? list.QnaCommentLikes[0]?.user_name === user_name
+            : false,
         };
       })
       .sort((a, b) => {
