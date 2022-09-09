@@ -23,6 +23,7 @@ export default class PostServices {
         { model: User, attributes: ['user_name'] },
         { model: PostComment, attributes: ['user_name', 'comment'] },
         { model: PostLike },
+        { model: PostBookmark },
       ],
       order: [['created_at', 'DESC']],
     });
@@ -36,6 +37,7 @@ export default class PostServices {
         created_at: currentValue.createdAt,
         updated_at: currentValue.updatedAt,
         user: currentValue.User,
+        // is_bookmark: currentValue.PostBookmarks
         cmtNum: currentValue.PostComments.length,
         like: currentValue.PostLikes.length,
       };
@@ -148,8 +150,12 @@ export default class PostServices {
   PostShowOne = async (post_id) => {
     const post = await Post.findOne({
       where: { id: post_id },
-      include: { model: User, attributes: ['user_name'] },
+      include: [
+        { model: User, attributes: ['user_name'] },
+        { model: PostBookmark },
+      ],
     });
+    console.log(post.PostBookMarks[0].length);
 
     return post;
   };
@@ -164,7 +170,7 @@ export default class PostServices {
   };
 
   PostCreate = async (title, content, tag, user_id) => {
-    if (content.length === 0) {
+    if (content.length === 0 || title.length === 0) {
       throw new ConflictException('내용을 입력해주세요');
     }
 
@@ -174,8 +180,6 @@ export default class PostServices {
       tag,
       user_id,
     });
-
-    // 로그인 안했으면 생성불가처리 해주기
   };
 
   PostUpdate = async (title, content, tag, user_id, post_id) => {
@@ -282,7 +286,7 @@ export default class PostServices {
       });
     }
   };
-
+  // 알람을 눌렀을때 동작하는 포스트요청
   NotiCheck = async (noti_id, post_id, user_id) => {
     const findNoti = await Notification.findOne({
       where: { id: noti_id, post_id: post_id, user_id: user_id },
@@ -290,12 +294,38 @@ export default class PostServices {
 
     if (findNoti.check === false) {
       await Notification.update({ check: true }, { where: { id: noti_id } });
-      console.log('안읽은거를 읽었다요');
-      // 이부분은 업데이트보다 딜리트를 쓰는건 어떠한가? db삭제하면 공간이 계속늘어나지는않음
+      return true;
     }
     if (findNoti.check === true) {
-      console.log('읽은거임');
+      return false;
     }
+
+    return findNoti;
+  };
+  // 알람을 확인하는 겟 요청
+  NotiNoti = async (noti_id, post_id, user_id) => {
+    const findNoti = await Notification.findAll({
+      where: { user_id: user_id },
+    });
+
+    // let arr = [];
+    // for (let i = 0; i < findNoti.length; i++) {
+    //   if (findNoti[i].check === true) {
+    //     arr.push(i);
+    //   }
+    // }
+    // console.log(arr);
+
+    // const notimap = findNoti.map((currentValue) => {
+    //   return {
+    //     id: currentValue.id,
+    //     data: currentValue.data,
+    //     created_at: currentValue.created_at,
+    //     check: currentValue.check,
+    //     post_id: currentValue.post_id,
+    //     user_id: currentValue.user_id,
+    //   };
+    // });
 
     return findNoti;
   };

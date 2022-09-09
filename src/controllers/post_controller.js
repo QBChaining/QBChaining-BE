@@ -13,7 +13,12 @@ export default class PostController {
         data: postShowAll,
       });
     } catch (error) {
-      return next(error);
+      const exception = exceptionHandler(error);
+
+      res.status(exception.statusCode).json({
+        success: exception.success,
+        message: exception.message,
+      });
     }
   };
 
@@ -26,7 +31,12 @@ export default class PostController {
         data: postShowComment,
       });
     } catch (error) {
-      return next(error);
+      const exception = exceptionHandler(error);
+
+      res.status(exception.statusCode).json({
+        success: exception.success,
+        message: exception.message,
+      });
     }
   };
 
@@ -39,7 +49,12 @@ export default class PostController {
         data: postShowAll,
       });
     } catch (error) {
-      return next(error);
+      const exception = exceptionHandler(error);
+
+      res.status(exception.statusCode).json({
+        success: exception.success,
+        message: exception.message,
+      });
     }
   };
 
@@ -52,7 +67,12 @@ export default class PostController {
         data: postShowhit,
       });
     } catch (error) {
-      return next(error);
+      const exception = exceptionHandler(error);
+
+      res.status(exception.statusCode).json({
+        success: exception.success,
+        message: exception.message,
+      });
     }
   };
 
@@ -67,7 +87,12 @@ export default class PostController {
         data: postShowOne,
       });
     } catch (error) {
-      return next(error);
+      const exception = exceptionHandler(error);
+
+      res.status(exception.statusCode).json({
+        success: exception.success,
+        message: exception.message,
+      });
     }
   };
 
@@ -82,7 +107,12 @@ export default class PostController {
         data: PostShowMy,
       });
     } catch (error) {
-      return next(error);
+      const exception = exceptionHandler(error);
+
+      res.status(exception.statusCode).json({
+        success: exception.success,
+        message: exception.message,
+      });
     }
   };
 
@@ -105,11 +135,11 @@ export default class PostController {
         data: postCreate,
       });
     } catch (error) {
-      const errorhandler = exceptionHandler(error);
+      const exception = exceptionHandler(error);
 
-      res.status(errorhandler.statusCode).json({
-        success: errorhandler.success,
-        message: errorhandler.message,
+      res.status(exception.statusCode).json({
+        success: exception.success,
+        message: exception.message,
       });
     }
   };
@@ -136,11 +166,11 @@ export default class PostController {
         data: postUpdate,
       });
     } catch (error) {
-      const errorhandler = exceptionHandler(error);
+      const exception = exceptionHandler(error);
 
-      res.status(errorhandler.statusCode).json({
-        success: errorhandler.success,
-        message: errorhandler.message,
+      res.status(exception.statusCode).json({
+        success: exception.success,
+        message: exception.message,
       });
     }
   };
@@ -155,11 +185,11 @@ export default class PostController {
         message: '삭제 성공',
       });
     } catch (error) {
-      const errorhandler = exceptionHandler(error);
+      const exception = exceptionHandler(error);
 
-      res.status(errorhandler.statusCode).json({
-        success: errorhandler.success,
-        message: errorhandler.message,
+      res.status(exception.statusCode).json({
+        success: exception.success,
+        message: exception.message,
       });
     }
   };
@@ -174,7 +204,12 @@ export default class PostController {
         data: post,
       });
     } catch (error) {
-      next(error);
+      const exception = exceptionHandler(error);
+
+      res.status(exception.statusCode).json({
+        success: exception.success,
+        message: exception.message,
+      });
     }
   };
 
@@ -188,11 +223,11 @@ export default class PostController {
         message: '좋아요 성공',
       });
     } catch (error) {
-      const errorhandler = exceptionHandler(error);
+      const exception = exceptionHandler(error);
 
-      res.status(errorhandler.statusCode).json({
-        success: errorhandler.success,
-        message: errorhandler.message,
+      res.status(exception.statusCode).json({
+        success: exception.success,
+        message: exception.message,
       });
     }
   };
@@ -210,11 +245,11 @@ export default class PostController {
         message: '좋아요 삭제 성공',
       });
     } catch (error) {
-      const errorhandler = exceptionHandler(error);
+      const exception = exceptionHandler(error);
 
-      res.status(errorhandler.statusCode).json({
-        success: errorhandler.success,
-        message: errorhandler.message,
+      res.status(exception.statusCode).json({
+        success: exception.success,
+        message: exception.message,
       });
     }
   };
@@ -233,11 +268,11 @@ export default class PostController {
         message: '즐겨찾기 성공',
       });
     } catch (error) {
-      const errorhandler = exceptionHandler(error);
+      const exception = exceptionHandler(error);
 
-      res.status(errorhandler.statusCode).json({
-        success: errorhandler.success,
-        message: errorhandler.message,
+      res.status(exception.statusCode).json({
+        success: exception.success,
+        message: exception.message,
       });
     }
   };
@@ -256,11 +291,11 @@ export default class PostController {
         message: '즐겨찾기 삭제 성공',
       });
     } catch (error) {
-      const errorhandler = exceptionHandler(error);
+      const exception = exceptionHandler(error);
 
-      res.status(errorhandler.statusCode).json({
-        success: errorhandler.success,
-        message: errorhandler.message,
+      res.status(exception.statusCode).json({
+        success: exception.success,
+        message: exception.message,
       });
     }
   };
@@ -280,11 +315,11 @@ export default class PostController {
         data: PostBookMarkView,
       });
     } catch (error) {
-      const errorhandler = exceptionHandler(error);
+      const exception = exceptionHandler(error);
 
-      res.status(errorhandler.statusCode).json({
-        success: errorhandler.success,
-        message: errorhandler.message,
+      res.status(exception.statusCode).json({
+        success: exception.success,
+        message: exception.message,
       });
     }
   };
@@ -302,10 +337,42 @@ export default class PostController {
       );
       return res.status(200).json({
         success: true,
-        message: '읽었다면 참 안읽었다면 거짓',
+        message: '읽었던것을 다시누르면 false 안읽은것을 눌렀다면 true',
+        data: NotiCheck,
       });
     } catch (error) {
-      next(error);
+      const exception = exceptionHandler(error);
+
+      res.status(exception.statusCode).json({
+        success: exception.success,
+        message: exception.message,
+      });
+    }
+  };
+
+  NotiNoti = async (req, res, next) => {
+    const noti_id = req.params.noti_id;
+    const post_id = req.params.post_id;
+    const user_id = req.decoded.id;
+
+    try {
+      const NotiNoti = await this.postService.NotiNoti(
+        noti_id,
+        post_id,
+        user_id
+      );
+      return res.status(200).json({
+        success: true,
+        message: '노티보여주기',
+        data: NotiNoti,
+      });
+    } catch (error) {
+      const exception = exceptionHandler(error);
+
+      res.status(exception.statusCode).json({
+        success: exception.success,
+        message: exception.message,
+      });
     }
   };
 }

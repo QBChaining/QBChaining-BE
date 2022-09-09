@@ -7,31 +7,21 @@ const router = express.Router();
 
 const postController = new PostController();
 
-// 게시물 전체조회 (시간순)
-router.get('/', postController.PostShowAll);
-
-// 게시물 전체조회 (댓글순)
-router.get('/comment', postController.PostShowComment);
-
-// 게시물 전체조회 (추천순)
-router.get('/like', postController.PostShowLike);
-
-// 게시물 전체조회 (히트순)
-router.get('/hits', postController.PostShowhit);
-
-// 게시물 상세조회
-router.get('/:post_id', postController.PostShowOne);
-
-// 나의 게시물 조회
+router.get('/', check_signin, postController.PostShowAll);
+router.get('/comment', check_signin, postController.PostShowComment);
+router.get('/like', check_signin, postController.PostShowLike);
+router.get('/hits', check_signin, postController.PostShowhit);
+router.get('/:post_id', check_signin, postController.PostShowOne);
 router.get('/my/:user_id', verifyToken, postController.PostShowMy);
 
 router.post('/', verifyToken, postController.PostCreate);
 router.put('/:post_id', verifyToken, postController.PostUpdate);
 router.delete('/:post_id', verifyToken, postController.PostDelete);
+
 router.post('/like/:post_id', verifyToken, postController.PostLike);
-// 여기추가
-router.get('/like/test', verifyToken, postController.PostLikeShow);
+router.get('/like/all', verifyToken, postController.PostLikeShow);
 router.delete('/like/:post_id', verifyToken, postController.PostLikeDelete);
+
 router.post('/bookmark/:post_id', verifyToken, postController.PostBookMark);
 router.delete(
   '/bookmark/:post_id',
@@ -39,6 +29,8 @@ router.delete(
   postController.PostBookMarkDelete
 );
 router.get('/bookmark/:post_id', verifyToken, postController.PostBookMarkView);
+
 router.post('/noti/:post_id/:noti_id', verifyToken, postController.NotiCheck);
+router.get('/noti/:post_id/:noti_id', verifyToken, postController.NotiNoti);
 
 export default router;
