@@ -12,6 +12,7 @@ import {
   UnauthorizedException,
   UnkownException,
 } from '../exception/customException.js';
+import Notification from '../models/noti.js';
 
 export default class PostServices {
   // 최신순 정렬
@@ -22,6 +23,7 @@ export default class PostServices {
         { model: User, attributes: ['user_name'] },
         { model: PostComment, attributes: ['user_name', 'comment'] },
         { model: PostLike },
+        { model: PostBookmark },
       ],
       order: [['created_at', 'DESC']],
     });
@@ -35,6 +37,7 @@ export default class PostServices {
         created_at: currentValue.createdAt,
         updated_at: currentValue.updatedAt,
         user: currentValue.User,
+        // is_bookmark: currentValue.PostBookmarks
         cmtNum: currentValue.PostComments.length,
         like: currentValue.PostLikes.length,
       };
@@ -147,9 +150,11 @@ export default class PostServices {
   PostShowOne = async (post_id) => {
     const post = await Post.findOne({
       where: { id: post_id },
-      include: { model: User, attributes: ['user_name'] },
+      include: [
+        { model: User, attributes: ['user_name'] },
+        { model: PostBookmark },
+      ],
     });
-
     return post;
   };
 
@@ -163,18 +168,16 @@ export default class PostServices {
   };
 
   PostCreate = async (title, content, tag, user_id) => {
-    if (content.length !== 0) {
-      const post = await Post.create({
-        title,
-        content,
-        tag,
-        user_id,
-      });
-      return post;
-    } else {
+    if (content.length === 0 || title.length === 0) {
       throw new ConflictException('내용을 입력해주세요');
     }
-    // 로그인 안했으면 생성불가처리 해주기
+
+    const post = await Post.create({
+      title,
+      content,
+      tag,
+      user_id,
+    });
   };
 
   PostUpdate = async (title, content, tag, user_id, post_id) => {
@@ -253,16 +256,15 @@ export default class PostServices {
     return findBookMark;
   };
 
-  PostBookMark = async (post_id, user_id, target_id) => {
+  PostBookMark = async (post_id, user_id) => {
     const findBookMark = await PostBookmark.findOne({
-      where: { user_id: user_id, post_id: post_id, target_id: target_id },
+      where: { user_id: user_id, post_id: post_id },
     });
 
     if (findBookMark === null) {
       const bookmark = await PostBookmark.create({
         user_id,
         post_id,
-        target_id,
       });
     } else {
       throw new BadRequestException('북마크를 이미 하였습니다');
@@ -281,5 +283,48 @@ export default class PostServices {
         where: { post_id: post_id, user_id: user_id },
       });
     }
+  };
+  // 알람을 눌렀을때 동작하는 포스트요청
+  NotiCheck = async (noti_id, post_id, user_id) => {
+    const findNoti = await Notification.findOne({
+      where: { id: noti_id, post_id: post_id, user_id: user_id },
+    });
+
+    if (findNoti.check === false) {
+      await Notification.update({ check: true }, { where: { id: noti_id } });
+      return true;
+    }
+    if (findNoti.check === true) {
+      return false;
+    }
+
+    return findNoti;
+  };
+  // 알람을 확인하는 겟 요청
+  NotiNoti = async (noti_id, post_id, user_id) => {
+    const findNoti = await Notification.findAll({
+      where: { user_id: user_id },
+    });
+
+    // let arr = [];
+    // for (let i = 0; i < findNoti.length; i++) {
+    //   if (findNoti[i].check === true) {
+    //     arr.push(i);
+    //   }
+    // }
+    // console.log(arr);
+
+    // const notimap = findNoti.map((currentValue) => {
+    //   return {
+    //     id: currentValue.id,
+    //     data: currentValue.data,
+    //     created_at: currentValue.created_at,
+    //     check: currentValue.check,
+    //     post_id: currentValue.post_id,
+    //     user_id: currentValue.user_id,
+    //   };
+    // });
+
+    return findNoti;
   };
 }
