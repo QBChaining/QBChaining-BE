@@ -17,11 +17,11 @@ export default class PostCommentController {
         data: postcomment,
       });
     } catch (error) {
-      const exceptionHandler = exceptionHandler(error);
+      const exception = exceptionHandler(error);
 
-      res.status(exceptionHandler.statusCode).json({
-        success: exceptionHandler.success,
-        message: exceptionHandler.message,
+      res.status(exception.statusCode).json({
+        success: exception.success,
+        message: exception.message,
       });
     }
   };
@@ -43,11 +43,11 @@ export default class PostCommentController {
         data: commentcreate,
       });
     } catch (error) {
-      const exceptionHandler = exceptionHandler(error);
+      const exception = exceptionHandler(error);
 
-      res.status(exceptionHandler.statusCode).json({
-        success: exceptionHandler.success,
-        message: exceptionHandler.message,
+      res.status(exception.statusCode).json({
+        success: exception.success,
+        message: exception.message,
       });
     }
   };
@@ -67,11 +67,11 @@ export default class PostCommentController {
         data: commentUpdate,
       });
     } catch (error) {
-      const exceptionHandler = exceptionHandler(error);
+      const exception = exceptionHandler(error);
 
-      res.status(exceptionHandler.statusCode).json({
-        success: exceptionHandler.success,
-        message: exceptionHandler.message,
+      res.status(exception.statusCode).json({
+        success: exception.success,
+        message: exception.message,
       });
     }
   };
@@ -88,11 +88,11 @@ export default class PostCommentController {
         success: true,
       });
     } catch (error) {
-      const exceptionHandler = exceptionHandler(error);
+      const exception = exceptionHandler(error);
 
-      res.status(exceptionHandler.statusCode).json({
-        success: exceptionHandler.success,
-        message: exceptionHandler.message,
+      res.status(exception.statusCode).json({
+        success: exception.success,
+        message: exception.message,
       });
     }
   };

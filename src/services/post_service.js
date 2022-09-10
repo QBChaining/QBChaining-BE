@@ -155,8 +155,6 @@ export default class PostServices {
         { model: PostBookmark },
       ],
     });
-    console.log(post.PostBookMarks[0].length);
-
     return post;
   };
 

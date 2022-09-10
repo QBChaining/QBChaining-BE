@@ -4,7 +4,6 @@ import { sequelize } from './sequelize.js';
 
 export default class Notification extends Sequelize.Model {
   static init(sequelize) {
-    // like를 BOOLEAN 값으로 설정
     return super.init(
       {
         data: {
@@ -31,7 +30,6 @@ export default class Notification extends Sequelize.Model {
       }
     );
   }
-  // belongsTo로 받아옴
   static associate(db) {
     db.notification.belongsTo(db.post, {
       foreignKey: 'post_id',
