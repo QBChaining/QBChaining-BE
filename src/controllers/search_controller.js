@@ -5,9 +5,10 @@ class SearchCotroller {
   searchService = new SearchService();
 
   Search = async (req, res, next) => {
-    const allQuery = req.query;
-    console.log(allQuery);
-    res.send(allQuery);
+    const { q } = req.query;
+
+    const data = await this.searchService.Search(q);
+    res.send(data);
   };
 }
 
