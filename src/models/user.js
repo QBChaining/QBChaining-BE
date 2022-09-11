@@ -43,6 +43,7 @@ export default class User extends Sequelize.Model {
   }
   //외래키로 넘겨주기 때문에 hasMany설정
   static associate(db) {
+    db.user.hasOne(db.UserInfo);
     db.user.hasMany(db.post);
     db.user.hasMany(db.qna);
     db.user.hasMany(db.post_like);
