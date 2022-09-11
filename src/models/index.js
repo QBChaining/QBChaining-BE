@@ -4,6 +4,9 @@ import sequelize from './sequelize.js';
 
 // 유저, 포스트, 댓글, 좋아요 임포트
 import User from './user.js';
+import UserInfo from './user_info.js';
+import Job from './job.js';
+import Language from './language.js';
 import PostComment from './post_comment.js';
 import Post from './post.js';
 import Qna from './qna.js';
@@ -15,12 +18,16 @@ import QnaTag from './qna_tag.js';
 import QnaBookmark from './qna_bookmark.js';
 import PostBookmark from './post_bookmark.js';
 import Notification from './noti.js';
+import Job from './job.js';
 
 const db = {};
 
 // 받아온 클래스들 사용
 db.sequelize = sequelize;
 db.user = User;
+db.user_info = UserInfo;
+db.Job = Job;
+db.Language = Language;
 db.post = Post;
 db.post_comment = PostComment;
 db.post_like = PostLike;
@@ -35,6 +42,9 @@ db.notification = Notification;
 
 // init한 부분 설정
 User.init(sequelize);
+UserInfo.init(sequelize);
+Job.init(sequelize);
+Language.init(sequelize);
 Post.init(sequelize);
 PostComment.init(sequelize);
 PostLike.init(sequelize);
@@ -49,6 +59,9 @@ Notification.init(sequelize);
 
 // 외래키 관계부분
 User.associate(db);
+UserInfo.associate(db);
+Job.associate(db);
+Language.associate(db);
 Post.associate(db);
 PostComment.associate(db);
 PostLike.associate(db);
