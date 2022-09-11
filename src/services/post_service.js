@@ -178,6 +178,8 @@ export default class PostServices {
       tag,
       user_id,
     });
+
+    return post;
   };
 
   PostUpdate = async (title, content, tag, user_id, post_id) => {

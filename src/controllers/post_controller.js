@@ -129,8 +129,6 @@ export default class PostController {
         user_id
       );
 
-      console.log(user_id);
-
       return res.status(200).json({
         success: true,
         message: '작성 성공',
