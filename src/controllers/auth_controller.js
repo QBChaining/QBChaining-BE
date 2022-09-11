@@ -31,7 +31,7 @@ export default class AuthController {
     const language = req.body.language;
     const age = req.body.age;
     const gender = req.body.gender;
-    const jobs = req.body.jobs;
+    const job = req.body.job;
     const career = req.body.career;
 
     try {
@@ -39,7 +39,7 @@ export default class AuthController {
         language,
         age,
         gender,
-        jobs,
+        job,
         career
       );
 
