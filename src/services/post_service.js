@@ -168,7 +168,7 @@ export default class PostServices {
   };
 
   PostCreate = async (title, content, tag, user_id) => {
-    if (content.length === 0 || title.length === 0) {
+    if (content.length === 0) {
       throw new ConflictException('내용을 입력해주세요');
     }
 
