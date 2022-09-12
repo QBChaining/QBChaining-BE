@@ -236,6 +236,13 @@ export default class PostServices {
           is_bookmark = true;
         }
       }
+
+      let is_like = false;
+      for (let i = 0; i < currentValue.PostLikes.length; i++) {
+        if (currentValue.PostLikes[i]?.user_id === user_id) {
+          is_like = true;
+        }
+      }
       return {
         id: currentValue.id,
         title: currentValue.title,
@@ -243,6 +250,7 @@ export default class PostServices {
         tag,
         created_at: currentValue.createdAt,
         is_bookmark,
+        is_like,
         user_name: currentValue.User,
         cmtNum: currentValue.PostComments.length,
         like: currentValue.PostLikes.length,
