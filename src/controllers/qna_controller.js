@@ -53,7 +53,7 @@ class QnaController {
 
   FindOneQna = async (req, res, next) => {
     const { id } = req.params;
-    const user_id = req.user.id;
+    const user_id = req.user?.id;
     try {
       const data = await this.qnaService.FindOneQna(id, user_id);
       return res
