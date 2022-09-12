@@ -31,10 +31,16 @@ class QnaCommentController {
   };
 
   FindAllComment = async (req, res, next) => {
+    const { page_count, page } = req.query;
     const { id } = req.params;
     const user_name = req.user?.name;
     try {
-      const data = await this.qnaCommentService.FindAllComment(id, user_name);
+      const data = await this.qnaCommentService.FindAllComment(
+        id,
+        user_name,
+        page_count * 1,
+        page * 1
+      );
       return res
         .status(200)
         .json({ success: true, message: '댓글 조회 완료', data });
