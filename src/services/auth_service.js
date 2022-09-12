@@ -23,6 +23,7 @@ export default class AuthService {
       },
     });
 
+
     console.log(user);
     const findUserInfo = await UserInfo.findOne({
       where: { user: user },

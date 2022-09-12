@@ -15,10 +15,6 @@ export default class Post extends Sequelize.Model {
           type: Sequelize.STRING(10000),
           allowNull: false,
         },
-        tag: {
-          type: Sequelize.STRING(50),
-          allowNull: false,
-        },
       },
       {
         sequelize,
@@ -45,5 +41,6 @@ export default class Post extends Sequelize.Model {
     });
     db.post.hasMany(db.post_like);
     db.post.hasMany(db.post_bookmark);
+    db.post.hasMany(db.post_tag);
   }
 }
