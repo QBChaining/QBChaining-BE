@@ -18,6 +18,7 @@ import QnaTag from './qna_tag.js';
 import QnaBookmark from './qna_bookmark.js';
 import PostBookmark from './post_bookmark.js';
 import Notification from './noti.js';
+import PostTag from './post_tag.js';
 
 const db = {};
 
@@ -38,6 +39,7 @@ db.qna_comment_like = QnaCommentLike;
 db.qna_tag = QnaTag;
 db.qna_bookmark = QnaBookmark;
 db.notification = Notification;
+db.post_tag = PostTag;
 
 // init한 부분 설정
 User.init(sequelize);
@@ -55,6 +57,7 @@ QnaCommentLike.init(sequelize);
 QnaTag.init(sequelize);
 QnaBookmark.init(sequelize);
 Notification.init(sequelize);
+PostTag.init(sequelize);
 
 // 외래키 관계부분
 User.associate(db);
@@ -72,5 +75,6 @@ QnaCommentLike.associate(db);
 QnaTag.associate(db);
 QnaBookmark.associate(db);
 Notification.associate(db);
+PostTag.associate(db);
 
 export { db };

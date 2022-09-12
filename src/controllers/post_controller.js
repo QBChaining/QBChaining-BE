@@ -123,16 +123,16 @@ export default class PostController {
   };
 
   PostCreate = async (req, res, next) => {
-    const title = req.body.title;
-    const content = req.body.content;
-    const tag = req.body.tag;
+    const { title, content, tag } = req.body;
     const user_id = req.decoded.id;
+    const user_name = req.decoded.user_name;
     try {
       const postCreate = await this.postService.PostCreate(
         title,
         content,
         tag,
-        user_id
+        user_id,
+        user_name
       );
       return res.status(200).json({
         success: true,
@@ -200,7 +200,6 @@ export default class PostController {
   };
   PostLikeShow = async (req, res, next) => {
     const user_id = req.decoded.id;
-    // const post_id = req.params.post_id;
     try {
       const post = await this.postService.PostLikeShow(user_id);
       return res.status(200).json({

@@ -13,6 +13,7 @@ import {
   UnkownException,
 } from '../exception/customException.js';
 import Notification from '../models/noti.js';
+import PostTag from '../models/post_tag.js';
 
 export default class PostServices {
   // 최신순 정렬
@@ -24,11 +25,17 @@ export default class PostServices {
         { model: PostComment, attributes: ['user_name', 'comment'] },
         { model: PostLike, attributes: ['user_id'] },
         { model: PostBookmark, attributes: ['user_id'] },
+        { model: PostTag, attributes: ['tag'], raw: true },
       ],
       order: [['created_at', 'DESC']],
     });
 
     return post.map((currentValue) => {
+      const tag = [];
+      for (let i = 0; i < currentValue.PostTags.length; i++) {
+        tag.push(currentValue.PostTags[i]?.tag);
+      }
+
       let is_bookmark = false;
 
       for (let i = 0; i < currentValue.PostBookmarks.length; i++) {
@@ -41,11 +48,11 @@ export default class PostServices {
         id: currentValue.id,
         title: currentValue.title,
         content: currentValue.content,
-        tag: currentValue.tag,
         created_at: currentValue.createdAt,
         updated_at: currentValue.updatedAt,
         user: currentValue.User,
         is_bookmark,
+        tag,
         cmtNum: currentValue.PostComments.length,
         like: currentValue.PostLikes.length,
       };
@@ -61,11 +68,17 @@ export default class PostServices {
         { model: PostComment, attributes: ['user_name', 'comment'] },
         { model: PostLike, attributes: ['user_id'] },
         { model: PostBookmark, attributes: ['user_id'] },
+        { model: PostTag, attributes: ['tag'], raw: true },
       ],
       order: [['created_at', 'DESC']],
     });
     return postcmt
       .map((currentValue) => {
+        const tag = [];
+        for (let i = 0; i < currentValue.PostTags.length; i++) {
+          tag.push(currentValue.PostTags[i]?.tag);
+        }
+
         let is_bookmark = false;
 
         for (let i = 0; i < currentValue.PostBookmarks.length; i++) {
@@ -78,11 +91,11 @@ export default class PostServices {
           id: currentValue.id,
           title: currentValue.title,
           content: currentValue.content,
-          tag: currentValue.tag,
           created_at: currentValue.createdAt,
           updated_at: currentValue.updatedAt,
           user: currentValue.User,
           is_bookmark,
+          tag,
           cmtNum: currentValue.PostComments.length,
           like: currentValue.PostLikes.length,
         };
@@ -101,12 +114,18 @@ export default class PostServices {
         { model: PostComment, attributes: ['user_name', 'comment'] },
         { model: PostLike },
         { model: PostBookmark, attributes: ['user_id'] },
+        { model: PostTag, attributes: ['tag'], raw: true },
       ],
       order: [['created_at', 'DESC']],
     });
 
     return postshowlike
       .map((currentValue) => {
+        const tag = [];
+        for (let i = 0; i < currentValue.PostTags.length; i++) {
+          tag.push(currentValue.PostTags[i]?.tag);
+        }
+
         let is_bookmark = false;
 
         for (let i = 0; i < currentValue.PostBookmarks.length; i++) {
@@ -118,11 +137,11 @@ export default class PostServices {
           id: currentValue.id,
           title: currentValue.title,
           content: currentValue.content,
-          tag: currentValue.tag,
           created_at: currentValue.createdAt,
           updated_at: currentValue.updatedAt,
           user: currentValue.User,
           is_bookmark,
+          tag,
           cmtNum: currentValue.PostComments.length,
           like: currentValue.PostLikes.length,
         };
@@ -138,18 +157,24 @@ export default class PostServices {
       include: [
         { model: User, attributes: ['user_name'] },
         { model: PostComment, attributes: ['user_name', 'comment'] },
-        { model: PostLike },
+        { model: PostLike, attributes: ['user_id'] },
         { model: PostBookmark, attributes: ['user_id'] },
+        { model: PostTag, attributes: ['tag'], raw: true },
       ],
       order: [['createdAt', 'DESC']],
     });
 
     const posthitmap = posthit.map((currentValue) => {
-      let is_bookmark = false;
+      const tag = [];
+      for (let i = 0; i < currentValue.PostTags.length; i++) {
+        tag.push(currentValue.PostTags[i]?.tag);
+      }
 
-      for (let i = 0; i < currentValue.PostBookmarks.length; i++) {
-        if (currentValue.PostBookmarks[i]?.user_id === user_id) {
-          is_bookmark = true;
+      let is_like = false;
+
+      for (let i = 0; i < currentValue.PostLikes.length; i++) {
+        if (currentValue.PostLikes[i]?.user_id === user_id) {
+          is_like = true;
         }
       }
 
@@ -157,11 +182,11 @@ export default class PostServices {
         id: currentValue.id,
         title: currentValue.title,
         content: currentValue.content,
-        tag: currentValue.tag,
+        tag,
         created_at: currentValue.createdAt,
         updated_at: currentValue.updatedAt,
         user: currentValue.User,
-        is_bookmark,
+        is_like,
         cmtNum: currentValue.PostComments.length,
         like: currentValue.PostLikes.length,
       };
@@ -195,11 +220,16 @@ export default class PostServices {
         { model: PostComment, attributes: ['user_name'] },
         { model: PostBookmark, attributes: ['user_id'] },
         { model: PostLike, attributes: ['user_id'] },
+        { model: PostTag, attributes: ['tag'], raw: true },
       ],
     });
 
     return post.map((currentValue) => {
-      console.log(post);
+      const tag = [];
+      for (let i = 0; i < currentValue.PostTags.length; i++) {
+        tag.push(currentValue.PostTags[i]?.tag);
+      }
+
       let is_bookmark = false;
       for (let i = 0; i < currentValue.PostBookmarks.length; i++) {
         if (currentValue.PostBookmarks[i]?.user_id === user_id) {
@@ -210,7 +240,7 @@ export default class PostServices {
         id: currentValue.id,
         title: currentValue.title,
         content: currentValue.content,
-        tag: currentValue.tag,
+        tag,
         created_at: currentValue.createdAt,
         is_bookmark,
         user_name: currentValue.User,
@@ -229,19 +259,31 @@ export default class PostServices {
     return post;
   };
 
-  PostCreate = async (title, content, tag, user_id) => {
+  PostCreate = async (title, content, tags, user_id, user_name) => {
     if (content.length === 0 || title.length === 0) {
       throw new ConflictException('내용을 입력해주세요');
     }
 
+    const postTag = [];
     const post = await Post.create({
       title,
       content,
-      tag,
       user_id,
     });
+    for (const tag of tags) {
+      const tagdata = await PostTag.create({ post_id: post.id, tag });
+      postTag.push(tagdata.tag);
+    }
 
-    return post;
+    return {
+      id: post.id,
+      title: post.title,
+      content: post.content,
+      created_at: post.createdAt,
+      like: 0,
+      postTag,
+      user_name,
+    };
   };
 
   PostUpdate = async (title, content, tag, user_id, post_id) => {
@@ -317,7 +359,7 @@ export default class PostServices {
       include: { model: Post, attributes: ['title'] },
       attributes: ['post_id'],
     });
-    // console.log(findBookMark);
+
     return findBookMark.reverse();
   };
 
