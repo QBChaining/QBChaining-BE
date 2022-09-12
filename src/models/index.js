@@ -18,7 +18,6 @@ import QnaTag from './qna_tag.js';
 import QnaBookmark from './qna_bookmark.js';
 import PostBookmark from './post_bookmark.js';
 import Notification from './noti.js';
-import Job from './job.js';
 
 const db = {};
 
@@ -26,8 +25,8 @@ const db = {};
 db.sequelize = sequelize;
 db.user = User;
 db.user_info = UserInfo;
-db.Job = Job;
-db.Language = Language;
+db.job = Job;
+db.language = Language;
 db.post = Post;
 db.post_comment = PostComment;
 db.post_like = PostLike;

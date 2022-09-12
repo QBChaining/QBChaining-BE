@@ -2,7 +2,6 @@ import User from '../models/user.js';
 import UserInfo from '../models/user_info.js';
 import Language from '../models/language.js';
 import Job from '../models/job.js';
-import { use } from 'passport';
 
 export default class AuthService {
   infoUpdate = async (user_id) => {
@@ -14,15 +13,35 @@ export default class AuthService {
     return user;
   };
 
-  userInfoCreate = async (language, age, gender, job, career) => {
-    const userInfo = await UserInfo.create({
-      age: age,
-      gender: gender,
-      career: career,
+  userInfoCreate = async (language, age, gender, job, career, user) => {
+    const userInfo = await UserInfo.findOrCreate({
+      where: {
+        age,
+        gender,
+        career,
+        user,
+      },
     });
-    const userLanguage = await userInfo.addLanguages(language);
-    const userJob = await userInfo.addJobs(job);
 
-    return { userInfo, userLanguage, userJob };
+    console.log(user);
+    const findUserInfo = await UserInfo.findOne({
+      where: { user: user },
+    });
+
+    // const findLanguage = await Language.findAll({ where: { info: user } });
+
+    const lanArr = await Promise.all(
+      language.map((e) => {
+        return Language.create({ language: e });
+      })
+    );
+
+    console.log(findUserInfo);
+
+    // console.log(lanArr);
+
+    await findUserInfo.addLanguages(lanArr);
+
+    return {};
   };
 }

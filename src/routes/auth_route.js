@@ -31,14 +31,14 @@ router.get(
       }
     );
 
-    return res.redirect(`http://localhost:3000/login?token=${token}`);
-    // return res.json({ response: req.user, token });
+    // return res.redirect(`http://localhost:3000/login?token=${token}`);
+    return res.json({ response: req.user, token });
   }
 );
 
 router.put('/user/isnew', verifyToken, authController.updateInfo);
 
-router.put('user/info', verifyToken, authController.createUserInfo);
+router.post('/user/info', verifyToken, authController.createUserInfo);
 
 router.get('/test', verifyToken, (req, res) => {
   res.json(req.decoded);

@@ -33,6 +33,7 @@ export default class AuthController {
     const gender = req.body.gender;
     const job = req.body.job;
     const career = req.body.career;
+    const user = req.decoded.id;
 
     try {
       const userInfo = await this.authService.userInfoCreate(
@@ -40,7 +41,8 @@ export default class AuthController {
         age,
         gender,
         job,
-        career
+        career,
+        user
       );
 
       return res
