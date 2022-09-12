@@ -16,7 +16,7 @@ export default class PostCommentServices {
   CommentShowAll = async (post_id) => {
     const postcomment = await PostComment.findAll({
       where: { post_id: post_id },
-      attributes: ['id', 'comment', 'user_name', 'createdAt', 'updatedAt'],
+      attributes: ['id', 'comment', 'createdAt', 'updatedAt'],
       include: [
         { model: User, attributes: ['user_name', 'id', 'profile_img'] },
       ],
