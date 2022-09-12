@@ -307,13 +307,9 @@ export default class PostController {
 
   PostBookMarkView = async (req, res, next) => {
     const user_id = req.decoded.id;
-    const post_id = req.params.post_id;
 
     try {
-      const PostBookMarkView = await this.postService.PostBookMarkView(
-        post_id,
-        user_id
-      );
+      const PostBookMarkView = await this.postService.PostBookMarkView(user_id);
       return res.status(200).json({
         success: true,
         message: '즐겨찾기 한 게시물',

@@ -15,6 +15,7 @@ import User from '../models/user.js';
 import QnaLike from '../models/qna_like.js';
 import QnaBookmark from '../models/qna_bookmark.js';
 import QnaCommentLike from '../models/qna_comment_like.js';
+import Notification from '../models/noti.js';
 
 class QnaCommentService {
   CreateQnaComment = async (qna_id, user_name, comment) => {
@@ -24,6 +25,22 @@ class QnaCommentService {
     if (!existQna) throw new NotFoundException('게시물이 존재 하지 않음');
 
     const commentdata = await QnaComment.create({ qna_id, user_name, comment });
+
+    const findQna = await QnaBookmark.findAll({
+      where: { qna_id },
+    });
+
+    if (findQna) {
+      for (let i = 0; i < findQna.length; i++) {
+        const noti = await Notification.create({
+          data: 'qna_comment',
+          check: false,
+          qna_id,
+          user_id: findQna[i].user_id,
+        });
+      }
+    }
+
     return { id: commentdata.id, comment: commentdata.comment };
   };
 

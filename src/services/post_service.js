@@ -311,13 +311,14 @@ export default class PostServices {
     }
   };
 
-  PostBookMarkView = async (post_id, user_id) => {
+  PostBookMarkView = async (user_id) => {
     const findBookMark = await PostBookmark.findAll({
-      where: { post_id: post_id, user_id: user_id },
+      where: { user_id: user_id },
       include: { model: Post, attributes: ['title'] },
-      attributes: ['user_id'],
+      attributes: ['post_id'],
     });
-    return findBookMark;
+    // console.log(findBookMark);
+    return findBookMark.reverse();
   };
 
   PostBookMark = async (post_id, user_id) => {
