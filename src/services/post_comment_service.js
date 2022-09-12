@@ -17,6 +17,9 @@ export default class PostCommentServices {
     const postcomment = await PostComment.findAll({
       where: { post_id: post_id },
       attributes: ['id', 'comment', 'user_name', 'createdAt', 'updatedAt'],
+      include: [
+        { model: User, attributes: ['user_name', 'id', 'profile_img'] },
+      ],
     });
     if (postcomment) {
       return postcomment;
@@ -43,16 +46,19 @@ export default class PostCommentServices {
       post_id,
     });
 
-    const findBookMark = await PostBookmark.findOne({
-      where: { post_id: post_id, user_id: user_id },
+    const findBookMark = await PostBookmark.findAll({
+      where: { post_id: post_id },
     });
+
     if (findBookMark) {
-      const noti = await Notification.create({
-        data: 'comment',
-        check: false,
-        post_id,
-        user_id,
-      });
+      for (let i = 0; i < findBookMark.length; i++) {
+        const noti = await Notification.create({
+          data: 'post_comment',
+          check: false,
+          post_id,
+          user_id: findBookMark[i].user_id,
+        });
+      }
     }
     return postcomment;
   };
