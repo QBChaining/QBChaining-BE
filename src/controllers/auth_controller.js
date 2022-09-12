@@ -45,6 +45,8 @@ export default class AuthController {
         user
       );
 
+      console.log(userInfo);
+
       return res
         .status(200)
         .json({ success: 'ok', message: '유저 정보 등록 성공' });
