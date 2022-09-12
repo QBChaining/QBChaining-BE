@@ -23,7 +23,7 @@ export default class UserInfo extends Sequelize.Model {
         sequelize,
         timestamps: true,
         underscored: true,
-        tableName: 'user',
+        tableName: 'user_info',
         charset: 'utf8',
         collate: 'utf8_general_ci',
       }
@@ -31,8 +31,8 @@ export default class UserInfo extends Sequelize.Model {
   }
   //외래키로 넘겨주기 때문에 hasMany설정
   static associate(db) {
-    db.user.belongsTo(db.User);
-    db.user.hayMany(db.Language);
-    db.user.hasMany(db.Job);
+    db.user_info.belongsTo(db.user, { foreignKey: 'user', targetKey: 'id' });
+    db.user_info.hasMany(db.language);
+    // db.user_info.hasMany(db.job);
   }
 }
