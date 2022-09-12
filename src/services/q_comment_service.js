@@ -15,8 +15,6 @@ import User from '../models/user.js';
 import sequelize from 'sequelize';
 import Notification from '../models/noti.js';
 
-const Op = sequelize.Op;
-
 class QnaCommentService {
   CreateQnaComment = async (qna_id, user_name, comment) => {
     if (!comment) throw new ConflictException('내용 입력은 필수');
@@ -49,23 +47,17 @@ class QnaCommentService {
   //
   FindAllComment = async (qna_id, user_name, page_count, page) => {
     const commentLists = await QnaComment.findAll({
+      where: { qna_id },
       offset: page_count * page,
       limit: page_count,
-      attributes: [
-        'id',
-        'comment',
-        'is_choose',
-        'user_name',
-        'createdAt',
-        [sequelize.col('User.profile_img'), 'profile_img'],
-      ],
-      where: { qna_id },
+      attributes: {
+        include: ['id', 'comment', 'is_choose', 'createdAt'],
+      },
       include: [
         { model: QnaCommentLike, attributes: ['user_name'] },
-        { model: User, attributes: [] },
+        { model: User, attributes: ['user_name', 'profile_img'] },
       ],
     });
-    return commentLists;
     return commentLists
       .map((list) => {
         let is_honey_tip = false;
@@ -79,7 +71,8 @@ class QnaCommentService {
           id: list.id,
           comment: list.comment,
           is_choose: list.is_choose,
-          user_name: list.user_name,
+          user_name: list.User.user_name,
+          profile_img: list.User.profile_img,
           createdAt: list.createdAt,
           honey_tip: list.QnaCommentLikes.length,
           is_honey_tip,
