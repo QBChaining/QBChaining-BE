@@ -362,7 +362,7 @@ export default class PostController {
       const NotiNoti = await this.postService.NotiNoti(user_id);
       return res.status(200).json({
         success: true,
-        message: '노티보여주기',
+        message: '알림 기능 성공',
         data: NotiNoti,
       });
     } catch (error) {
