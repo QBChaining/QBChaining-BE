@@ -13,23 +13,35 @@ export default class AuthService {
     return user;
   };
 
-  userInfoCreate = async (language, age, gender, job, career) => {
-    const userInfo = await UserInfo.create({
-      age: age,
-      gender: gender,
-      career: career,
+  userInfoCreate = async (language, age, gender, job, career, user) => {
+    const userInfo = await UserInfo.findOrCreate({
+      where: {
+        age,
+        gender,
+        career,
+        user,
+      },
     });
-    console.log('- - - -');
 
-    let test = Language.create({ language: 'python' });
-    console.log(test);
+    console.log(user);
+    const findUserInfo = await UserInfo.findOne({
+      where: { user: user },
+    });
 
-    // const userLanguage = await userInfo.addLanguage(test);
-    // const getLan = await userInfo.getLanguages();
-    // console.log(userLanguage, getLan);
-    // const userJob = await userInfo.addJobs();
+    // const findLanguage = await Language.findAll({ where: { info: user } });
 
-    // return { userInfo, userLanguage, userJob };
-    return { userInfo };
+    const lanArr = await Promise.all(
+      language.map((e) => {
+        return Language.create({ language: e });
+      })
+    );
+
+    console.log(findUserInfo);
+
+    // console.log(lanArr);
+
+    await findUserInfo.addLanguages(lanArr);
+
+    return {};
   };
 }
