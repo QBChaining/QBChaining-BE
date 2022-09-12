@@ -5,8 +5,10 @@ export default class PostController {
   postService = new PostService();
 
   PostShowAll = async (req, res, next) => {
+    const user_id = req.user?.id;
+
     try {
-      const postShowAll = await this.postService.PostShowAll();
+      const postShowAll = await this.postService.PostShowAll(user_id);
       return res.status(200).json({
         success: true,
         message: '조회 성공',
@@ -23,8 +25,9 @@ export default class PostController {
   };
 
   PostShowComment = async (req, res, next) => {
+    const user_id = req.user?.id;
     try {
-      const postShowComment = await this.postService.PostShowComment();
+      const postShowComment = await this.postService.PostShowComment(user_id);
       return res.status(200).json({
         success: true,
         message: '조회 성공1',
@@ -41,8 +44,9 @@ export default class PostController {
   };
 
   PostShowLike = async (req, res, next) => {
+    const user_id = req.user?.id;
     try {
-      const postShowAll = await this.postService.PostShowLike();
+      const postShowAll = await this.postService.PostShowLike(user_id);
       return res.status(200).json({
         success: true,
         message: '조회 성공',
@@ -59,8 +63,9 @@ export default class PostController {
   };
 
   PostShowhit = async (req, res, next) => {
+    const user_id = req.user?.id;
     try {
-      const postShowhit = await this.postService.PostShowhit();
+      const postShowhit = await this.postService.PostShowhit(user_id);
       return res.status(200).json({
         success: true,
         message: '히트상품조회성공',
@@ -77,6 +82,7 @@ export default class PostController {
   };
 
   PostShowOne = async (req, res, next) => {
+    const user_id = req.user?.id;
     const post_id = req.params.post_id;
     try {
       const postShowOne = await this.postService.PostShowOne(post_id);
@@ -128,7 +134,6 @@ export default class PostController {
         tag,
         user_id
       );
-
       return res.status(200).json({
         success: true,
         message: '작성 성공',
@@ -269,7 +274,6 @@ export default class PostController {
       });
     } catch (error) {
       const exception = exceptionHandler(error);
-      console.log(error);
 
       res.status(exception.statusCode).json({
         success: exception.success,

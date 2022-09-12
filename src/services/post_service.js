@@ -16,19 +16,27 @@ import Notification from '../models/noti.js';
 
 export default class PostServices {
   // 최신순 정렬
-  PostShowAll = async () => {
+  PostShowAll = async (user_id) => {
     const post = await Post.findAll({
       where: {},
       include: [
         { model: User, attributes: ['user_name'] },
         { model: PostComment, attributes: ['user_name', 'comment'] },
-        { model: PostLike },
-        { model: PostBookmark },
+        { model: PostLike, attributes: ['user_id'] },
+        { model: PostBookmark, attributes: ['user_id'] },
       ],
       order: [['created_at', 'DESC']],
     });
 
     return post.map((currentValue) => {
+      let is_bookmark = false;
+
+      for (let i = 0; i < currentValue.PostBookmarks.length; i++) {
+        if (currentValue.PostBookmarks[i]?.user_id === user_id) {
+          is_bookmark = true;
+        }
+      }
+
       return {
         id: currentValue.id,
         title: currentValue.title,
@@ -37,7 +45,7 @@ export default class PostServices {
         created_at: currentValue.createdAt,
         updated_at: currentValue.updatedAt,
         user: currentValue.User,
-        // is_bookmark: currentValue.PostBookmarks
+        is_bookmark,
         cmtNum: currentValue.PostComments.length,
         like: currentValue.PostLikes.length,
       };
@@ -45,17 +53,27 @@ export default class PostServices {
   };
 
   // 댓글순 정렬
-  PostShowComment = async () => {
+  PostShowComment = async (user_id) => {
     const postcmt = await Post.findAll({
       where: {},
       include: [
         { model: User, attributes: ['user_name'] },
         { model: PostComment, attributes: ['user_name', 'comment'] },
-        { model: PostLike },
+        { model: PostLike, attributes: ['user_id'] },
+        { model: PostBookmark, attributes: ['user_id'] },
       ],
+      order: [['created_at', 'DESC']],
     });
     return postcmt
       .map((currentValue) => {
+        let is_bookmark = false;
+
+        for (let i = 0; i < currentValue.PostBookmarks.length; i++) {
+          if (currentValue.PostBookmarks[i]?.user_id === user_id) {
+            is_bookmark = true;
+          }
+        }
+
         return {
           id: currentValue.id,
           title: currentValue.title,
@@ -64,6 +82,7 @@ export default class PostServices {
           created_at: currentValue.createdAt,
           updated_at: currentValue.updatedAt,
           user: currentValue.User,
+          is_bookmark,
           cmtNum: currentValue.PostComments.length,
           like: currentValue.PostLikes.length,
         };
@@ -74,18 +93,27 @@ export default class PostServices {
   };
 
   // 추천순 정렬
-  PostShowLike = async () => {
+  PostShowLike = async (user_id) => {
     const postshowlike = await Post.findAll({
       where: {},
       include: [
         { model: User, attributes: ['user_name'] },
         { model: PostComment, attributes: ['user_name', 'comment'] },
         { model: PostLike },
+        { model: PostBookmark, attributes: ['user_id'] },
       ],
+      order: [['created_at', 'DESC']],
     });
 
     return postshowlike
       .map((currentValue) => {
+        let is_bookmark = false;
+
+        for (let i = 0; i < currentValue.PostBookmarks.length; i++) {
+          if (currentValue.PostBookmarks[i]?.user_id === user_id) {
+            is_bookmark = true;
+          }
+        }
         return {
           id: currentValue.id,
           title: currentValue.title,
@@ -94,6 +122,7 @@ export default class PostServices {
           created_at: currentValue.createdAt,
           updated_at: currentValue.updatedAt,
           user: currentValue.User,
+          is_bookmark,
           cmtNum: currentValue.PostComments.length,
           like: currentValue.PostLikes.length,
         };
@@ -103,17 +132,27 @@ export default class PostServices {
       });
   };
 
-  PostShowhit = async () => {
+  PostShowhit = async (user_id) => {
     const posthit = await Post.findAll({
       where: {},
       include: [
         { model: User, attributes: ['user_name'] },
         { model: PostComment, attributes: ['user_name', 'comment'] },
         { model: PostLike },
+        { model: PostBookmark, attributes: ['user_id'] },
       ],
+      order: [['createdAt', 'DESC']],
     });
 
     const posthitmap = posthit.map((currentValue) => {
+      let is_bookmark = false;
+
+      for (let i = 0; i < currentValue.PostBookmarks.length; i++) {
+        if (currentValue.PostBookmarks[i]?.user_id === user_id) {
+          is_bookmark = true;
+        }
+      }
+
       return {
         id: currentValue.id,
         title: currentValue.title,
@@ -122,6 +161,7 @@ export default class PostServices {
         created_at: currentValue.createdAt,
         updated_at: currentValue.updatedAt,
         user: currentValue.User,
+        is_bookmark,
         cmtNum: currentValue.PostComments.length,
         like: currentValue.PostLikes.length,
       };
@@ -152,9 +192,10 @@ export default class PostServices {
       where: { id: post_id },
       include: [
         { model: User, attributes: ['user_name'] },
-        { model: PostBookmark },
+        { model: PostBookmark, attributes: ['user_id'] },
       ],
     });
+
     return post;
   };
 
@@ -178,6 +219,8 @@ export default class PostServices {
       tag,
       user_id,
     });
+
+    return post;
   };
 
   PostUpdate = async (title, content, tag, user_id, post_id) => {
@@ -305,25 +348,6 @@ export default class PostServices {
     const findNoti = await Notification.findAll({
       where: { user_id: user_id },
     });
-
-    // let arr = [];
-    // for (let i = 0; i < findNoti.length; i++) {
-    //   if (findNoti[i].check === true) {
-    //     arr.push(i);
-    //   }
-    // }
-    // console.log(arr);
-
-    // const notimap = findNoti.map((currentValue) => {
-    //   return {
-    //     id: currentValue.id,
-    //     data: currentValue.data,
-    //     created_at: currentValue.created_at,
-    //     check: currentValue.check,
-    //     post_id: currentValue.post_id,
-    //     user_id: currentValue.user_id,
-    //   };
-    // });
 
     return findNoti;
   };

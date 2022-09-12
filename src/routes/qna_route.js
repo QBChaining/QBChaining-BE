@@ -2,16 +2,20 @@ import express from 'express';
 
 import QnaController from '../controllers/qna_controller.js';
 import QnaCommentController from '../controllers/q_comment_controller.js';
+import SearchCotroller from '../controllers/search_controller.js';
+
 import check_signin from '../middlewares/check_signin.js';
 import verifyToken from '../middlewares/auth.js';
 
 const router = express.Router();
 const qnaController = new QnaController();
 const qnaCommentController = new QnaCommentController();
+const searchController = new SearchCotroller();
 
 router.use(check_signin);
 
 router.get('/bookmark', verifyToken, qnaController.FindBookMark);
+router.get('/search', searchController.QnaSearch);
 router.get('/', qnaController.FindAllQna);
 router.get('/:id', qnaController.FindOneQna);
 router.get('/:id/comments', qnaCommentController.FindAllComment);
