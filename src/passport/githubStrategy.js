@@ -20,7 +20,9 @@ const github = () => {
         clientID: `${id}`,
         clientSecret: `${secret}`,
         // callbackURL: `${url}`,
-        callbackURL: 'http://15.165.235.187/api/auth/github/callback',
+
+        callbackURL: 'http://localhost:3000/api/auth/github/callback',
+
         scope: ['user:email'],
       },
       async (accessToken, refreshToken, profile, done) => {

@@ -20,6 +20,7 @@ import PostBookmark from './post_bookmark.js';
 import Notification from './noti.js';
 import PostTag from './post_tag.js';
 
+
 const db = {};
 
 // 받아온 클래스들 사용
