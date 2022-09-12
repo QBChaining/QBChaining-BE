@@ -85,7 +85,7 @@ export default class PostController {
     const user_id = req.user?.id;
     const post_id = req.params.post_id;
     try {
-      const postShowOne = await this.postService.PostShowOne(post_id);
+      const postShowOne = await this.postService.PostShowOne(user_id, post_id);
 
       return res.status(200).json({
         success: true,
@@ -356,16 +356,10 @@ export default class PostController {
   };
 
   NotiNoti = async (req, res, next) => {
-    const noti_id = req.params.noti_id;
-    const post_id = req.params.post_id;
     const user_id = req.decoded.id;
 
     try {
-      const NotiNoti = await this.postService.NotiNoti(
-        noti_id,
-        post_id,
-        user_id
-      );
+      const NotiNoti = await this.postService.NotiNoti(user_id);
       return res.status(200).json({
         success: true,
         message: '노티보여주기',

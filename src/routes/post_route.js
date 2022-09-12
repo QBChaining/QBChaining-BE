@@ -31,6 +31,6 @@ router.delete(
 router.get('/bookmark/:post_id', verifyToken, postController.PostBookMarkView);
 
 router.post('/noti/:post_id/:noti_id', verifyToken, postController.NotiCheck);
-router.get('/noti/:post_id/:noti_id', verifyToken, postController.NotiNoti);
+router.get('/noti/:user_id', verifyToken, postController.NotiNoti);
 
 export default router;

@@ -187,16 +187,37 @@ export default class PostServices {
     });
   };
 
-  PostShowOne = async (post_id) => {
-    const post = await Post.findOne({
+  PostShowOne = async (user_id, post_id) => {
+    const post = await Post.findAll({
       where: { id: post_id },
       include: [
         { model: User, attributes: ['user_name'] },
+        { model: PostComment, attributes: ['user_name'] },
         { model: PostBookmark, attributes: ['user_id'] },
+        { model: PostLike, attributes: ['user_id'] },
       ],
     });
 
-    return post;
+    return post.map((currentValue) => {
+      console.log(post);
+      let is_bookmark = false;
+      for (let i = 0; i < currentValue.PostBookmarks.length; i++) {
+        if (currentValue.PostBookmarks[i]?.user_id === user_id) {
+          is_bookmark = true;
+        }
+      }
+      return {
+        id: currentValue.id,
+        title: currentValue.title,
+        content: currentValue.content,
+        tag: currentValue.tag,
+        created_at: currentValue.createdAt,
+        is_bookmark,
+        user_name: currentValue.User,
+        cmtNum: currentValue.PostComments.length,
+        like: currentValue.PostLikes.length,
+      };
+    });
   };
 
   PostShowMy = async (user_id) => {
@@ -344,9 +365,10 @@ export default class PostServices {
     return findNoti;
   };
   // 알람을 확인하는 겟 요청
-  NotiNoti = async (noti_id, post_id, user_id) => {
+  NotiNoti = async (user_id) => {
     const findNoti = await Notification.findAll({
       where: { user_id: user_id },
+      order: [['created_at', 'DESC']],
     });
 
     return findNoti;
