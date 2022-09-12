@@ -28,19 +28,24 @@ export default class AuthService {
       where: { user: user },
     });
 
-    // const findLanguage = await Language.findAll({ where: { info: user } });
+    const findLanguage = await Language.findAll({ where: { info: user } });
 
-    const lanArr = await Promise.all(
-      language.map((e) => {
-        return Language.create({ language: e });
-      })
-    );
+    console.log(findLanguage);
 
-    console.log(findUserInfo);
+    console.log(findLanguage == true);
 
-    // console.log(lanArr);
+    if (findLanguage.length > 0) {
+      console.log('정상수');
+    } else {
+      console.log('쇼미더머니');
+      const lanArr = await Promise.all(
+        language.map((e) => {
+          return Language.create({ language: e });
+        })
+      );
 
-    await findUserInfo.addLanguages(lanArr);
+      await findUserInfo.addLanguages(lanArr);
+    }
 
     return {};
   };
