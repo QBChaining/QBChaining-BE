@@ -38,7 +38,7 @@ export default class Post extends Sequelize.Model {
       onUpdate: 'cascade',
     });
     db.post.belongsTo(db.user, {
-      foreignKey: 'userId',
+      foreignKey: 'user_id',
       targetKey: 'id',
       onDelete: 'cascade',
       onUpdate: 'cascade',
