@@ -12,7 +12,7 @@ import Qna from '../models/qna.js';
 import QnaComment from '../models/qna_comment.js';
 import QnaCommentLike from '../models/qna_comment_like.js';
 import User from '../models/user.js';
-import sequelize from 'sequelize';
+import QnaBookmark from '../models/qna_bookmark.js';
 import Notification from '../models/noti.js';
 
 class QnaCommentService {
