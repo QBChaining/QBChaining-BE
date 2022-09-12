@@ -5,10 +5,16 @@ class SearchCotroller {
   searchService = new SearchService();
 
   QnaSearch = async (req, res, next) => {
+    const { page_count, page } = req.query;
     const { q } = req.query;
     const user_id = req.user?.id;
     try {
-      const data = await this.searchService.QnaSearch(q, user_id);
+      const data = await this.searchService.QnaSearch(
+        q,
+        user_id,
+        page_count * 1,
+        page * 1
+      );
       return res
         .status(200)
         .json({ success: true, message: '검색 조회 성공', data });
