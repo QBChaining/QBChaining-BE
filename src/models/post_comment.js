@@ -12,10 +12,6 @@ export default class PostComment extends Sequelize.Model {
           type: Sequelize.STRING(1000),
           allowNull: false,
         },
-        user_name: {
-          type: Sequelize.STRING(50),
-          allowNull: false,
-        },
       },
       {
         sequelize,
