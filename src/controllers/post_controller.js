@@ -126,14 +126,13 @@ export default class PostController {
 
   PostCreate = async (req, res, next) => {
     const { title, content, tag } = req.body;
-    const user_id = req.decoded.id;
-    const user_name = req.decoded.user_name;
+    const user_name = req.decoded.name;
+    console.log(req.decoded);
     try {
       const postCreate = await this.postService.PostCreate(
         title,
         content,
         tag,
-        user_id,
         user_name
       );
       return res.status(200).json({
@@ -152,7 +151,7 @@ export default class PostController {
   };
 
   PostUpdate = async (req, res, next) => {
-    const user_id = req.decoded.id;
+    const user_name = req.decoded.name;
     const title = req.body.title;
     const content = req.body.content;
     const tag = req.body.tag;
@@ -163,7 +162,7 @@ export default class PostController {
         title,
         content,
         tag,
-        user_id,
+        user_name,
         post_id
       );
 
@@ -183,10 +182,10 @@ export default class PostController {
   };
 
   PostDelete = async (req, res, next) => {
-    const user_id = req.decoded.id;
+    const user_name = req.decoded.name;
     const post_id = req.params.post_id;
     try {
-      const postDelete = await this.postService.PostDelete(post_id, user_id);
+      const postDelete = await this.postService.PostDelete(post_id, user_name);
       return res.status(200).json({
         success: true,
         message: '삭제 성공',

@@ -267,7 +267,7 @@ export default class PostServices {
     return post;
   };
 
-  PostCreate = async (title, content, tags, user_id, user_name) => {
+  PostCreate = async (title, content, tags, user_name) => {
     if (content.length === 0 || title.length === 0) {
       throw new ConflictException('내용을 입력해주세요');
     }
@@ -276,7 +276,7 @@ export default class PostServices {
     const post = await Post.create({
       title,
       content,
-      user_id,
+      user_name,
     });
     for (const tag of tags) {
       const tagdata = await PostTag.create({ post_id: post.id, tag });
@@ -294,22 +294,22 @@ export default class PostServices {
     };
   };
 
-  PostUpdate = async (title, content, tag, user_id, post_id) => {
+  PostUpdate = async (title, content, tag, user_name, post_id) => {
     const post1 = await Post.findOne({
       where: { id: post_id },
     });
 
-    if (user_id !== post1.user_id) {
+    if (user_name !== post1.user_name) {
       throw new ConflictException('본인의 글만 수정이 가능합니다');
     }
 
     if (content.length !== 0) {
       const post = await Post.update(
-        { title, content, tag, user_id },
-        { where: { id: post_id, user_id: user_id } }
+        { title, content, tag, user_name },
+        { where: { id: post_id, user_name: user_name } }
       );
       if (post) {
-        return { title, content, tag, user_id, id: parseInt(post_id) };
+        return { title, content, tag, user_name, id: parseInt(post_id) };
       }
     } else {
       throw new ConflictException('내용을 입력해주세요');
@@ -317,15 +317,15 @@ export default class PostServices {
     // if문써서 user_id 비교해서 내꺼아니면 수정불가처리해야댐
   };
 
-  PostDelete = async (post_id, user_id) => {
+  PostDelete = async (post_id, user_name) => {
     const find = await Post.findOne({
       where: { id: post_id },
     });
-    if (find.user_id !== user_id) {
+    if (find.user_name !== user_name) {
       throw new NotFoundException('본인의 글만 삭제 가능합니다');
     } else {
       const post = await Post.destroy({
-        where: { id: post_id, user_id: user_id },
+        where: { id: post_id, user_name: user_name },
       });
     }
   };
@@ -364,8 +364,8 @@ export default class PostServices {
   PostBookMarkView = async (user_name) => {
     const findBookMark = await PostBookmark.findAll({
       where: { user_name: user_name },
-      include: { model: Post, attributes: ['title'] },
-      attributes: ['post_id', 'user_name'],
+      include: { model: Post, attributes: ['title', 'user_name', 'createdAt'] },
+      attributes: ['post_id'],
     });
 
     return findBookMark.reverse();
