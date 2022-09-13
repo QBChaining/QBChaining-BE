@@ -165,6 +165,29 @@ class QnaController {
         .json({ success: exception.success, message: exception.message });
     }
   };
+
+  FindCategories = async (req, res, next) => {
+    const { page, page_count } = req.query;
+    const { category } = req.params;
+    const user_id = req.user.id;
+
+    try {
+      const data = await this.qnaService.FindCategories(
+        category,
+        page,
+        page_count,
+        user_id
+      );
+      return res.status(200).json({ data });
+    } catch (err) {
+      console.log(err);
+      const exception = exceptionHandler(err);
+
+      return res
+        .status(exception.statusCode)
+        .json({ success: exception.success, message: exception.message });
+    }
+  };
 }
 
 export default QnaController;
