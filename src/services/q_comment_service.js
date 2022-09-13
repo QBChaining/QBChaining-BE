@@ -30,11 +30,11 @@ class QnaCommentService {
 
     if (findQna) {
       for (let i = 0; i < findQna.length; i++) {
-        const noti = await Notification.create({
+        await Notification.create({
           data: 'qna_comment',
           check: false,
           qna_id,
-          user_id: findQna[i].user_id,
+          user_name: findQna[i].user_name,
         });
       }
     }
@@ -42,9 +42,6 @@ class QnaCommentService {
     return { id: commentdata.id, comment: commentdata.comment };
   };
 
-  //
-  // user_name >>> user_id 1 : N 설정 변경해야함
-  //
   FindAllComment = async (qna_id, user_name, page_count, page) => {
     if (!page_count) throw new BadRequestException('page_count is null');
     const commentLists = await QnaComment.findAll({
@@ -52,11 +49,11 @@ class QnaCommentService {
       offset: page_count * page,
       limit: page_count,
       attributes: {
-        include: ['id', 'comment', 'is_choose', 'createdAt'],
+        include: ['id', 'comment', 'is_choose', 'createdAt', 'user_name'],
       },
       include: [
         { model: QnaCommentLike, attributes: ['user_name'] },
-        { model: User, attributes: ['user_name', 'profile_img'] },
+        { model: User, attributes: ['profile_img'] },
       ],
     });
     return commentLists
@@ -71,11 +68,11 @@ class QnaCommentService {
         return {
           id: list.id,
           comment: list.comment,
-          is_choose: list.is_choose,
-          user_name: list.User.user_name,
+          user_name: list.user_name,
           profile_img: list.User.profile_img,
           createdAt: list.createdAt,
           honey_tip: list.QnaCommentLikes.length,
+          is_choose: list.is_choose,
           is_honey_tip,
         };
       })
@@ -84,26 +81,6 @@ class QnaCommentService {
         b = b.honey_tip;
         return b - a;
       });
-  };
-
-  UpdateComment = async (id, comment, user_name) => {
-    if (!comment) throw new ConflictException('수정 요청에 내용이 없다니..');
-
-    const isSameUser = await QnaComment.findByPk(id);
-    if (!isSameUser) throw new ConflictException('댓글이 존재하지 않습니다.');
-    if (isSameUser.user_name !== user_name)
-      throw new ConflictException('자신의 댓글만 수정 가능합니다.');
-
-    await QnaComment.update({ comment }, { where: { id } });
-  };
-
-  RemoveComment = async (id, comment, user_name) => {
-    const isSameUser = await QnaComment.findByPk(id);
-    if (!isSameUser) throw new ConflictException('댓글이 존재하지 않습니다.');
-    if (isSameUser.user_name !== user_name)
-      throw new ConflictException('자신의 댓글만 수정 가능합니다.');
-
-    await QnaComment.destroy({ where: { id } });
   };
 
   LikeComment = async (qna_comment_id, user_name) => {
@@ -122,12 +99,12 @@ class QnaCommentService {
     else await QnaCommentLike.destroy({ where: { qna_comment_id, user_name } });
   };
 
-  ChooseComment = async (qna_comment_id, user_id) => {
+  ChooseComment = async (qna_comment_id, user_name) => {
     const existComment = await QnaComment.findByPk(qna_comment_id);
     if (!existComment) throw new ConflictException('존재하지 않는 댓글입니다.');
 
     const qna = await existComment.getQna();
-    if (qna.user_id !== user_id)
+    if (qna.user_name !== user_name)
       throw new ConflictException('채택은 게시글 작성자만 가능합니다.');
     else {
       await Qna.update({ is_resolve: true }, { where: { id: qna.id } });
