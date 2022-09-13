@@ -7,11 +7,11 @@ class SearchCotroller {
   QnaSearch = async (req, res, next) => {
     const { page_count, page } = req.query;
     const { q } = req.query;
-    const user_id = req.user?.id;
+    const user_name = req.user?.name;
     try {
       const data = await this.searchService.QnaSearch(
         q,
-        user_id,
+        user_name,
         page_count * 1,
         page * 1
       );
