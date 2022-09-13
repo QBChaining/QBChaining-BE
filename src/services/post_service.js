@@ -258,13 +258,48 @@ export default class PostServices {
     });
   };
 
-  PostShowMy = async (user_id) => {
+  PostShowMy = async (user_name, user_name1) => {
     const post = await Post.findAll({
-      where: { user_id: user_id },
-      include: [{ model: User, attributes: ['user_name'] }],
-      attributes: ['id', 'title', 'content', 'createdAt', 'updatedAt'],
+      where: { user_name: user_name },
+      include: [
+        { model: PostLike, attributes: ['user_name'] },
+        { model: PostTag, attributes: ['tag'], raw: true },
+      ],
+      attributes: [
+        'id',
+        'title',
+        'content',
+        'createdAt',
+        'updatedAt',
+        'user_name',
+      ],
+      order: [['createdAt', 'DESC']],
     });
-    return post;
+
+    return post.map((currentValue) => {
+      const tag = [];
+      for (let i = 0; i < currentValue.PostTags.length; i++) {
+        tag.push(currentValue.PostTags[i]?.tag);
+      }
+
+      let is_like = false;
+
+      for (let i = 0; i < currentValue.PostLikes.length; i++) {
+        if (currentValue.PostLikes[i]?.user_name === user_name1) {
+          is_like = true;
+        }
+      }
+      return {
+        id: currentValue.id,
+        title: currentValue.title,
+        content: currentValue.content,
+        created_at: currentValue.createdAt,
+        updated_at: currentValue.updatedAt,
+        user_name: currentValue.user_name,
+        tag,
+        is_like,
+      };
+    });
   };
 
   PostCreate = async (title, content, tags, user_name) => {
