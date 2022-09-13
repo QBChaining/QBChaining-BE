@@ -375,4 +375,24 @@ export default class PostController {
       });
     }
   };
+
+  PostTagShow = async (req, res, next) => {
+    const tag = req.query.tag;
+    const user_name = req.user?.name;
+    try {
+      const postTagShow = await this.postService.PostTagShow(tag, user_name);
+      return res.status(200).json({
+        success: true,
+        message: 'message',
+        data: postTagShow,
+      });
+    } catch (error) {
+      const exception = exceptionHandler(error);
+
+      res.status(exception.statusCode).json({
+        success: exception.success,
+        message: exception.message,
+      });
+    }
+  };
 }
