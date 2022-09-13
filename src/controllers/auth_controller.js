@@ -54,4 +54,32 @@ export default class AuthController {
       return next(error);
     }
   };
+
+  updateUserInfo = async (req, res, next) => {
+    const language = req.body.language;
+    const age = req.body.age;
+    const gender = req.body.gender;
+    const job = req.body.job;
+    const career = req.body.career;
+    const user = req.decoded.id;
+
+    try {
+      const userInfo = await this.authService.userInfoUpdate(
+        language,
+        age,
+        gender,
+        job,
+        career,
+        user
+      );
+
+      console.log(userInfo);
+
+      return res
+        .status(200)
+        .json({ success: 'ok', message: '유저 정보 등록 성공' });
+    } catch (error) {
+      return next(error);
+    }
+  };
 }

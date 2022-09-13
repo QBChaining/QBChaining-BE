@@ -14,7 +14,7 @@ export default class AuthService {
   };
 
   userInfoCreate = async (language, age, gender, job, career, user) => {
-    const userInfo = await UserInfo.findOrCreate({
+    await UserInfo.findOrCreate({
       where: {
         age,
         gender,
@@ -23,29 +23,69 @@ export default class AuthService {
       },
     });
 
-
-    console.log(user);
-    const findUserInfo = await UserInfo.findOne({
-      where: { user: user },
+    const findUser = await User.findOne({
+      where: { id: user },
     });
 
-    const findLanguage = await Language.findAll({ where: { info: user } });
+    const findLanguage = await Language.findAll({ where: { user_id: user } });
+    const findJob = await Job.findAll({ where: { user_id: user } });
 
-    console.log(findLanguage);
-
-    console.log(findLanguage == true);
-
-    if (findLanguage.length > 0) {
-      console.log('정상수');
+    if (findLanguage.length > 0 && findJob.length > 0) {
+      return {};
     } else {
-      console.log('쇼미더머니');
       const lanArr = await Promise.all(
         language.map((e) => {
           return Language.create({ language: e });
         })
       );
 
-      await findUserInfo.addLanguages(lanArr);
+      const jobArr = await Promise.all(
+        job.map((e) => {
+          return Job.create({ job: e });
+        })
+      );
+
+      await findUser.addLanguages(lanArr);
+      await findUser.addJobs(jobArr);
+    }
+
+    return {};
+  };
+
+  userInfoUpdate = async (language, age, gender, job, career, user) => {
+    await UserInfo.findOrCreate({
+      where: {
+        age,
+        gender,
+        career,
+        user,
+      },
+    });
+
+    const findUser = await User.findOne({
+      where: { id: user },
+    });
+
+    const findLanguage = await Language.findAll({ where: { user_id: user } });
+    const findJob = await Job.findAll({ where: { user_id: user } });
+
+    if (findLanguage.length > 0 && findJob.length > 0) {
+      return {};
+    } else {
+      const lanArr = await Promise.all(
+        language.map((e) => {
+          return Language.create({ language: e });
+        })
+      );
+
+      const jobArr = await Promise.all(
+        job.map((e) => {
+          return Job.create({ job: e });
+        })
+      );
+
+      await findUser.addLanguages(lanArr);
+      await findUser.addJobs(jobArr);
     }
 
     return {};
