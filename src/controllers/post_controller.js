@@ -105,9 +105,13 @@ export default class PostController {
   };
 
   PostShowMy = async (req, res, next) => {
-    const user_id = 2;
+    const user_name = req.params.user_name;
+    const user_name1 = req.user?.name;
     try {
-      const PostShowMy = await this.postService.PostShowMy(user_id);
+      const PostShowMy = await this.postService.PostShowMy(
+        user_name,
+        user_name1
+      );
 
       return res.status(200).json({
         success: true,

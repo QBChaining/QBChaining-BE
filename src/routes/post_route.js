@@ -13,7 +13,7 @@ router.get('/like', check_signin, postController.PostShowLike);
 router.get('/hits', check_signin, postController.PostShowhit);
 router.get('/bookmark', verifyToken, postController.PostBookMarkView);
 router.get('/:post_id', check_signin, postController.PostShowOne);
-router.get('/my/:user_id', verifyToken, postController.PostShowMy);
+router.get('/users/:user_name', check_signin, postController.PostShowMy);
 
 router.post('/', verifyToken, postController.PostCreate);
 router.put('/:post_id', verifyToken, postController.PostUpdate);
