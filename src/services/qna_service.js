@@ -44,7 +44,7 @@ class QnaService {
   };
 
   FindAllQna = async (user_id, page_count, page) => {
-    console.log(page_count, page);
+    if (!page_count) throw new BadRequestException('page_count is null');
     const qnaLists = await Qna.findAll({
       offset: page_count * page,
       limit: page_count,
@@ -155,6 +155,7 @@ class QnaService {
   };
 
   FindBookMark = async (user_id, page, page_count) => {
+    if (!page_count) throw new BadRequestException('page_count is null');
     const bookmarkLists = await QnaBookmark.findAll({
       offset: page * page_count,
       limit: page_count,
@@ -164,6 +165,52 @@ class QnaService {
     });
     return bookmarkLists;
   };
-}
 
+  FindCategories = async (category, page, page_count, user_id) => {
+    if (!page_count) throw new BadRequestException('page_count is null');
+    const filterlists = await Qna.findAll({
+      where: { category },
+      attributes: {
+        exclude: ['updatedAt', 'UserId', 'user_id', 'content'],
+      },
+      include: [
+        { model: User, attributes: ['user_name', 'profile_img'] },
+        { model: QnaComment, attributes: ['id'] },
+        { model: QnaTag, attributes: ['tag'] },
+        { model: QnaLike, attributes: ['id', 'user_id'] },
+        { model: QnaBookmark, attributes: ['user_id'] },
+      ],
+    });
+
+    return filterlists.map((list) => {
+      let tag = [];
+      let is_bookmark = false;
+      let is_honey_tip = false;
+      for (let i = 0; i < list.QnaTags.length; i++) {
+        tag.push(list.QnaTags[i]?.tag);
+      }
+      for (let i = 0; i < list.QnaBookmarks.length; i++) {
+        if (list.QnaBookmarks[i]?.user_id === user_id) is_bookmark = true;
+      }
+      for (let i = 0; i < list.QnaLikes.length; i++) {
+        if (list.QnaLikes[i]?.user_id === user_id) is_honey_tip = true;
+      }
+
+      return {
+        id: list.id,
+        title: list.title,
+        // content: list.content,
+        is_resolve: list.is_resolve,
+        createdAt: list.createdAt,
+        honey_tip: list.QnaLikes.length,
+        is_honey_tip,
+        is_bookmark,
+        cntcomment: list.QnaComments.length,
+        category: list.category,
+        tag,
+        user: list.User,
+      };
+    });
+  };
+}
 export default QnaService;
