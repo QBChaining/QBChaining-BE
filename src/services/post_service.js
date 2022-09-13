@@ -469,4 +469,42 @@ export default class PostServices {
 
     return findNoti;
   };
+  // 태그로 조회
+  PostTagShow = async (tag, user_name) => {
+    const findTag = await PostTag.findAll({
+      where: { tag: tag },
+    });
+    const postList = [];
+    for (let i = 0; i < findTag.length; i++) {
+      const post = await Post.findOne({
+        where: { id: findTag[i].post_id },
+        include: [
+          { model: PostTag, attributes: ['tag'], raw: true },
+          { model: PostBookmark, attributes: ['user_name'] },
+        ],
+      });
+      postList.push(post);
+    }
+
+    const postLists = postList.reverse();
+
+    return postLists.map((post) => {
+      let is_bookmark = false;
+      for (let i = 0; i < post.PostBookmarks.length; i++) {
+        if (post.PostBookmarks[i]?.user_name === user_name) {
+          is_bookmark = true;
+        }
+      }
+      return {
+        id: post.id,
+        title: post.title,
+        content: post.content,
+        created_at: post.createdAt,
+        updated_at: post.updatedAt,
+        user_name: post.User,
+        tag: post.PostTags,
+        is_bookmark,
+      };
+    });
+  };
 }

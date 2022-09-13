@@ -14,6 +14,7 @@ router.get('/comment', check_signin, postController.PostShowComment);
 router.get('/like', check_signin, postController.PostShowLike);
 router.get('/hits', check_signin, postController.PostShowhit);
 router.get('/bookmark', verifyToken, postController.PostBookMarkView);
+router.get('/tags', check_signin, postController.PostTagShow);
 router.get('/:post_id', check_signin, postController.PostShowOne);
 router.get('/users/:user_name', check_signin, postController.PostShowMy);
 
