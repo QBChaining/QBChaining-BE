@@ -32,7 +32,10 @@ router.get(
     );
 
     return res.redirect(`http://localhost:3000/login?token=${token}`);
+<<<<<<< HEAD
     // return res.json({ response: req.user, token });
+=======
+>>>>>>> 601f3b28099a62968e7cdc66f475712a3f83d694
   }
 );
 

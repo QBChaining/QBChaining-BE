@@ -35,8 +35,13 @@ class QnaController {
 
   FindAllQna = async (req, res, next) => {
     try {
+      const { page_count, page } = req.query;
       const user_id = req.user?.id;
-      const data = await this.qnaService.FindAllQna(user_id);
+      const data = await this.qnaService.FindAllQna(
+        user_id,
+        page_count * 1,
+        page * 1
+      );
 
       return res
         .status(200)
@@ -139,9 +144,14 @@ class QnaController {
   };
 
   FindBookMark = async (req, res, next) => {
+    const { page, page_count } = req.query;
     const user_id = req.decoded.id;
     try {
-      const data = await this.qnaService.FindBookMark(user_id);
+      const data = await this.qnaService.FindBookMark(
+        user_id,
+        page * 1,
+        page_count * 1
+      );
 
       return res
         .status(200)

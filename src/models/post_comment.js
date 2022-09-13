@@ -36,5 +36,9 @@ export default class PostComment extends Sequelize.Model {
       foreignKey: 'post_id',
       targetKey: 'id',
     });
+    db.post_comment.belongsTo(db.user, {
+      foreignKey: 'user_name',
+      targetKey: 'user_name',
+    });
   }
 }

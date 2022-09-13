@@ -33,6 +33,8 @@ class SearchService {
     }
 
     const lists = await Qna.findAll({
+      offset: page_count * page,
+      limit: page_count,
       attributes: {
         exclude: ['updatedAt', 'UserId', 'user_id'],
       },

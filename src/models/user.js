@@ -49,5 +49,7 @@ export default class User extends Sequelize.Model {
     db.user.hasMany(db.post_like);
     db.user.hasMany(db.qna_like);
     db.user.hasMany(db.qna_bookmark);
+    db.user.hasMany(db.post_comment);
+    db.user.hasMany(db.qna_comment);
   }
 }

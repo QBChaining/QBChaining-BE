@@ -14,6 +14,8 @@ import QnaTag from '../models/qna_tag.js';
 import User from '../models/user.js';
 import QnaLike from '../models/qna_like.js';
 import QnaBookmark from '../models/qna_bookmark.js';
+import sequelize from 'sequelize';
+const Op = sequelize.Op;
 
 class QnaService {
   CreateQna = async (title, content, category, tags, user_id, user_name) => {
@@ -41,24 +43,35 @@ class QnaService {
     };
   };
 
-  FindAllQna = async (user_id) => {
+  FindAllQna = async (user_id, page_count, page) => {
+    console.log(page_count, page);
     const qnaLists = await Qna.findAll({
+      offset: page_count * page,
+      limit: page_count,
       attributes: ['id', 'title', 'is_resolve', 'createdAt', 'category'],
       include: [
-        { model: User, attributes: ['id', 'user_name'] },
+        { model: User, attributes: ['user_name', 'profile_img'] },
         { model: QnaComment, attributes: ['id'] },
-        { model: QnaTag, attributes: ['tag'], raw: true },
+        { model: QnaTag, attributes: ['tag'] },
         { model: QnaLike, attributes: ['id', 'user_id'] },
         { model: QnaBookmark, attributes: ['user_id'] },
       ],
     });
+
     qnaLists.reverse();
 
     return qnaLists.map((list) => {
-      const tag = [];
-
+      let tag = [];
+      let is_bookmark = false;
+      let is_honey_tip = false;
       for (let i = 0; i < list.QnaTags.length; i++) {
         tag.push(list.QnaTags[i]?.tag);
+      }
+      for (let i = 0; i < list.QnaBookmarks.length; i++) {
+        if (list.QnaBookmarks[i]?.user_id === user_id) is_bookmark = true;
+      }
+      for (let i = 0; i < list.QnaLikes.length; i++) {
+        if (list.QnaLikes[i]?.user_id === user_id) is_honey_tip = true;
       }
 
       return {
@@ -68,8 +81,8 @@ class QnaService {
         is_resolve: list.is_resolve,
         createdAt: list.createdAt,
         honey_tip: list.QnaLikes.length,
-        is_honey_tip: list.QnaLikes[0]?.user_id === user_id,
-        is_bookmark: list.QnaBookmarks[0]?.user_id === user_id,
+        is_honey_tip,
+        is_bookmark,
         cntcomment: list.QnaComments.length,
         category: list.category,
         tag,
@@ -90,8 +103,8 @@ class QnaService {
         'createdAt',
       ],
       include: [
-        { model: User, attributes: ['id', 'user_name'] },
-        { model: QnaTag, attributes: ['tag'], raw: true },
+        { model: User, attributes: { exclude: ['id', 'updatedAt', 'is_new'] } },
+        { model: QnaTag, attributes: ['tag'] },
         { model: QnaLike, attributes: ['id', 'user_id', 'qna_id'] },
       ],
     });
@@ -141,8 +154,10 @@ class QnaService {
     else await QnaLike.destroy({ where: { qna_id, user_id } });
   };
 
-  FindBookMark = async (user_id) => {
+  FindBookMark = async (user_id, page, page_count) => {
     const bookmarkLists = await QnaBookmark.findAll({
+      offset: page * page_count,
+      limit: page_count,
       where: { user_id },
       attributes: ['qna_id'],
       include: [{ model: Qna, attributes: ['title'] }],

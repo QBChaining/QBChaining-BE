@@ -10,11 +10,9 @@ import {
 
 import Qna from '../models/qna.js';
 import QnaComment from '../models/qna_comment.js';
-import QnaTag from '../models/qna_tag.js';
-import User from '../models/user.js';
-import QnaLike from '../models/qna_like.js';
-import QnaBookmark from '../models/qna_bookmark.js';
 import QnaCommentLike from '../models/qna_comment_like.js';
+import User from '../models/user.js';
+import QnaBookmark from '../models/qna_bookmark.js';
 import Notification from '../models/noti.js';
 
 class QnaCommentService {
@@ -44,25 +42,40 @@ class QnaCommentService {
     return { id: commentdata.id, comment: commentdata.comment };
   };
 
-  FindAllComment = async (qna_id, user_name) => {
+  //
+  // user_name >>> user_id 1 : N 설정 변경해야함
+  //
+  FindAllComment = async (qna_id, user_name, page_count, page) => {
     const commentLists = await QnaComment.findAll({
-      attributes: ['id', 'comment', 'is_choose', 'user_name', 'createdAt'],
       where: { qna_id },
-      include: [{ model: QnaCommentLike, attributes: ['user_name'] }],
+      offset: page_count * page,
+      limit: page_count,
+      attributes: {
+        include: ['id', 'comment', 'is_choose', 'createdAt'],
+      },
+      include: [
+        { model: QnaCommentLike, attributes: ['user_name'] },
+        { model: User, attributes: ['user_name', 'profile_img'] },
+      ],
     });
-
     return commentLists
       .map((list) => {
+        let is_honey_tip = false;
+
+        for (let i = 0; i < list.QnaCommentLikes?.length; i++) {
+          if (list.QnaCommentLikes[i]?.user_name === user_name)
+            is_honey_tip = true;
+        }
+
         return {
           id: list.id,
           comment: list.comment,
           is_choose: list.is_choose,
-          user_name: list.user_name,
+          user_name: list.User.user_name,
+          profile_img: list.User.profile_img,
           createdAt: list.createdAt,
           honey_tip: list.QnaCommentLikes.length,
-          is_honey_tip: list.QnaCommentLikes[0]?.user_name
-            ? list.QnaCommentLikes[0]?.user_name === user_name
-            : false,
+          is_honey_tip,
         };
       })
       .sort((a, b) => {
