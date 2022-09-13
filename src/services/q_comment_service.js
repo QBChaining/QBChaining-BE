@@ -46,6 +46,7 @@ class QnaCommentService {
   // user_name >>> user_id 1 : N 설정 변경해야함
   //
   FindAllComment = async (qna_id, user_name, page_count, page) => {
+    if (!page_count) throw new BadRequestException('page_count is null');
     const commentLists = await QnaComment.findAll({
       where: { qna_id },
       offset: page_count * page,
