@@ -18,7 +18,7 @@ import Post from '../models/post.js';
 import sequelize from 'sequelize';
 const Op = sequelize.Op;
 class SearchService {
-  QnaSearch = async (keyWords, user_id) => {
+  QnaSearch = async (keyWords, user_name, page_count, page) => {
     if (!keyWords || keyWords.trim() === '')
       throw new BadRequestException('검색 조건이 옳지 않습니다.');
 
@@ -36,7 +36,7 @@ class SearchService {
       offset: page_count * page,
       limit: page_count,
       attributes: {
-        exclude: ['updatedAt', 'UserId', 'user_id'],
+        exclude: ['updatedAt', 'UserId', 'user_name'],
       },
       where: {
         [Op.or]: searchKeywords,
@@ -44,8 +44,8 @@ class SearchService {
       include: [
         { model: User, attributes: ['user_name', 'profile_img'] },
         { model: QnaTag, attributes: ['tag'] },
-        { model: QnaLike, attributes: ['id', 'user_id'] },
-        { model: QnaBookmark, attributes: ['user_id'] },
+        { model: QnaLike, attributes: ['id', 'user_name'] },
+        { model: QnaBookmark, attributes: ['user_name'] },
         { model: QnaComment, attributes: ['id'] },
       ],
     });
@@ -58,10 +58,10 @@ class SearchService {
         tag.push(list.QnaTags[i]?.tag);
       }
       for (let i = 0; i < list.QnaBookmarks.length; i++) {
-        if (list.QnaBookmarks[i]?.user_id === user_id) is_bookmark = true;
+        if (list.QnaBookmarks[i]?.user_name === user_name) is_bookmark = true;
       }
       for (let i = 0; i < list.QnaLikes.length; i++) {
-        if (list.QnaLikes[i]?.user_id === user_id) is_honey_tip = true;
+        if (list.QnaLikes[i]?.user_name === user_name) is_honey_tip = true;
       }
 
       return {

@@ -45,7 +45,7 @@ export default class User extends Sequelize.Model {
   static associate(db) {
     db.user.hasOne(db.user_info, { foreignKey: 'user', sourceKey: 'id' });
     db.user.hasMany(db.post);
-    db.user.hasMany(db.qna);
+    db.user.hasMany(db.qna, { sourceKey: 'id' });
     db.user.hasMany(db.post_like);
     db.user.hasMany(db.qna_like);
     db.user.hasMany(db.qna_bookmark);
