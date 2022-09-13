@@ -25,8 +25,8 @@ export default class PostLike extends Sequelize.Model {
       onDelete: 'cascade',
     });
     db.post_like.belongsTo(db.user, {
-      foreignKey: 'user_id',
-      targetKey: 'id',
+      foreignKey: 'user_name',
+      targetKey: 'user_name',
       onDelete: 'cascade',
     });
   }

@@ -17,14 +17,14 @@ import PostTag from '../models/post_tag.js';
 
 export default class PostServices {
   // 최신순 정렬
-  PostShowAll = async (user_id) => {
+  PostShowAll = async (user_name) => {
     const post = await Post.findAll({
       where: {},
       include: [
         { model: User, attributes: ['user_name'] },
         { model: PostComment, attributes: ['user_name', 'comment'] },
-        { model: PostLike, attributes: ['user_id'] },
-        { model: PostBookmark, attributes: ['user_id'] },
+        { model: PostLike, attributes: ['user_name'] },
+        { model: PostBookmark, attributes: ['user_name'] },
         { model: PostTag, attributes: ['tag'], raw: true },
       ],
       order: [['created_at', 'DESC']],
@@ -39,7 +39,7 @@ export default class PostServices {
       let is_bookmark = false;
 
       for (let i = 0; i < currentValue.PostBookmarks.length; i++) {
-        if (currentValue.PostBookmarks[i]?.user_id === user_id) {
+        if (currentValue.PostBookmarks[i]?.user_name === user_name) {
           is_bookmark = true;
         }
       }
@@ -60,14 +60,14 @@ export default class PostServices {
   };
 
   // 댓글순 정렬
-  PostShowComment = async (user_id) => {
+  PostShowComment = async (user_name) => {
     const postcmt = await Post.findAll({
       where: {},
       include: [
         { model: User, attributes: ['user_name'] },
         { model: PostComment, attributes: ['user_name', 'comment'] },
-        { model: PostLike, attributes: ['user_id'] },
-        { model: PostBookmark, attributes: ['user_id'] },
+        { model: PostLike, attributes: ['user_name'] },
+        { model: PostBookmark, attributes: ['user_name'] },
         { model: PostTag, attributes: ['tag'], raw: true },
       ],
       order: [['created_at', 'DESC']],
@@ -82,7 +82,7 @@ export default class PostServices {
         let is_bookmark = false;
 
         for (let i = 0; i < currentValue.PostBookmarks.length; i++) {
-          if (currentValue.PostBookmarks[i]?.user_id === user_id) {
+          if (currentValue.PostBookmarks[i]?.user_name === user_name) {
             is_bookmark = true;
           }
         }
@@ -106,14 +106,14 @@ export default class PostServices {
   };
 
   // 추천순 정렬
-  PostShowLike = async (user_id) => {
+  PostShowLike = async (user_name) => {
     const postshowlike = await Post.findAll({
       where: {},
       include: [
         { model: User, attributes: ['user_name'] },
         { model: PostComment, attributes: ['user_name', 'comment'] },
         { model: PostLike },
-        { model: PostBookmark, attributes: ['user_id'] },
+        { model: PostBookmark, attributes: ['user_name'] },
         { model: PostTag, attributes: ['tag'], raw: true },
       ],
       order: [['created_at', 'DESC']],
@@ -129,7 +129,7 @@ export default class PostServices {
         let is_bookmark = false;
 
         for (let i = 0; i < currentValue.PostBookmarks.length; i++) {
-          if (currentValue.PostBookmarks[i]?.user_id === user_id) {
+          if (currentValue.PostBookmarks[i]?.user_name === user_name) {
             is_bookmark = true;
           }
         }
@@ -151,14 +151,14 @@ export default class PostServices {
       });
   };
 
-  PostShowhit = async (user_id) => {
+  PostShowhit = async (user_name) => {
     const posthit = await Post.findAll({
       where: {},
       include: [
         { model: User, attributes: ['user_name'] },
         { model: PostComment, attributes: ['user_name', 'comment'] },
-        { model: PostLike, attributes: ['user_id'] },
-        { model: PostBookmark, attributes: ['user_id'] },
+        { model: PostLike, attributes: ['user_name'] },
+        { model: PostBookmark, attributes: ['user_name'] },
         { model: PostTag, attributes: ['tag'], raw: true },
       ],
       order: [['createdAt', 'DESC']],
@@ -173,7 +173,7 @@ export default class PostServices {
       let is_like = false;
 
       for (let i = 0; i < currentValue.PostLikes.length; i++) {
-        if (currentValue.PostLikes[i]?.user_id === user_id) {
+        if (currentValue.PostLikes[i]?.user_name === user_name) {
           is_like = true;
         }
       }
@@ -212,14 +212,14 @@ export default class PostServices {
     });
   };
 
-  PostShowOne = async (user_id, post_id) => {
+  PostShowOne = async (user_name, post_id) => {
     const post = await Post.findAll({
       where: { id: post_id },
       include: [
         { model: User, attributes: ['user_name'] },
         { model: PostComment, attributes: ['user_name'] },
-        { model: PostBookmark, attributes: ['user_id'] },
-        { model: PostLike, attributes: ['user_id'] },
+        { model: PostBookmark, attributes: ['user_name'] },
+        { model: PostLike, attributes: ['user_name'] },
         { model: PostTag, attributes: ['tag'], raw: true },
       ],
     });
@@ -232,14 +232,14 @@ export default class PostServices {
 
       let is_bookmark = false;
       for (let i = 0; i < currentValue.PostBookmarks.length; i++) {
-        if (currentValue.PostBookmarks[i]?.user_id === user_id) {
+        if (currentValue.PostBookmarks[i]?.user_name === user_name) {
           is_bookmark = true;
         }
       }
 
       let is_like = false;
       for (let i = 0; i < currentValue.PostLikes.length; i++) {
-        if (currentValue.PostLikes[i]?.user_id === user_id) {
+        if (currentValue.PostLikes[i]?.user_name === user_name) {
           is_like = true;
         }
       }
@@ -337,48 +337,48 @@ export default class PostServices {
     return findLike;
   };
 
-  PostLike = async (post_id, user_id) => {
+  PostLike = async (post_id, user_name) => {
     const findLike = await PostLike.findOne({
-      where: { user_id: user_id, post_id: post_id },
+      where: { user_name: user_name, post_id: post_id },
     });
     if (findLike === null) {
-      const like = await PostLike.create({ user_id, post_id });
+      const like = await PostLike.create({ user_name, post_id });
     } else {
       throw new ConflictException('이미 좋아요한 게시물입니다');
     }
   };
 
-  PostLikeDelete = async (post_id, user_id) => {
+  PostLikeDelete = async (post_id, user_name) => {
     const findLike = await PostLike.findOne({
-      where: { user_id: user_id, post_id: post_id },
+      where: { user_name: user_name, post_id: post_id },
     });
     if (findLike === null) {
       throw new ConflictException('좋아요를 하지 않았습니다');
     } else {
       const like = await PostLike.destroy({
-        where: { post_id: post_id, user_id: user_id },
+        where: { post_id: post_id, user_name: user_name },
       });
     }
   };
 
-  PostBookMarkView = async (user_id) => {
+  PostBookMarkView = async (user_name) => {
     const findBookMark = await PostBookmark.findAll({
-      where: { user_id: user_id },
+      where: { user_name: user_name },
       include: { model: Post, attributes: ['title'] },
-      attributes: ['post_id'],
+      attributes: ['post_id', 'user_name'],
     });
 
     return findBookMark.reverse();
   };
 
-  PostBookMark = async (post_id, user_id) => {
+  PostBookMark = async (post_id, user_name) => {
     const findBookMark = await PostBookmark.findOne({
-      where: { user_id: user_id, post_id: post_id },
+      where: { user_name: user_name, post_id: post_id },
     });
 
     if (findBookMark === null) {
       const bookmark = await PostBookmark.create({
-        user_id,
+        user_name,
         post_id,
       });
     } else {
@@ -386,23 +386,23 @@ export default class PostServices {
     }
   };
 
-  PostBookMarkDelete = async (post_id, user_id) => {
+  PostBookMarkDelete = async (post_id, user_name) => {
     const findBookMark = await PostBookmark.findOne({
-      where: { user_id: user_id, post_id: post_id },
+      where: { user_name: user_name, post_id: post_id },
     });
 
     if (findBookMark === null) {
       throw new BadRequestException('즐겨찾기한 북마크가 없습니다');
     } else {
       const bookmark = await PostBookmark.destroy({
-        where: { post_id: post_id, user_id: user_id },
+        where: { post_id: post_id, user_name: user_name },
       });
     }
   };
   // 알람을 눌렀을때 동작하는 포스트요청
-  NotiCheck = async (noti_id, post_id, user_id) => {
+  NotiCheck = async (noti_id, post_id, user_name) => {
     const findNoti = await Notification.findOne({
-      where: { id: noti_id, post_id: post_id, user_id: user_id },
+      where: { id: noti_id, post_id: post_id, user_name: user_name },
     });
 
     if (findNoti.check === false) {
@@ -416,9 +416,9 @@ export default class PostServices {
     return findNoti;
   };
   // 알람을 확인하는 겟 요청
-  NotiNoti = async (user_id) => {
+  NotiNoti = async (user_name) => {
     const findNoti = await Notification.findAll({
-      where: { user_id: user_id },
+      where: { user_name: user_name },
       order: [['created_at', 'DESC']],
     });
 

@@ -28,8 +28,8 @@ export default class PostBookmark extends Sequelize.Model {
       // constraints: false,
     });
     db.post_bookmark.belongsTo(db.user, {
-      foreignKey: 'user_id',
-      targetKey: 'id',
+      foreignKey: 'user_name',
+      targetKey: 'user_name',
       onDelete: 'cascade',
       // constraints: false,
     });

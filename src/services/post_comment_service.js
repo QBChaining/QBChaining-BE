@@ -18,7 +18,7 @@ export default class PostCommentServices {
       where: { post_id: post_id },
       attributes: ['id', 'comment', 'createdAt', 'updatedAt'],
       include: [
-        { model: User, attributes: ['user_name', 'id', 'profile_img'] },
+        { model: User, attributes: ['user_name', 'user_name', 'profile_img'] },
       ],
     });
     if (postcomment) {
@@ -36,7 +36,7 @@ export default class PostCommentServices {
     return postcomment;
   };
 
-  CommentCreate = async (comment, user_name, post_id, user_id) => {
+  CommentCreate = async (comment, user_name, post_id) => {
     if (comment.length === 0) {
       throw new BadRequestException('내용을 입력해주세요');
     }
@@ -56,7 +56,7 @@ export default class PostCommentServices {
           data: 'post_comment',
           check: false,
           post_id,
-          user_id: findBookMark[i].user_id,
+          user_name: findBookMark[i].user_name,
         });
       }
     }
