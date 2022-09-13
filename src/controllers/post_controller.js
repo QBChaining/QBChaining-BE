@@ -127,7 +127,6 @@ export default class PostController {
   PostCreate = async (req, res, next) => {
     const { title, content, tag } = req.body;
     const user_name = req.decoded.name;
-    console.log(req.decoded);
     try {
       const postCreate = await this.postService.PostCreate(
         title,
@@ -262,8 +261,6 @@ export default class PostController {
   PostBookMark = async (req, res, next) => {
     const user_name = req.decoded.name;
     const post_id = req.params.post_id;
-
-    console.log(req.decoded);
 
     try {
       const PostBookMark = await this.postService.PostBookMark(
