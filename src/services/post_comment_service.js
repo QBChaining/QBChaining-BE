@@ -52,7 +52,7 @@ export default class PostCommentServices {
 
     if (findBookMark) {
       for (let i = 0; i < findBookMark.length; i++) {
-        const noti = await Notification.create({
+        await Notification.create({
           data: 'post_comment',
           check: false,
           post_id,

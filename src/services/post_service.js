@@ -364,11 +364,21 @@ export default class PostServices {
   PostBookMarkView = async (user_name) => {
     const findBookMark = await PostBookmark.findAll({
       where: { user_name: user_name },
-      include: { model: Post, attributes: ['title', 'user_name', 'createdAt'] },
-      attributes: ['post_id'],
+      include: {
+        model: Post,
+        attributes: ['title', 'user_name', 'createdAt', 'id'],
+      },
+      attributes: [],
     });
 
-    return findBookMark.reverse();
+    return findBookMark.map((currentValue) => {
+      return {
+        id: currentValue.Post.id,
+        title: currentValue.Post.title,
+        created_at: currentValue.Post.createdAt,
+        user_name: currentValue.Post.user_name,
+      };
+    });
   };
 
   PostBookMark = async (post_id, user_name) => {
