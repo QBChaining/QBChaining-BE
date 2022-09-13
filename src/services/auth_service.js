@@ -14,14 +14,22 @@ export default class AuthService {
   };
 
   userInfoCreate = async (language, age, gender, job, career, user) => {
-    await UserInfo.findOrCreate({
+    const userInfo = await UserInfo.findOne({
       where: {
+        user,
+      },
+    });
+
+    if (userInfo) {
+      return {};
+    } else {
+      await UserInfo.create({
         age,
         gender,
         career,
         user,
-      },
-    });
+      });
+    }
 
     const findUser = await User.findOne({
       where: { id: user },
@@ -53,25 +61,36 @@ export default class AuthService {
   };
 
   userInfoUpdate = async (language, age, gender, job, career, user) => {
-    await UserInfo.findOrCreate({
+    const findUserInfo = await UserInfo.findOne({
       where: {
-        age,
-        gender,
-        career,
         user,
       },
     });
+
+    if (findUserInfo) {
+      await UserInfo.update(
+        {
+          age,
+          gender,
+          career,
+        },
+        { where: { user } }
+      );
+    } else {
+      console.log('NO USER FOUND');
+    }
 
     const findUser = await User.findOne({
       where: { id: user },
     });
 
-    const findLanguage = await Language.findAll({ where: { user_id: user } });
-    const findJob = await Job.findAll({ where: { user_id: user } });
+    const userLanguages = await findUser.getLanguages();
+    const userJobs = await findUser.getJobs();
 
-    if (findLanguage.length > 0 && findJob.length > 0) {
-      return {};
-    } else {
+    // 기존의 언어/직업을 찾고
+    // 기존의 언어/직업을 새로운 언어/직업으로 업데이트
+
+    if (userLanguages.length > 0 && userJobs.length > 0) {
       const lanArr = await Promise.all(
         language.map((e) => {
           return Language.create({ language: e });
@@ -84,8 +103,12 @@ export default class AuthService {
         })
       );
 
-      await findUser.addLanguages(lanArr);
-      await findUser.addJobs(jobArr);
+      await findUser.setLanguages(lanArr);
+      await findUser.setJobs(jobArr);
+      await Language.destroy({ where: { user_id: null } });
+      await Job.destroy({ where: { user_id: null } });
+    } else {
+      console.log('NO USER 정보 FOUND');
     }
 
     return {};
