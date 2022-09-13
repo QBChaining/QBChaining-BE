@@ -78,7 +78,7 @@ class QnaController {
     try {
       await this.qnaService.AddBookMark(qna_id, user_name);
       return res
-        .status(200)
+        .status(201)
         .json({ success: true, message: '즐겨찾기 추가 되었습니다.' });
     } catch (err) {
       console.log(err);
@@ -114,7 +114,7 @@ class QnaController {
     const user_name = req.decoded.name;
     try {
       await this.qnaService.LikeQna(qna_id, user_name);
-      return res.status(200).json({ success: true, message: '추천 완료' });
+      return res.status(201).json({ success: true, message: '추천 완료' });
     } catch (err) {
       console.log(err);
       const exception = exceptionHandler(err);
