@@ -14,6 +14,7 @@ export default class AuthController {
           id: user.id,
           name: user.user_name,
           is_new: user.is_new,
+          profile_img: req.user.profile_img,
         },
         process.env.JWT_SECRET,
         {
