@@ -3,16 +3,6 @@ import User from '../models/user.js';
 import PostComment from '../models/post_comment.js';
 import PostLike from '../models/post_like.js';
 import PostBookmark from '../models/post_bookmark.js';
-import {
-  CustomException,
-  ForbiddenException,
-  ConflictException,
-  NotFoundException,
-  BadRequestException,
-  UnauthorizedException,
-  UnkownException,
-} from '../exception/customException.js';
-import Notification from '../models/noti.js';
 import PostTag from '../models/post_tag.js';
 
 export default class PostServices {
@@ -21,7 +11,7 @@ export default class PostServices {
     const post = await Post.findAll({
       where: {},
       include: [
-        { model: User, attributes: ['user_name'] },
+        { model: User, attributes: ['user_name', 'profile_img'] },
         { model: PostComment, attributes: ['user_name', 'comment'] },
         { model: PostLike, attributes: ['user_name'] },
         { model: PostBookmark, attributes: ['user_name'] },
@@ -30,31 +20,32 @@ export default class PostServices {
       order: [['created_at', 'DESC']],
     });
 
-    return post.map((currentValue) => {
+    return post.map((post) => {
       const tag = [];
-      for (let i = 0; i < currentValue.PostTags.length; i++) {
-        tag.push(currentValue.PostTags[i]?.tag);
+      for (let i = 0; i < post.PostTags.length; i++) {
+        tag.push(post.PostTags[i]?.tag);
       }
 
       let is_bookmark = false;
 
-      for (let i = 0; i < currentValue.PostBookmarks.length; i++) {
-        if (currentValue.PostBookmarks[i]?.user_name === user_name) {
+      for (let i = 0; i < post.PostBookmarks.length; i++) {
+        if (post.PostBookmarks[i]?.user_name === user_name) {
           is_bookmark = true;
         }
       }
 
       return {
-        id: currentValue.id,
-        title: currentValue.title,
-        content: currentValue.content,
-        created_at: currentValue.createdAt,
-        updated_at: currentValue.updatedAt,
-        user: currentValue.User,
+        id: post.id,
+        title: post.title,
+        content: post.content,
+        created_at: post.createdAt,
+        updated_at: post.updatedAt,
+        user_name: post.User.user_name,
         is_bookmark,
         tag,
-        cmtNum: currentValue.PostComments.length,
-        like: currentValue.PostLikes.length,
+        cmtNum: post.PostComments.length,
+        like: post.PostLikes.length,
+        profile_img: post.User.profile_img,
       };
     });
   };
@@ -64,7 +55,7 @@ export default class PostServices {
     const postcmt = await Post.findAll({
       where: {},
       include: [
-        { model: User, attributes: ['user_name'] },
+        { model: User, attributes: ['user_name', 'profile_img'] },
         { model: PostComment, attributes: ['user_name', 'comment'] },
         { model: PostLike, attributes: ['user_name'] },
         { model: PostBookmark, attributes: ['user_name'] },
@@ -73,31 +64,32 @@ export default class PostServices {
       order: [['created_at', 'DESC']],
     });
     return postcmt
-      .map((currentValue) => {
+      .map((posting) => {
         const tag = [];
-        for (let i = 0; i < currentValue.PostTags.length; i++) {
-          tag.push(currentValue.PostTags[i]?.tag);
+        for (let i = 0; i < posting.PostTags.length; i++) {
+          tag.push(posting.PostTags[i]?.tag);
         }
 
         let is_bookmark = false;
 
-        for (let i = 0; i < currentValue.PostBookmarks.length; i++) {
-          if (currentValue.PostBookmarks[i]?.user_name === user_name) {
+        for (let i = 0; i < posting.PostBookmarks.length; i++) {
+          if (posting.PostBookmarks[i]?.user_name === user_name) {
             is_bookmark = true;
           }
         }
 
         return {
-          id: currentValue.id,
-          title: currentValue.title,
-          content: currentValue.content,
-          created_at: currentValue.createdAt,
-          updated_at: currentValue.updatedAt,
-          user: currentValue.User,
+          id: posting.id,
+          title: posting.title,
+          content: posting.content,
+          created_at: posting.createdAt,
+          updated_at: posting.updatedAt,
+          user_name: posting.User.user_name,
           is_bookmark,
           tag,
-          cmtNum: currentValue.PostComments.length,
-          like: currentValue.PostLikes.length,
+          profile_img: posting.User.profile_img,
+          cmtNum: posting.PostComments.length,
+          like: posting.PostLikes.length,
         };
       })
       .sort(function (a, b) {
@@ -110,7 +102,7 @@ export default class PostServices {
     const postshowlike = await Post.findAll({
       where: {},
       include: [
-        { model: User, attributes: ['user_name'] },
+        { model: User, attributes: ['user_name', 'profile_img'] },
         { model: PostComment, attributes: ['user_name', 'comment'] },
         { model: PostLike },
         { model: PostBookmark, attributes: ['user_name'] },
@@ -120,30 +112,31 @@ export default class PostServices {
     });
 
     return postshowlike
-      .map((currentValue) => {
+      .map((posting) => {
         const tag = [];
-        for (let i = 0; i < currentValue.PostTags.length; i++) {
-          tag.push(currentValue.PostTags[i]?.tag);
+        for (let i = 0; i < posting.PostTags.length; i++) {
+          tag.push(posting.PostTags[i]?.tag);
         }
 
         let is_bookmark = false;
 
-        for (let i = 0; i < currentValue.PostBookmarks.length; i++) {
-          if (currentValue.PostBookmarks[i]?.user_name === user_name) {
+        for (let i = 0; i < posting.PostBookmarks.length; i++) {
+          if (posting.PostBookmarks[i]?.user_name === user_name) {
             is_bookmark = true;
           }
         }
         return {
-          id: currentValue.id,
-          title: currentValue.title,
-          content: currentValue.content,
-          created_at: currentValue.createdAt,
-          updated_at: currentValue.updatedAt,
-          user: currentValue.User,
+          id: posting.id,
+          title: posting.title,
+          content: posting.content,
+          created_at: posting.createdAt,
+          updated_at: posting.updatedAt,
+          user_name: posting.User.user_name,
           is_bookmark,
           tag,
-          cmtNum: currentValue.PostComments.length,
-          like: currentValue.PostLikes.length,
+          profile_img: posting.User.profile_img,
+          cmtNum: posting.PostComments.length,
+          like: posting.PostLikes.length,
         };
       })
       .sort((a, b) => {
@@ -155,7 +148,7 @@ export default class PostServices {
     const posthit = await Post.findAll({
       where: {},
       include: [
-        { model: User, attributes: ['user_name'] },
+        { model: User, attributes: ['user_name', 'profile_img'] },
         { model: PostComment, attributes: ['user_name', 'comment'] },
         { model: PostLike, attributes: ['user_name'] },
         { model: PostBookmark, attributes: ['user_name'] },
@@ -164,31 +157,32 @@ export default class PostServices {
       order: [['createdAt', 'DESC']],
     });
 
-    const posthitmap = posthit.map((currentValue) => {
+    const posthitmap = posthit.map((posting) => {
       const tag = [];
-      for (let i = 0; i < currentValue.PostTags.length; i++) {
-        tag.push(currentValue.PostTags[i]?.tag);
+      for (let i = 0; i < posting.PostTags.length; i++) {
+        tag.push(posting.PostTags[i]?.tag);
       }
 
       let is_like = false;
 
-      for (let i = 0; i < currentValue.PostLikes.length; i++) {
-        if (currentValue.PostLikes[i]?.user_name === user_name) {
+      for (let i = 0; i < posting.PostLikes.length; i++) {
+        if (posting.PostLikes[i]?.user_name === user_name) {
           is_like = true;
         }
       }
 
       return {
-        id: currentValue.id,
-        title: currentValue.title,
-        content: currentValue.content,
+        id: posting.id,
+        title: posting.title,
+        content: posting.content,
         tag,
-        created_at: currentValue.createdAt,
-        updated_at: currentValue.updatedAt,
-        user: currentValue.User,
+        created_at: posting.createdAt,
+        updated_at: posting.updatedAt,
+        user_name: posting.User.user_name,
         is_like,
-        cmtNum: currentValue.PostComments.length,
-        like: currentValue.PostLikes.length,
+        profile_img: posting.User.profile_img,
+        cmtNum: posting.PostComments.length,
+        like: posting.PostLikes.length,
       };
     });
 
@@ -216,7 +210,7 @@ export default class PostServices {
     const post = await Post.findAll({
       where: { id: post_id },
       include: [
-        { model: User, attributes: ['user_name'] },
+        { model: User, attributes: ['user_name', 'profile_img'] },
         { model: PostComment, attributes: ['user_name'] },
         { model: PostBookmark, attributes: ['user_name'] },
         { model: PostLike, attributes: ['user_name'] },
@@ -224,41 +218,42 @@ export default class PostServices {
       ],
     });
 
-    return post.map((currentValue) => {
+    return post.map((posting) => {
       const tag = [];
-      for (let i = 0; i < currentValue.PostTags.length; i++) {
-        tag.push(currentValue.PostTags[i]?.tag);
+      for (let i = 0; i < posting.PostTags.length; i++) {
+        tag.push(posting.PostTags[i]?.tag);
       }
 
       let is_bookmark = false;
-      for (let i = 0; i < currentValue.PostBookmarks.length; i++) {
-        if (currentValue.PostBookmarks[i]?.user_name === user_name) {
+      for (let i = 0; i < posting.PostBookmarks.length; i++) {
+        if (posting.PostBookmarks[i]?.user_name === user_name) {
           is_bookmark = true;
         }
       }
 
       let is_like = false;
-      for (let i = 0; i < currentValue.PostLikes.length; i++) {
-        if (currentValue.PostLikes[i]?.user_name === user_name) {
+      for (let i = 0; i < posting.PostLikes.length; i++) {
+        if (posting.PostLikes[i]?.user_name === user_name) {
           is_like = true;
         }
       }
       return {
-        id: currentValue.id,
-        title: currentValue.title,
-        content: currentValue.content,
+        id: posting.id,
+        title: posting.title,
+        content: posting.content,
         tag,
-        created_at: currentValue.createdAt,
+        created_at: posting.createdAt,
         is_bookmark,
         is_like,
-        user_name: currentValue.User,
-        cmtNum: currentValue.PostComments.length,
-        like: currentValue.PostLikes.length,
+        profile_img: posting.User.profile_img,
+        user_name: posting.User.user_name,
+        cmtNum: posting.PostComments.length,
+        like: posting.PostLikes.length,
       };
     });
   };
 
-  PostShowMy = async (user_name, user_name1) => {
+  PostShowMy = async (user_name, user_name1, profile_img) => {
     const post = await Post.findAll({
       where: { user_name: user_name },
       include: [
@@ -276,33 +271,34 @@ export default class PostServices {
       order: [['createdAt', 'DESC']],
     });
 
-    return post.map((currentValue) => {
+    return post.map((posting) => {
       const tag = [];
-      for (let i = 0; i < currentValue.PostTags.length; i++) {
-        tag.push(currentValue.PostTags[i]?.tag);
+      for (let i = 0; i < posting.PostTags.length; i++) {
+        tag.push(posting.PostTags[i]?.tag);
       }
 
       let is_like = false;
 
-      for (let i = 0; i < currentValue.PostLikes.length; i++) {
-        if (currentValue.PostLikes[i]?.user_name === user_name1) {
+      for (let i = 0; i < posting.PostLikes.length; i++) {
+        if (posting.PostLikes[i]?.user_name === user_name1) {
           is_like = true;
         }
       }
       return {
-        id: currentValue.id,
-        title: currentValue.title,
-        content: currentValue.content,
-        created_at: currentValue.createdAt,
-        updated_at: currentValue.updatedAt,
-        user_name: currentValue.user_name,
+        id: posting.id,
+        title: posting.title,
+        content: posting.content,
+        created_at: posting.createdAt,
+        updated_at: posting.updatedAt,
+        user_name: posting.user_name,
         tag,
         is_like,
+        profile_img: posting.User.profile_img,
       };
     });
   };
 
-  PostCreate = async (title, content, tags, user_name) => {
+  PostCreate = async (title, content, tags, user_name, profile_img) => {
     if (content.length === 0 || title.length === 0) {
       throw new ConflictException('내용을 입력해주세요');
     }
@@ -326,10 +322,11 @@ export default class PostServices {
       like: 0,
       postTag,
       user_name,
+      profile_img,
     };
   };
 
-  PostUpdate = async (title, content, tag, user_name, post_id) => {
+  PostUpdate = async (title, content, tag, user_name, post_id, profile_img) => {
     const post1 = await Post.findOne({
       where: { id: post_id },
     });
@@ -344,7 +341,14 @@ export default class PostServices {
         { where: { id: post_id, user_name: user_name } }
       );
       if (post) {
-        return { title, content, tag, user_name, id: parseInt(post_id) };
+        return {
+          title,
+          content,
+          tag,
+          user_name,
+          id: parseInt(post_id),
+          profile_img,
+        };
       }
     } else {
       throw new ConflictException('내용을 입력해주세요');
@@ -406,12 +410,12 @@ export default class PostServices {
       attributes: [],
     });
 
-    return findBookMark.map((currentValue) => {
+    return findBookMark.map((bookmark) => {
       return {
-        id: currentValue.Post.id,
-        title: currentValue.Post.title,
-        created_at: currentValue.Post.createdAt,
-        user_name: currentValue.Post.user_name,
+        id: bookmark.Post.id,
+        title: bookmark.Post.title,
+        created_at: bookmark.Post.createdAt,
+        user_name: bookmark.Post.user_name,
       };
     });
   };
@@ -444,31 +448,7 @@ export default class PostServices {
       });
     }
   };
-  // 알람을 눌렀을때 동작하는 포스트요청
-  NotiCheck = async (noti_id, post_id, user_name) => {
-    const findNoti = await Notification.findOne({
-      where: { id: noti_id, post_id: post_id, user_name: user_name },
-    });
 
-    if (findNoti.check === false) {
-      await Notification.update({ check: true }, { where: { id: noti_id } });
-      return true;
-    }
-    if (findNoti.check === true) {
-      return false;
-    }
-
-    return findNoti;
-  };
-  // 알람을 확인하는 겟 요청
-  NotiNoti = async (user_name) => {
-    const findNoti = await Notification.findAll({
-      where: { user_name: user_name },
-      order: [['created_at', 'DESC']],
-    });
-
-    return findNoti;
-  };
   // 태그로 조회
   PostTagShow = async (tag, user_name) => {
     const findTag = await PostTag.findAll({

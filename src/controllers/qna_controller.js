@@ -6,7 +6,6 @@ class QnaController {
 
   CreateQna = async (req, res, next) => {
     const user_name = req.decoded.name;
-
     const { title, content, category, tag } = req.body;
 
     try {
