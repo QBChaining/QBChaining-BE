@@ -35,6 +35,7 @@ const sessionOption = {
 if (process.env.NODE_ENV === 'production') {
   sessionOption.proxy = true;
 }
+
 app.use(cors());
 app.use(morgan('dev'));
 app.use(session(sessionOption));

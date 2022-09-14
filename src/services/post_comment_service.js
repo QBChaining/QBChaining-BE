@@ -45,19 +45,22 @@ export default class PostCommentServices {
       post_id,
     });
 
-    const findpost = await Post.findOne({
-      where: { id: post_id },
-    });
-    await Notification.create({
-      type: 'post',
-      check: false,
-      post_id: findpost.id,
-      user_name: findpost.user_name,
-    });
-
     const findBookMark = await PostBookmark.findAll({
       where: { post_id: post_id },
     });
+    console.log(findBookMark);
+
+    const findpost = await Post.findOne({
+      where: { id: post_id },
+    });
+    if (findBookMark.length === 0) {
+      await Notification.create({
+        type: 'post',
+        check: false,
+        post_id: findpost.id,
+        user_name: findpost.user_name,
+      });
+    }
 
     if (findBookMark) {
       for (let i = 0; i < findBookMark.length; i++) {

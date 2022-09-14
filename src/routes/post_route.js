@@ -33,7 +33,4 @@ router.delete(
   postController.PostBookMarkDelete
 );
 
-router.post('/noti/:post_id/:noti_id', verifyToken, postController.NotiCheck);
-router.get('/noti/:user_name', verifyToken, postController.NotiNoti);
-
 export default router;

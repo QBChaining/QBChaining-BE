@@ -30,7 +30,7 @@ export default class Notification_Service {
   NotiNoti = async (user_name) => {
     const findNoti = await Notification.findAll({
       where: { user_name: user_name },
-      order: [['created_at', 'DESC']],
+      order: [['created_At', 'DESC']],
     });
 
     return findNoti;
