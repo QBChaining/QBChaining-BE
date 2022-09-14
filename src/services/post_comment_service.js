@@ -1,5 +1,6 @@
 import PostComment from '../models/post_comment.js';
 import User from '../models/user.js';
+import Post from '../models/post.js';
 import {
   CustomException,
   ForbiddenException,
@@ -17,12 +18,10 @@ export default class PostCommentServices {
     const postcomment = await PostComment.findAll({
       where: { post_id: post_id },
       attributes: ['id', 'comment', 'createdAt', 'updatedAt'],
-      include: [
-        { model: User, attributes: ['user_name', 'user_name', 'profile_img'] },
-      ],
+      include: [{ model: User, attributes: ['user_name', 'profile_img'] }],
     });
     if (postcomment) {
-      return postcomment;
+      return postcomment.reverse();
     } else {
       throw new BadRequestException('게시물이 없습니다');
     }
@@ -36,7 +35,7 @@ export default class PostCommentServices {
     return postcomment;
   };
 
-  CommentCreate = async (comment, user_name, post_id) => {
+  CommentCreate = async (comment, user_name, post_id, profile_img) => {
     if (comment.length === 0) {
       throw new BadRequestException('내용을 입력해주세요');
     }
@@ -46,6 +45,16 @@ export default class PostCommentServices {
       post_id,
     });
 
+    const findpost = await Post.findOne({
+      where: { id: post_id },
+    });
+    await Notification.create({
+      type: 'post',
+      check: false,
+      post_id: findpost.id,
+      user_name: findpost.user_name,
+    });
+
     const findBookMark = await PostBookmark.findAll({
       where: { post_id: post_id },
     });
@@ -53,17 +62,28 @@ export default class PostCommentServices {
     if (findBookMark) {
       for (let i = 0; i < findBookMark.length; i++) {
         await Notification.create({
-          data: 'post_comment',
+          type: 'post',
           check: false,
           post_id,
           user_name: findBookMark[i].user_name,
         });
       }
+      return {
+        id: postcomment.id,
+        comment: postcomment.comment,
+        created_at: postcomment.createdAt,
+        updated_at: postcomment.updatedAt,
+        profile_img,
+        user_name,
+      };
     }
-    return postcomment;
+
+    // if(postcomment.user_name){
+
+    // }
   };
 
-  CommentUpdate = async (comment, comment_id, user_name) => {
+  CommentUpdate = async (comment, comment_id, user_name, profile_img) => {
     const find = await PostComment.findOne({
       where: { id: comment_id, user_name: user_name },
     });
@@ -79,7 +99,7 @@ export default class PostCommentServices {
         }
       );
       if (postcomment) {
-        return { comment, id: parseInt(comment_id), user_name };
+        return { comment, id: parseInt(comment_id), user_name, profile_img };
       }
     } else {
       throw new BadRequestException('내용을 입력해주세요');

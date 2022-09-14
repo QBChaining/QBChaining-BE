@@ -6,7 +6,7 @@ export default class Notification extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
-        data: {
+        type: {
           type: Sequelize.STRING(50),
           allowNull: false,
         },

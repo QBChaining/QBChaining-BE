@@ -6,8 +6,12 @@ export default class PostController {
 
   PostShowAll = async (req, res, next) => {
     const user_name = req.user?.name;
+    const profile_img = req.user?.profile_img;
     try {
-      const postShowAll = await this.postService.PostShowAll(user_name);
+      const postShowAll = await this.postService.PostShowAll(
+        user_name,
+        profile_img
+      );
       return res.status(200).json({
         success: true,
         message: '조회 성공',
@@ -25,8 +29,12 @@ export default class PostController {
 
   PostShowComment = async (req, res, next) => {
     const user_name = req.user?.name;
+    const profile_img = req.user?.profile_img;
     try {
-      const postShowComment = await this.postService.PostShowComment(user_name);
+      const postShowComment = await this.postService.PostShowComment(
+        user_name,
+        profile_img
+      );
       return res.status(200).json({
         success: true,
         message: '조회 성공1',
@@ -44,8 +52,12 @@ export default class PostController {
 
   PostShowLike = async (req, res, next) => {
     const user_name = req.user?.name;
+    const profile_img = req.user?.profile_img;
     try {
-      const postShowAll = await this.postService.PostShowLike(user_name);
+      const postShowAll = await this.postService.PostShowLike(
+        user_name,
+        profile_img
+      );
       return res.status(200).json({
         success: true,
         message: '조회 성공',
@@ -63,8 +75,12 @@ export default class PostController {
 
   PostShowhit = async (req, res, next) => {
     const user_name = req.user?.name;
+    const profile_img = req.user?.profile_img;
     try {
-      const postShowhit = await this.postService.PostShowhit(user_name);
+      const postShowhit = await this.postService.PostShowhit(
+        user_name,
+        profile_img
+      );
       return res.status(200).json({
         success: true,
         message: '히트상품조회성공',
@@ -83,9 +99,11 @@ export default class PostController {
   PostShowOne = async (req, res, next) => {
     const user_name = req.user?.name;
     const post_id = req.params.post_id;
+    const profile_img = req.user?.profile_img;
     try {
       const postShowOne = await this.postService.PostShowOne(
         user_name,
+        profile_img,
         post_id
       );
 
@@ -107,10 +125,12 @@ export default class PostController {
   PostShowMy = async (req, res, next) => {
     const user_name = req.params.user_name;
     const user_name1 = req.user?.name;
+    const profile_img = req.user?.profile_img;
     try {
       const PostShowMy = await this.postService.PostShowMy(
         user_name,
-        user_name1
+        user_name1,
+        profile_img
       );
 
       return res.status(200).json({
@@ -131,12 +151,14 @@ export default class PostController {
   PostCreate = async (req, res, next) => {
     const { title, content, tag } = req.body;
     const user_name = req.decoded.name;
+    const profile_img = req.decoded.profile_img;
     try {
       const postCreate = await this.postService.PostCreate(
         title,
         content,
         tag,
-        user_name
+        user_name,
+        profile_img
       );
       return res.status(200).json({
         success: true,
@@ -160,6 +182,7 @@ export default class PostController {
     const content = req.body.content;
     const tag = req.body.tag;
     const post_id = req.params.post_id;
+    const profile_img = req.decoded.profile_img;
 
     try {
       const postUpdate = await this.postService.PostUpdate(
@@ -167,7 +190,8 @@ export default class PostController {
         content,
         tag,
         user_name,
-        post_id
+        post_id,
+        profile_img
       );
 
       return res.status(200).json({
@@ -188,6 +212,7 @@ export default class PostController {
   PostDelete = async (req, res, next) => {
     const user_name = req.decoded.name;
     const post_id = req.params.post_id;
+
     try {
       const postDelete = await this.postService.PostDelete(post_id, user_name);
       return res.status(200).json({
@@ -380,8 +405,13 @@ export default class PostController {
   PostTagShow = async (req, res, next) => {
     const tag = req.query.tag;
     const user_name = req.user?.name;
+    const profile_img = req.user.profile_img;
     try {
-      const postTagShow = await this.postService.PostTagShow(tag, user_name);
+      const postTagShow = await this.postService.PostTagShow(
+        tag,
+        user_name,
+        profile_img
+      );
       return res.status(200).json({
         success: true,
         message: 'message',

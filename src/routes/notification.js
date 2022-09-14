@@ -1,6 +1,11 @@
-// import express from 'express';
-// import PostController from '../controllers/post_controller';
-// import QnaController from '../controllers/qna_controller.js';
+import express from 'express';
+import verifyToken from '../middlewares/auth.js';
+import Notification_Controller from '../controllers/notification_controller.js';
 
-// router.post('/noti/:post_id/:noti_id', verifyToken, postController.NotiCheck);
-// router.get('/noti/:user_name', verifyToken, postController.NotiNoti);
+const router = express.Router();
+const notification_Controller = new Notification_Controller();
+
+router.post('/:noti_id', verifyToken, notification_Controller.NotiCheck);
+router.get('/:user_name', verifyToken, notification_Controller.NotiNoti);
+
+export default router;

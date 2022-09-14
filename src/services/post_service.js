@@ -3,21 +3,11 @@ import User from '../models/user.js';
 import PostComment from '../models/post_comment.js';
 import PostLike from '../models/post_like.js';
 import PostBookmark from '../models/post_bookmark.js';
-import {
-  CustomException,
-  ForbiddenException,
-  ConflictException,
-  NotFoundException,
-  BadRequestException,
-  UnauthorizedException,
-  UnkownException,
-} from '../exception/customException.js';
-import Notification from '../models/noti.js';
 import PostTag from '../models/post_tag.js';
 
 export default class PostServices {
   // 최신순 정렬
-  PostShowAll = async (user_name) => {
+  PostShowAll = async (user_name, profile_img) => {
     const post = await Post.findAll({
       where: {},
       include: [
@@ -53,6 +43,7 @@ export default class PostServices {
         user: currentValue.User,
         is_bookmark,
         tag,
+        profile_img,
         cmtNum: currentValue.PostComments.length,
         like: currentValue.PostLikes.length,
       };
@@ -60,7 +51,7 @@ export default class PostServices {
   };
 
   // 댓글순 정렬
-  PostShowComment = async (user_name) => {
+  PostShowComment = async (user_name, profile_img) => {
     const postcmt = await Post.findAll({
       where: {},
       include: [
@@ -96,6 +87,7 @@ export default class PostServices {
           user: currentValue.User,
           is_bookmark,
           tag,
+          profile_img,
           cmtNum: currentValue.PostComments.length,
           like: currentValue.PostLikes.length,
         };
@@ -106,7 +98,7 @@ export default class PostServices {
   };
 
   // 추천순 정렬
-  PostShowLike = async (user_name) => {
+  PostShowLike = async (user_name, profile_img) => {
     const postshowlike = await Post.findAll({
       where: {},
       include: [
@@ -142,6 +134,7 @@ export default class PostServices {
           user: currentValue.User,
           is_bookmark,
           tag,
+          profile_img,
           cmtNum: currentValue.PostComments.length,
           like: currentValue.PostLikes.length,
         };
@@ -151,7 +144,7 @@ export default class PostServices {
       });
   };
 
-  PostShowhit = async (user_name) => {
+  PostShowhit = async (user_name, profile_img) => {
     const posthit = await Post.findAll({
       where: {},
       include: [
@@ -187,6 +180,7 @@ export default class PostServices {
         updated_at: currentValue.updatedAt,
         user: currentValue.User,
         is_like,
+        profile_img,
         cmtNum: currentValue.PostComments.length,
         like: currentValue.PostLikes.length,
       };
@@ -212,7 +206,7 @@ export default class PostServices {
     });
   };
 
-  PostShowOne = async (user_name, post_id) => {
+  PostShowOne = async (user_name, post_id, profile_img) => {
     const post = await Post.findAll({
       where: { id: post_id },
       include: [
@@ -251,6 +245,7 @@ export default class PostServices {
         created_at: currentValue.createdAt,
         is_bookmark,
         is_like,
+        profile_img,
         user_name: currentValue.User,
         cmtNum: currentValue.PostComments.length,
         like: currentValue.PostLikes.length,
@@ -258,7 +253,7 @@ export default class PostServices {
     });
   };
 
-  PostShowMy = async (user_name, user_name1) => {
+  PostShowMy = async (user_name, user_name1, profile_img) => {
     const post = await Post.findAll({
       where: { user_name: user_name },
       include: [
@@ -298,11 +293,12 @@ export default class PostServices {
         user_name: currentValue.user_name,
         tag,
         is_like,
+        profile_img,
       };
     });
   };
 
-  PostCreate = async (title, content, tags, user_name) => {
+  PostCreate = async (title, content, tags, user_name, profile_img) => {
     if (content.length === 0 || title.length === 0) {
       throw new ConflictException('내용을 입력해주세요');
     }
@@ -326,10 +322,11 @@ export default class PostServices {
       like: 0,
       postTag,
       user_name,
+      profile_img,
     };
   };
 
-  PostUpdate = async (title, content, tag, user_name, post_id) => {
+  PostUpdate = async (title, content, tag, user_name, post_id, profile_img) => {
     const post1 = await Post.findOne({
       where: { id: post_id },
     });
@@ -344,7 +341,14 @@ export default class PostServices {
         { where: { id: post_id, user_name: user_name } }
       );
       if (post) {
-        return { title, content, tag, user_name, id: parseInt(post_id) };
+        return {
+          title,
+          content,
+          tag,
+          user_name,
+          id: parseInt(post_id),
+          profile_img,
+        };
       }
     } else {
       throw new ConflictException('내용을 입력해주세요');
@@ -444,31 +448,7 @@ export default class PostServices {
       });
     }
   };
-  // 알람을 눌렀을때 동작하는 포스트요청
-  NotiCheck = async (noti_id, post_id, user_name) => {
-    const findNoti = await Notification.findOne({
-      where: { id: noti_id, post_id: post_id, user_name: user_name },
-    });
 
-    if (findNoti.check === false) {
-      await Notification.update({ check: true }, { where: { id: noti_id } });
-      return true;
-    }
-    if (findNoti.check === true) {
-      return false;
-    }
-
-    return findNoti;
-  };
-  // 알람을 확인하는 겟 요청
-  NotiNoti = async (user_name) => {
-    const findNoti = await Notification.findAll({
-      where: { user_name: user_name },
-      order: [['created_at', 'DESC']],
-    });
-
-    return findNoti;
-  };
   // 태그로 조회
   PostTagShow = async (tag, user_name) => {
     const findTag = await PostTag.findAll({

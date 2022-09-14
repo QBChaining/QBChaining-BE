@@ -30,13 +30,13 @@ export default class PostCommentController {
     const comment = req.body.comment;
     const user_name = req.decoded.name;
     const post_id = req.params.post_id;
-    const user_id = req.decoded.id;
+    const profile_img = req.decoded.profile_img;
     try {
       const commentcreate = await this.postCommentServices.CommentCreate(
         comment,
         user_name,
         post_id,
-        user_id
+        profile_img
       );
       return res.status(200).json({
         success: true,
@@ -56,11 +56,13 @@ export default class PostCommentController {
     const comment = req.body.comment;
     const comment_id = req.params.comment_id;
     const user_name = req.decoded.name;
+    const profile_img = req.decoded.profile_img;
     try {
       const commentUpdate = await this.postCommentServices.CommentUpdate(
         comment,
         comment_id,
-        user_name
+        user_name,
+        profile_img
       );
       return res.status(200).json({
         success: true,

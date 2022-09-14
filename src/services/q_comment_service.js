@@ -31,7 +31,7 @@ class QnaCommentService {
     if (findQna) {
       for (let i = 0; i < findQna.length; i++) {
         await Notification.create({
-          data: 'qna_comment',
+          type: 'qna',
           check: false,
           qna_id,
           user_name: findQna[i].user_name,
