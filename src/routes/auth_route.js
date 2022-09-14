@@ -24,6 +24,7 @@ router.get(
         id: req.user.id,
         name: req.user.user_name,
         is_new: req.user.is_new,
+        profile: req.user.profile_url,
       },
       process.env.JWT_SECRET,
       {
