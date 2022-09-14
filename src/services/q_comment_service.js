@@ -38,8 +38,12 @@ class QnaCommentService {
         });
       }
     }
-
-    return { id: commentdata.id, comment: commentdata.comment };
+    return {
+      id: commentdata.id,
+      comment: commentdata.comment,
+      user_name: commentdata.user_name,
+      createdAt: commentdata.createdAt,
+    };
   };
 
   FindAllComment = async (qna_id, user_name, page_count, page) => {
