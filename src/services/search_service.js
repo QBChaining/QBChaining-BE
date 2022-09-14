@@ -126,7 +126,7 @@ class SearchService {
       let is_bookmark = false;
       let is_like = false;
       for (let i = 0; i < list.PostTags.length; i++) {
-        tag.push(list.QnaTags[i]?.tag);
+        tag.push(list.PostTags[i]?.tag);
       }
       for (let i = 0; i < list.PostBookmarks.length; i++) {
         if (list.PostBookmarks[i]?.user_name === user_name) is_bookmark = true;
