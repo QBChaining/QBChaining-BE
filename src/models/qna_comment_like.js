@@ -21,7 +21,6 @@ export default class QnaCommentLike extends Sequelize.Model {
       }
     );
   }
-  // belongsTo로 받아옴
   static associate(db) {
     db.qna_comment_like.belongsTo(db.qna_comment, {
       foreignKey: 'qna_comment_id',

@@ -4,7 +4,6 @@ import { sequelize } from './sequelize.js';
 
 export default class QnaBookmark extends Sequelize.Model {
   static init(sequelize) {
-    // like를 BOOLEAN 값으로 설정
     return super.init(
       {},
       {
@@ -17,7 +16,6 @@ export default class QnaBookmark extends Sequelize.Model {
       }
     );
   }
-  // belongsTo로 받아옴
   static associate(db) {
     db.qna_bookmark.belongsTo(db.qna, {
       foreignKey: 'qna_id',
