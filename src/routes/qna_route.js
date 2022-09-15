@@ -17,6 +17,7 @@ router.use(check_signin);
 router.get('/bookmark', verifyToken, qnaController.FindBookMark);
 router.get('/search', searchController.QnaSearch);
 router.get('/categories/:category', qnaController.FindCategories);
+router.get('/users/:user_name', qnaController.FindUserQna);
 router.get('/', qnaController.FindAllQna);
 router.get('/:id', qnaController.FindOneQna);
 router.get('/:id/comments', qnaCommentController.FindAllComment);
@@ -32,8 +33,6 @@ router.delete('/:id/like', qnaController.RemoveLikeQna);
 router.post('/:id/comments', qnaCommentController.CreateQnaComment);
 router.post('/comments/:id/like', qnaCommentController.LikeComment);
 router.post('/comments/:id/choice', qnaCommentController.ChooseComment);
-router.put('/comments/:id', qnaCommentController.UpdateComment);
-router.delete('/comments/:id', qnaCommentController.RemoveComment);
 router.delete('/comments/:id/like', qnaCommentController.RemoveLikeComment);
 
 export default router;

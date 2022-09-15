@@ -6,7 +6,6 @@ import { sequelize } from './sequelize.js';
 
 export default class PostBookmark extends Sequelize.Model {
   static init(sequelize) {
-    // like를 BOOLEAN 값으로 설정
     return super.init(
       {},
       {
@@ -19,19 +18,16 @@ export default class PostBookmark extends Sequelize.Model {
       }
     );
   }
-  // belongsTo로 받아옴
   static associate(db) {
     db.post_bookmark.belongsTo(db.post, {
       foreignKey: 'post_id',
       targetKey: 'id',
       onDelete: 'cascade',
-      // constraints: false,
     });
     db.post_bookmark.belongsTo(db.user, {
-      foreignKey: 'user_id',
-      targetKey: 'id',
+      foreignKey: 'user_name',
+      targetKey: 'user_name',
       onDelete: 'cascade',
-      // constraints: false,
     });
   }
 }

@@ -24,6 +24,7 @@ router.get(
         id: req.user.id,
         name: req.user.user_name,
         is_new: req.user.is_new,
+        profile_img: req.user.profile_img,
       },
       process.env.JWT_SECRET,
       {
@@ -31,8 +32,10 @@ router.get(
       }
     );
 
-    // return res.redirect(`http://localhost:3000/login?token=${token}`);
-    return res.json({ response: req.user, token });
+
+    return res.redirect(
+      `http://qb-chaning.s3-website.ap-northeast-2.amazonaws.com/login?token=${token}`
+    );
   }
 );
 

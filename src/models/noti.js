@@ -6,7 +6,7 @@ export default class Notification extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
-        data: {
+        type: {
           type: Sequelize.STRING(50),
           allowNull: false,
         },
@@ -42,8 +42,8 @@ export default class Notification extends Sequelize.Model {
       onDelete: 'cascade',
     });
     db.notification.belongsTo(db.user, {
-      foreignKey: 'user_id',
-      targetKey: 'id',
+      foreignKey: 'user_name',
+      targetKey: 'user_name',
       onDelete: 'cascade',
     });
   }
