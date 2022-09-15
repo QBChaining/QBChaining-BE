@@ -23,8 +23,6 @@ export default class AuthService {
       },
     });
 
-
-    console.log(user);
     const findUserInfo = await UserInfo.findOne({
       where: { user: user },
     });
@@ -36,10 +34,6 @@ export default class AuthService {
         return Language.create({ language: e });
       })
     );
-
-    console.log(findUserInfo);
-
-    // console.log(lanArr);
 
     await findUserInfo.addLanguages(lanArr);
 
