@@ -36,7 +36,11 @@ if (process.env.NODE_ENV === 'production') {
   sessionOption.proxy = true;
 }
 
-app.use(cors());
+let corsOption = {
+  origin: 'http://qb-chaning.s3-website.ap-northeast-2.amazonaws.com',
+};
+
+app.use(cors(corsOption));
 app.use(morgan('dev'));
 app.use(session(sessionOption));
 app.use(passport.initialize());
@@ -50,17 +54,6 @@ sequelize
   .sync({ force: false })
   .then(() => console.log('db connect'))
   .catch((err) => console.error(err));
-
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept'
-  );
-  next();
-});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

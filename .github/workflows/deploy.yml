@@ -22,8 +22,25 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: create env
+        run: |
+          pwd
+          touch .env
+          echo DB_ID=${{ secrets.DB_ID }} >> .env
+          echo DB_PW=${{ secrets.DB_PW }} >> .env
+          echo DB_HOST=${{ secrets.DB_HOST }} >> .env
+          echo DB=${{ secrets.DB }} >> .env
+          echo GIT_ID=${{ secrets.GIT_ID }} >> .env
+          echo GIT_SECRET=${{ secrets.GIT_SECRET }} >> .env
+          echo GIT_URL=${{ secrets.GIT_URL }} >> .env
+          echo REDIS_HOST=${{ secrets.REDIS_HOST }} >> .env
+          echo REDIS_PORT=${{ secrets.REDIS_PORT }} >> .env
+          echo REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }} >> .env
+          echo COOKIE_SECRET=${{ secrets.COOKIE_SECRET }} >> .env
+          echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> .env
+
       - name: zip file
-        run: zip -r QBChaining.zip .github/workflows ./package.json ./package-lock.json ./src ./appspec.yml ./scripts
+        run: zip -r QBChaining.zip .github/workflows ./package.json ./package-lock.json ./src ./appspec.yml ./scripts .env
       - name: AWS configure credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
