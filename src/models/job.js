@@ -22,6 +22,6 @@ export default class Job extends Sequelize.Model {
     );
   }
   static associate(db) {
-    db.job.belongsTo(db.user_info);
+    db.job.belongsTo(db.user);
   }
 }

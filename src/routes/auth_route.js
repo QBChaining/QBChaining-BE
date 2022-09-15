@@ -32,6 +32,7 @@ router.get(
       }
     );
 
+
     return res.redirect(
       `http://qb-chaning.s3-website.ap-northeast-2.amazonaws.com/login?token=${token}`
     );
@@ -41,6 +42,7 @@ router.get(
 router.put('/user/isnew', verifyToken, authController.updateInfo);
 
 router.post('/user/info', verifyToken, authController.createUserInfo);
+router.put('/user/info', verifyToken, authController.updateUserInfo);
 
 router.get('/test', verifyToken, (req, res) => {
   res.json(req.decoded);
