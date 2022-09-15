@@ -20,10 +20,8 @@ import PostBookmark from './post_bookmark.js';
 import Notification from './noti.js';
 import PostTag from './post_tag.js';
 
-
 const db = {};
 
-// 받아온 클래스들 사용
 db.sequelize = sequelize;
 db.user = User;
 db.user_info = UserInfo;
@@ -42,7 +40,6 @@ db.qna_bookmark = QnaBookmark;
 db.notification = Notification;
 db.post_tag = PostTag;
 
-// init한 부분 설정
 User.init(sequelize);
 UserInfo.init(sequelize);
 Job.init(sequelize);
@@ -60,7 +57,6 @@ QnaBookmark.init(sequelize);
 Notification.init(sequelize);
 PostTag.init(sequelize);
 
-// 외래키 관계부분
 User.associate(db);
 UserInfo.associate(db);
 Job.associate(db);

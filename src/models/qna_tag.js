@@ -19,7 +19,6 @@ export default class QnaTag extends Sequelize.Model {
       }
     );
   }
-  // belongsTo로 받아옴
   static associate(db) {
     db.qna_tag.belongsTo(db.qna, {
       foreignKey: 'qna_id',
