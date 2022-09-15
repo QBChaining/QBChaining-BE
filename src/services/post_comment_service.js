@@ -48,7 +48,6 @@ export default class PostCommentServices {
     const findBookMark = await PostBookmark.findAll({
       where: { post_id: post_id },
     });
-    console.log(findBookMark);
 
     const findpost = await Post.findOne({
       where: { id: post_id },

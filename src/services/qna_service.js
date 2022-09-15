@@ -71,15 +71,12 @@ class QnaService {
       let is_honey_tip = false;
       for (let i = 0; i < list.QnaTags.length; i++) {
         tag.push(list.QnaTags[i]?.tag);
-        console.log(list.QnaTags[i]?.tag);
       }
       for (let i = 0; i < list.QnaBookmarks.length; i++) {
         if (list.QnaBookmarks[i]?.user_name === user_name) is_bookmark = true;
-        console.log(list.QnaBookmarks[i]?.user_name);
       }
       for (let i = 0; i < list.QnaLikes.length; i++) {
         if (list.QnaLikes[i]?.user_name === user_name) is_honey_tip = true;
-        console.log(list.QnaLikes[i]?.user_name);
       }
 
       return {
