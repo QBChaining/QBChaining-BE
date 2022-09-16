@@ -113,4 +113,29 @@ export default class AuthService {
 
     return {};
   };
+
+  getUserActivity = async (user) => {
+    const findUser = await User.findOne({
+      where: { id: user },
+    });
+
+    const posts = await findUser.getPosts();
+    const qnas = await findUser.getQnas();
+
+    const postArr = posts.map((e) => {
+      let type = 'post';
+      let date = e.dataValues.updatedAt;
+      return { type, date };
+    });
+
+    const qnaArr = qnas.map((e) => {
+      let type = 'qna';
+      let date = e.dataValues.updatedAt;
+      return { type, date };
+    });
+
+    const sumArr = postArr.concat(qnaArr);
+
+    return sumArr;
+  };
 }

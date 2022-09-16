@@ -79,4 +79,18 @@ export default class AuthController {
       return next(error);
     }
   };
+
+  getActivity = async (req, res, next) => {
+    const user = req.decoded.id;
+
+    try {
+      const userActivity = await this.authService.getUserActivity(user);
+
+      return res.status(200).json({
+        Activity: userActivity,
+      });
+    } catch (error) {
+      return next(error);
+    }
+  };
 }
