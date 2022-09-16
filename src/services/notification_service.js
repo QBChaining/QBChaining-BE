@@ -8,6 +8,8 @@ import {
   UnkownException,
 } from '../exception/customException.js';
 import Notification from '../models/noti.js';
+import Post from '../models/post.js';
+import Qna from '../models/qna.js';
 
 export default class Notification_Service {
   // 알람을 눌렀을때 동작하는 포스트요청
@@ -31,6 +33,10 @@ export default class Notification_Service {
     const findNoti = await Notification.findAll({
       where: { user_name: user_name },
       order: [['created_At', 'DESC']],
+      include: [
+        { model: Post, attributes: ['title'] },
+        { model: Qna, attributes: ['title'] },
+      ],
     });
 
     return findNoti;

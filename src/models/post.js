@@ -39,5 +39,6 @@ export default class Post extends Sequelize.Model {
     db.post.hasMany(db.post_like);
     db.post.hasMany(db.post_bookmark);
     db.post.hasMany(db.post_tag);
+    db.post.hasMany(db.notification);
   }
 }

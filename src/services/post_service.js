@@ -193,7 +193,7 @@ export default class PostServices {
       const datecompare =
         now.getTime() - new Date(posthitmap[i].created_at).getTime();
       const inttime = datecompare / 1000 / 60 / 60;
-      if (parseInt(inttime) < 12) {
+      if (parseInt(inttime) < 24) {
         posthits.push(i);
       }
     }

@@ -52,9 +52,13 @@ export default class PostCommentServices {
     const findpost = await Post.findOne({
       where: { id: post_id },
     });
+    if (!findpost) {
+      throw new NotFoundException('게시물이 없습니다');
+    }
+
     if (findBookMark.length === 0) {
       await Notification.create({
-        type: 'post',
+        type: 'posts',
         check: false,
         post_id: findpost.id,
         user_name: findpost.user_name,
@@ -64,7 +68,7 @@ export default class PostCommentServices {
     if (findBookMark) {
       for (let i = 0; i < findBookMark.length; i++) {
         await Notification.create({
-          type: 'post',
+          type: 'posts',
           check: false,
           post_id,
           user_name: findBookMark[i].user_name,
@@ -79,10 +83,6 @@ export default class PostCommentServices {
         user_name,
       };
     }
-
-    // if(postcomment.user_name){
-
-    // }
   };
 
   CommentUpdate = async (comment, comment_id, user_name, profile_img) => {
