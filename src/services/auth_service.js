@@ -116,7 +116,7 @@ export default class AuthService {
 
   getUserActivity = async (user) => {
     const findUser = await User.findOne({
-      where: { id: user },
+      where: { user_name: user },
     });
 
     const posts = await findUser.getPosts();

@@ -81,7 +81,7 @@ export default class AuthController {
   };
 
   getActivity = async (req, res, next) => {
-    const user = req.decoded.id;
+    const user = req.decoded.name;
 
     try {
       const userActivity = await this.authService.getUserActivity(user);
