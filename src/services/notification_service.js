@@ -38,7 +38,19 @@ export default class Notification_Service {
         { model: Qna, attributes: ['title'] },
       ],
     });
-
-    return findNoti;
+    console.log(findNoti);
+    return findNoti.map((notification) => {
+      return {
+        id: notification.id,
+        type: notification.type,
+        created_at: notification.created_at,
+        check: notification.check,
+        post_id: notification.post_id,
+        qna_id: notification.qna_id,
+        qna_title: notification.Qna?.title,
+        post_title: notification.Post?.title,
+        user_name: notification.user_name,
+      };
+    });
   };
 }
