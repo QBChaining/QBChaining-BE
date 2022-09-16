@@ -63,7 +63,7 @@ class QnaService {
         { model: QnaBookmark, attributes: ['user_name'] },
       ],
     });
-    qnaLists.reverse();
+
     return qnaLists.map((list) => {
       let tag = [];
       let is_bookmark = false;
