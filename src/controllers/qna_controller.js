@@ -164,7 +164,6 @@ class QnaController {
   };
 
   FindCategories = async (req, res, next) => {
-    console.log('gd');
     const { page, page_count } = req.query;
     const { category } = req.params;
     const user_name = req.user.name;
