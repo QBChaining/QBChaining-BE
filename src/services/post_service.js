@@ -417,7 +417,7 @@ export default class PostServices {
       return {
         id: bookmark.Post.id,
         title: bookmark.Post.title,
-        created_at: bookmark.Post.createdAt,
+        createdAt: bookmark.Post.createdAt,
         user_name: bookmark.Post.user_name,
       };
     });
