@@ -44,6 +44,7 @@ class QnaService {
   FindAllQna = async (user_name, page_count, page) => {
     if (!page_count) throw new BadRequestException('page_count is null');
     const qnaLists = await Qna.findAll({
+      order: [['createdAt', 'DESC']],
       offset: page_count * page,
       limit: page_count,
       attributes: [
@@ -62,9 +63,7 @@ class QnaService {
         { model: QnaBookmark, attributes: ['user_name'] },
       ],
     });
-
     qnaLists.reverse();
-
     return qnaLists.map((list) => {
       let tag = [];
       let is_bookmark = false;
