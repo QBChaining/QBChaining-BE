@@ -37,7 +37,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 let corsOption = {
-  origin: 'http://qb-chaning.s3-website.ap-northeast-2.amazonaws.com',
+  origin: '*',
 };
 
 app.use(cors(corsOption));
@@ -51,7 +51,7 @@ import { sequelize } from './models/index.js';
 app.set('port', process.env.PORT || 3000);
 
 sequelize
-  .sync({ force: false })
+  .sync({ alter: false })
   .then(() => console.log('db connect'))
   .catch((err) => console.error(err));
 

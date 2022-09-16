@@ -28,6 +28,15 @@ class QnaCommentService {
       where: { qna_id },
     });
 
+    if (findQna.length === 0) {
+      await Notification.create({
+        type: 'qna',
+        check: false,
+        qna_id: existQna.id,
+        user_name: existQna.user_name,
+      });
+    }
+
     if (findQna) {
       for (let i = 0; i < findQna.length; i++) {
         await Notification.create({

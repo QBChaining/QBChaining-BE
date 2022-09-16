@@ -43,5 +43,6 @@ export default class Qna extends Sequelize.Model {
     db.qna.hasMany(db.qna_like);
     db.qna.hasMany(db.qna_bookmark);
     db.qna.hasMany(db.qna_tag);
+    db.qna.hasMany(db.notification);
   }
 }
