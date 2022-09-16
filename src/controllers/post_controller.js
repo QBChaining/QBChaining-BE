@@ -204,7 +204,6 @@ export default class PostController {
       });
     } catch (error) {
       const exception = exceptionHandler(error);
-
       res.status(exception.statusCode).json({
         success: exception.success,
         message: exception.message,

@@ -4,6 +4,10 @@ import PostComment from '../models/post_comment.js';
 import PostLike from '../models/post_like.js';
 import PostBookmark from '../models/post_bookmark.js';
 import PostTag from '../models/post_tag.js';
+import {
+  BadRequestException,
+  ConflictException,
+} from '../exception/customException.js';
 
 export default class PostServices {
   // 최신순 정렬
@@ -327,6 +331,8 @@ export default class PostServices {
   };
 
   PostUpdate = async (title, content, tag, user_name, post_id, profile_img) => {
+    if (content.length === 0 || title.length === 0)
+      throw new ConflictException('내용이나 제목을 입력해주세요');
     const post1 = await Post.findOne({
       where: { id: post_id },
     });
@@ -335,31 +341,29 @@ export default class PostServices {
       throw new ConflictException('본인의 글만 수정이 가능합니다');
     }
 
-    if (content.length !== 0) {
-      const post = await Post.update(
-        { title, content, tag, user_name },
-        { where: { id: post_id, user_name: user_name } }
-      );
-      if (post) {
-        return {
-          title,
-          content,
-          tag,
-          user_name,
-          id: parseInt(post_id),
-          profile_img,
-        };
-      }
-    } else {
-      throw new ConflictException('내용을 입력해주세요');
+    const post = await Post.update(
+      { title, content, tag, user_name },
+      { where: { id: post_id, user_name: user_name } }
+    );
+    if (post) {
+      return {
+        title,
+        content,
+        tag,
+        user_name,
+        id: parseInt(post_id),
+        profile_img,
+      };
     }
-    // if문써서 user_id 비교해서 내꺼아니면 수정불가처리해야댐
   };
 
   PostDelete = async (post_id, user_name) => {
     const find = await Post.findOne({
       where: { id: post_id },
     });
+
+    if (!find) throw new BadRequestException('게시물이 존재하지 않습니다');
+
     if (find.user_name !== user_name) {
       throw new NotFoundException('본인의 글만 삭제 가능합니다');
     } else {
@@ -368,11 +372,10 @@ export default class PostServices {
       });
     }
   };
-  PostLikeShow = async (post_id, user_id) => {
+  PostLikeShow = async (user_name) => {
     const findLike = await PostLike.findAll({
-      where: { user_id: 1 },
+      where: { user_name: user_name },
     });
-
     return findLike;
   };
 
