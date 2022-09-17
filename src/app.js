@@ -37,7 +37,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 let corsOption = {
-  origin: 'http://qb-chaning.s3-website.ap-northeast-2.amazonaws.com',
+  origin: '*',
 };
 
 app.use(cors(corsOption));
