@@ -141,11 +141,11 @@ class SearchService {
         user_name: list.user_name,
         profile_img: list.User.profile_img,
         is_resolve: list.is_resolve,
-        created_at: list.createdAt,
-        like: list.PostLikes.length,
-        is_like,
+        createdAt: list.createdAt,
+        honey_tip: list.PostLikes.length,
+        is_honey_tip,
         is_bookmark,
-        cmtNum: list.PostComments.length,
+        cntcomment: list.PostComments.length,
         tag,
       };
     });
