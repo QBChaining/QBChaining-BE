@@ -151,5 +151,5 @@ class SearchService {
     });
   };
 }
-
+//수정:
 export default SearchService;
