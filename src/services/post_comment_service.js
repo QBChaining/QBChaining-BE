@@ -21,7 +21,7 @@ export default class PostCommentServices {
       include: [{ model: User, attributes: ['user_name', 'profile_img'] }],
     });
     if (postcomment) {
-      return postcomment.reverse();
+      return postcomment;
     } else {
       throw new BadRequestException('게시물이 없습니다');
     }
