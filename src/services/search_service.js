@@ -145,7 +145,7 @@ class SearchService {
         honey_tip: list.PostLikes.length,
         is_honey_tip,
         is_bookmark,
-        cmtNum: list.PostComments.length,
+        cntcomment: list.PostComments.length,
         tag,
       };
     });
