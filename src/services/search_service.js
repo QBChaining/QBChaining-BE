@@ -124,7 +124,7 @@ class SearchService {
     return lists.map((list) => {
       let tag = [];
       let is_bookmark = false;
-      let is_like = false;
+      let is_honey_tip = false;
       for (let i = 0; i < list.PostTags.length; i++) {
         tag.push(list.PostTags[i]?.tag);
       }
@@ -132,7 +132,7 @@ class SearchService {
         if (list.PostBookmarks[i]?.user_name === user_name) is_bookmark = true;
       }
       for (let i = 0; i < list.PostLikes.length; i++) {
-        if (list.PostLikes[i]?.user_name === user_name) is_like = true;
+        if (list.PostLikes[i]?.user_name === user_name) is_honey_tip = true;
       }
 
       return {
