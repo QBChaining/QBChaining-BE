@@ -15,10 +15,10 @@ import QnaLike from '../models/qna.like.js';
 import QnaComment from '../models/qna.comment.js';
 import QnaBookmark from '../models/qna.bookmark.js';
 import Post from '../models/post.js';
-import PostTag from '../models/post_tag.js';
-import PostLike from '../models/post_like.js';
-import PostBookmark from '../models/post_bookmark.js';
-import PostComment from '../models/post_comment.js';
+import PostTag from '../models/post.tag.js';
+import PostLike from '../models/post.like.js';
+import PostBookmark from '../models/post.bookmark.js';
+import PostComment from '../models/post.comment.js';
 import sequelize from 'sequelize';
 
 const Op = sequelize.Op;

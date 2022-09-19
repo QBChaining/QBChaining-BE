@@ -1,5 +1,5 @@
 import QnaService from '../services/qna.service.js';
-import exceptionHandler from '../errorhandler/customException_handler.js';
+import exceptionHandler from '../errorhandler/customException.handler.js';
 
 class QnaController {
   qnaService = new QnaService();

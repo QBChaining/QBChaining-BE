@@ -1,6 +1,6 @@
 import QnaCommentService from '../services/q.comment.service.js';
 
-import exceptionHandler from '../errorhandler/customException_handler.js';
+import exceptionHandler from '../errorhandler/customException.handler.js';
 
 class QnaCommentController {
   qnaCommentService = new QnaCommentService();

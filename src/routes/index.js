@@ -1,17 +1,17 @@
 import express from 'express';
 
-import auth_route from './auth_route.js';
-import postRouter from './post_route.js';
-import qnaRouter from './qna_route.js';
-import PostCommentRouter from './post_comment_route.js';
-import Notification_Router from './notification.js';
+import authroute from './auth.route.js';
+import postRouter from './post.route.js';
+import qnaRouter from './qna.route.js';
+import PostCommentRouter from './post.comment.route.js';
+import NotificationRouter from './notification.js';
 
 const router = express.Router();
 
 router.use('/posts', postRouter);
 router.use('/qna', qnaRouter);
 router.use('/comments', PostCommentRouter);
-router.use('/auth', auth_route);
-router.use('/notification', Notification_Router);
+router.use('/auth', authroute);
+router.use('/notification', NotificationRouter);
 
 export default router;
