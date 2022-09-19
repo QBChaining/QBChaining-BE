@@ -20,7 +20,7 @@ export default class PostTag extends Sequelize.Model {
     );
   }
   static associate(db) {
-    db.post_tag.belongsTo(db.post, {
+    db.postTag.belongsTo(db.post, {
       foreignKey: 'postId',
       targetKey: 'id',
     });

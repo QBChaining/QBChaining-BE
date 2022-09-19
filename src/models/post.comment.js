@@ -22,13 +22,13 @@ export default class PostComment extends Sequelize.Model {
     );
   }
   static associate(db) {
-    db.post_comment.belongsTo(db.post, {
+    db.postComment.belongsTo(db.post, {
       onUpdate: 'cascade',
       onDelete: 'cascade',
       foreignKey: 'postId',
       targetKey: 'id',
     });
-    db.post_comment.belongsTo(db.user, {
+    db.postComment.belongsTo(db.user, {
       foreignKey: 'userName',
       targetKey: 'userName',
     });
