@@ -33,10 +33,10 @@ const github = () => {
           } else {
             const newUser = await User.create({
               email: profile.emails[0].value,
-              profile_url: profile.profileUrl,
-              user_name: profile.username,
-              profile_img: profile._json.avatar_url,
-              is_new: 'true',
+              profileUrl: profile.profileUrl,
+              userName: profile.username,
+              profileImg: profile._json.avatar_url,
+              isNew: 'true',
             });
             done(null, newUser);
           }
