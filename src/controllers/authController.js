@@ -1,20 +1,20 @@
 import jwt from 'jsonwebtoken';
-import AuthService from '../services/auth_service.js';
+import AuthService from '../services/authService.js';
 
 export default class AuthController {
   authService = new AuthService();
 
   updateInfo = async (req, res, next) => {
-    const user_id = req.decoded.id;
+    const userId = req.decoded.id;
     try {
-      const user = await this.authService.infoUpdate(user_id);
+      const user = await this.authService.infoUpdate(userId);
 
       const token = jwt.sign(
         {
-          id: user.id,
-          name: user.user_name,
-          is_new: user.is_new,
-          profile_img: req.user.profile_img,
+          userId: user.id,
+          userName: user.userName,
+          isNew: user.isNew,
+          profileImg: user.profileImg,
         },
         process.env.JWT_SECRET,
         {
