@@ -35,14 +35,29 @@ export default class Qna extends Sequelize.Model {
   }
 
   static associate(db) {
-    db.qna.hasMany(db.qnaComment);
+    db.qna.hasMany(db.qnaComment, {
+      foreignKey: 'qnaId',
+      targetKey: 'id',
+    });
     db.qna.belongsTo(db.user, {
       foreignKey: 'userName',
       targetKey: 'userName',
     });
-    db.qna.hasMany(db.qnaLike);
-    db.qna.hasMany(db.qnaBookmark);
-    db.qna.hasMany(db.qnaTag);
-    db.qna.hasMany(db.notification);
+    db.qna.hasMany(db.qnaLike, {
+      foreignKey: 'qnaId',
+      targetKey: 'id',
+    });
+    db.qna.hasMany(db.qnaBookmark, {
+      foreignKey: 'qnaId',
+      targetKey: 'id',
+    });
+    db.qna.hasMany(db.qnaTag, {
+      foreignKey: 'qnaId',
+      targetKey: 'id',
+    });
+    db.qna.hasMany(db.notification, {
+      foreignKey: 'qnaId',
+      targetKey: 'id',
+    });
   }
 }
