@@ -31,12 +31,12 @@ export default class QnaComment extends Sequelize.Model {
     );
   }
   static associate(db) {
-    db.qna_comment.belongsTo(db.qna, {
+    db.qnaComment.belongsTo(db.qna, {
       foreignKey: 'qnaId',
       targetKey: 'id',
     });
-    db.qna_comment.hasMany(db.qnaCommentLike);
-    db.qna_comment.belongsTo(db.user, {
+    db.qnaComment.hasMany(db.qnaCommentLike);
+    db.qnaComment.belongsTo(db.user, {
       foreignKey: 'userName',
       targetKey: 'userName',
     });
