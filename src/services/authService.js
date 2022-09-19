@@ -9,7 +9,7 @@ export default class AuthService {
       { isNew: 'false' },
       { where: { id: userId } }
     );
-    // const user = User.findOne({ where: { id: user_id } });
+
     return user;
   };
 

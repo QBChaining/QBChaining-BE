@@ -22,7 +22,7 @@ export default class UserInfo extends Sequelize.Model {
       {
         sequelize,
         timestamps: true,
-        underscored: true,
+        underscored: false,
         tableName: 'userInfo',
         charset: 'utf8',
         collate: 'utf8_general_ci',
