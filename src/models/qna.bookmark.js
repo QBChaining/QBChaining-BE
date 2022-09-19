@@ -10,7 +10,7 @@ export default class QnaBookmark extends Sequelize.Model {
         sequelize,
         timestamps: false,
         underscored: false,
-        tableName: 'qna_bookmark',
+        tableName: 'qnaBookmark',
         charset: 'utf8',
         collate: 'utf8_general_ci',
       }
