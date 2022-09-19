@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import AuthService from '../services/authService.js';
+import AuthService from '../services/auth.service.js';
 
 export default class AuthController {
   authService = new AuthService();
