@@ -1,4 +1,4 @@
-import exceptionHandler from '../errorhandler/customException_handler.js';
+import exceptionHandler from '../errorhandler/customException.handler.js';
 import Notification_Service from '../services/notification.service.js';
 
 export default class Notification_controller {

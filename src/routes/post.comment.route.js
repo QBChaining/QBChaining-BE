@@ -1,5 +1,5 @@
 import express from 'express';
-import PostCommentController from '../controllers/post_comment_controller.js';
+import PostCommentController from '../controllers/post.comment.controller.js';
 import verifyToken from '../middlewares/auth.js';
 import checkSignin from '../middlewares/check.signin.js';
 

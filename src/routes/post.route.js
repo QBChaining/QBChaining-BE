@@ -1,8 +1,8 @@
 import express from 'express';
-import PostController from '../controllers/post_controller.js';
+import PostController from '../controllers/post.controller.js';
 import verifyToken from '../middlewares/auth.js';
 import checkSignin from '../middlewares/check.signin.js';
-import SearchCotroller from '../controllers/search_controller.js';
+import SearchCotroller from '../controllers/search.controller.js';
 const router = express.Router();
 
 const postController = new PostController();
