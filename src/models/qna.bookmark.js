@@ -22,7 +22,7 @@ export default class QnaBookmark extends Sequelize.Model {
       targetKey: 'id',
     });
     db.qnaBookmark.belongsTo(db.user, {
-      sourceKey: 'userName',
+      targetKey: 'userName',
       foreignKey: 'userName',
     });
   }
