@@ -14,6 +14,7 @@ export default class AuthService {
   };
 
   userInfoCreate = async (language, age, gender, job, career, user) => {
+    console.log('shibal');
     const userInfo = await UserInfo.findOne({
       where: {
         user,
@@ -114,9 +115,9 @@ export default class AuthService {
     return {};
   };
 
-  getUserActivity = async (user) => {
+  getUserActivity = async (userName) => {
     const findUser = await User.findOne({
-      where: { userName: user },
+      where: { userName },
     });
 
     const posts = await findUser.getPosts();

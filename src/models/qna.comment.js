@@ -32,7 +32,7 @@ export default class QnaComment extends Sequelize.Model {
   }
   static associate(db) {
     db.qnaComment.belongsTo(db.user, {
-      sourceKey: 'userName',
+      targetKey: 'userName',
       foreignKey: 'userName',
     });
     db.qnaComment.belongsTo(db.qna, {
@@ -41,7 +41,7 @@ export default class QnaComment extends Sequelize.Model {
     });
     db.qnaComment.hasMany(db.qnaCommentLike, {
       foreignKey: 'qnaCommentId',
-      targetKey: 'id',
+      sourceKey: 'id',
     });
   }
 }
