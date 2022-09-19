@@ -14,7 +14,7 @@ export default class Job extends Sequelize.Model {
       {
         sequelize,
         timestamps: true,
-        underscored: true,
+        underscored: false,
         tableName: 'job',
         charset: 'utf8',
         collate: 'utf8_general_ci',

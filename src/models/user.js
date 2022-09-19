@@ -43,14 +43,31 @@ export default class User extends Sequelize.Model {
   }
   static associate(db) {
     db.user.hasOne(db.userInfo, { foreignKey: 'user', sourceKey: 'id' });
-    db.user.hasMany(db.post);
+    db.user.hasMany(db.post, {
+      foreignKey: 'userName',
+      targetKey: 'userName',
+      onDelete: 'cascade',
+    });
     db.user.hasMany(db.language);
     db.user.hasMany(db.job);
     db.user.hasMany(db.qna);
-    db.user.hasMany(db.postLike);
+    db.user.hasMany(db.postLike, {
+      foreignKey: 'userName',
+      targetKey: 'userName',
+      onDelete: 'cascade',
+    });
     db.user.hasMany(db.qnaLike);
     db.user.hasMany(db.qnaBookmark);
-    db.user.hasMany(db.postComment);
+    db.user.hasMany(db.postComment, {
+      foreignKey: 'userName',
+      targetKey: 'userName',
+      onDelete: 'cascade',
+    });
     db.user.hasMany(db.qnaComment);
+    db.user.hasMany(db.notification, {
+      foreignKey: 'userName',
+      targetKey: 'userName',
+      onDelete: 'cascade',
+    });
   }
 }

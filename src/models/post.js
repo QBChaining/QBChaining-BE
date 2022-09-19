@@ -26,8 +26,16 @@ export default class Post extends Sequelize.Model {
     );
   }
   static associate(db) {
-    db.post.hasMany(db.postComment);
-    db.post.belongsTo(db.user);
+    db.post.hasMany(db.postComment, {
+      foreignKey: 'postId',
+      targetKey: 'id',
+      onDelete: 'cascade',
+    });
+    db.post.belongsTo(db.user, {
+      foreignKey: 'userName',
+      targetKey: 'userName',
+      onDelete: 'cascade',
+    });
     db.post.hasMany(db.postLike, {
       foreignKey: 'postId',
       targetKey: 'id',
