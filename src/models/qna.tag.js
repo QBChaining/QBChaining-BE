@@ -13,7 +13,7 @@ export default class QnaTag extends Sequelize.Model {
         sequelize,
         timestamps: false,
         underscored: false,
-        tableName: 'qna_tag',
+        tableName: 'qnaTag',
         charset: 'utf8',
         collate: 'utf8_general_ci',
       }
