@@ -72,6 +72,7 @@ export default class User extends Sequelize.Model {
       foreignKey: 'userName',
       targetKey: 'userName',
       onDelete: 'cascade',
+    });
     db.user.hasMany(db.qnaBookmark, {
       foreignKey: 'userName',
       targetKey: 'userName',
