@@ -1,11 +1,11 @@
-import QnaService from '../services/qna_service.js';
+import QnaService from '../services/qna.service.js';
 import exceptionHandler from '../errorhandler/customException_handler.js';
 
 class QnaController {
   qnaService = new QnaService();
 
   CreateQna = async (req, res, next) => {
-    const user_name = req.decoded.name;
+    const { userName } = req.decoded;
     const { title, content, category, tag } = req.body;
 
     try {
@@ -14,7 +14,7 @@ class QnaController {
         content,
         category,
         tag,
-        user_name
+        userName
       );
 
       return res
@@ -33,9 +33,9 @@ class QnaController {
   FindAllQna = async (req, res, next) => {
     try {
       const { page_count, page } = req.query;
-      const user_name = req.user?.name;
+      const userName = req.user?.userName;
       const data = await this.qnaService.FindAllQna(
-        user_name,
+        userName,
         page_count * 1,
         page * 1
       );
@@ -55,9 +55,9 @@ class QnaController {
 
   FindOneQna = async (req, res, next) => {
     const { id } = req.params;
-    const user_name = req.user?.name;
+    const userName = req.user?.userName;
     try {
-      const data = await this.qnaService.FindOneQna(id, user_name);
+      const data = await this.qnaService.FindOneQna(id, userName);
       return res
         .status(200)
         .json({ success: true, message: '상세 조회 완료', data });
@@ -72,10 +72,10 @@ class QnaController {
   };
 
   AddBookMark = async (req, res, next) => {
-    const qna_id = req.params.id * 1;
-    const user_name = req.decoded.name;
+    const qnaId = req.params.id * 1;
+    const userName = req.decoded.userName;
     try {
-      await this.qnaService.AddBookMark(qna_id, user_name);
+      await this.qnaService.AddBookMark(qnaId, userName);
       return res
         .status(201)
         .json({ success: true, message: '즐겨찾기 추가 되었습니다.' });
@@ -90,11 +90,11 @@ class QnaController {
   };
 
   RemoveBookMark = async (req, res, next) => {
-    const qna_id = req.params.id * 1;
-    const user_name = req.decoded.name;
+    const qnaId = req.params.id * 1;
+    const userName = req.decoded.userName;
 
     try {
-      await this.qnaService.RemoveBookMark(qna_id, user_name);
+      await this.qnaService.RemoveBookMark(qnaId, userName);
       return res
         .status(200)
         .json({ success: true, message: '즐겨찾기 삭제 되었습니다.' });
@@ -109,10 +109,10 @@ class QnaController {
   };
 
   LikeQna = async (req, res, next) => {
-    const qna_id = req.params.id * 1;
-    const user_name = req.decoded.name;
+    const qnaId = req.params.id * 1;
+    const userName = req.decoded.userName;
     try {
-      await this.qnaService.LikeQna(qna_id, user_name);
+      await this.qnaService.LikeQna(qnaId, userName);
       return res.status(201).json({ success: true, message: '추천 완료' });
     } catch (err) {
       console.log(err);
@@ -125,10 +125,10 @@ class QnaController {
   };
 
   RemoveLikeQna = async (req, res, next) => {
-    const qna_id = req.params.id * 1;
-    const user_name = req.decoded.name;
+    const qnaId = req.params.id * 1;
+    const userName = req.decoded.userName;
     try {
-      await this.qnaService.RemoveLikeQna(qna_id, user_name);
+      await this.qnaService.RemoveLikeQna(qnaId, userName);
       return res.status(200).json({ success: true, message: '추천 최소' });
     } catch (err) {
       console.log(err);
@@ -142,10 +142,10 @@ class QnaController {
 
   FindBookMark = async (req, res, next) => {
     const { page, page_count } = req.query;
-    const user_name = req.decoded.name;
+    const userName = req.decoded.userName;
     try {
       const data = await this.qnaService.FindBookMark(
-        user_name,
+        userName,
         page * 1,
         page_count * 1
       );
@@ -166,14 +166,14 @@ class QnaController {
   FindCategories = async (req, res, next) => {
     const { page, page_count } = req.query;
     const { category } = req.params;
-    const user_name = req.user?.name;
+    const userName = req.user?.userName;
 
     try {
       const data = await this.qnaService.FindCategories(
         category,
         page * 1,
         page_count * 1,
-        user_name
+        userName
       );
       return res
         .status(200)
@@ -189,11 +189,11 @@ class QnaController {
   };
 
   FindUserQna = async (req, res, next) => {
-    const { user_name } = req.params;
+    const { userName } = req.params;
     const compare_id = req.user.id;
 
     try {
-      const data = await this.qnaService.FindUserQna(user_name, compare_id);
+      const data = await this.qnaService.FindUserQna(userName, compare_id);
       return res
         .status(200)
         .json({ success: true, message: '유저 게시글 조회 완료', data });

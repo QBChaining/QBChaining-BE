@@ -24,7 +24,7 @@ import sequelize from 'sequelize';
 const Op = sequelize.Op;
 
 class SearchService {
-  QnaSearch = async (keyWords, user_name, page_count, page) => {
+  QnaSearch = async (keyWords, userName, page_count, page) => {
     if (!keyWords || keyWords.trim() === '')
       throw new BadRequestException('검색 조건이 옳지 않습니다.');
 
@@ -48,10 +48,10 @@ class SearchService {
         [Op.or]: searchKeywords,
       },
       include: [
-        { model: User, attributes: ['profile_img'] },
+        { model: User, attributes: ['profileImg'] },
         { model: QnaTag, attributes: ['tag'] },
-        { model: QnaLike, attributes: ['id', 'user_name'] },
-        { model: QnaBookmark, attributes: ['user_name'] },
+        { model: QnaLike, attributes: ['id', 'userName'] },
+        { model: QnaBookmark, attributes: ['userName'] },
         { model: QnaComment, attributes: ['id'] },
       ],
     });
@@ -59,28 +59,28 @@ class SearchService {
 
     return lists.map((list) => {
       let tag = [];
-      let is_bookmark = false;
-      let is_honey_tip = false;
+      let isBookmark = false;
+      let isLike = false;
       for (let i = 0; i < list.QnaTags.length; i++) {
         tag.push(list.QnaTags[i]?.tag);
       }
       for (let i = 0; i < list.QnaBookmarks.length; i++) {
-        if (list.QnaBookmarks[i]?.user_name === user_name) is_bookmark = true;
+        if (list.QnaBookmarks[i]?.userName === userName) isBookmark = true;
       }
       for (let i = 0; i < list.QnaLikes.length; i++) {
-        if (list.QnaLikes[i]?.user_name === user_name) is_honey_tip = true;
+        if (list.QnaLikes[i]?.userName === userName) isLike = true;
       }
 
       return {
         id: list.id,
         title: list.title,
-        user_name: list.user_name,
-        profile_img: list.User.profile_img,
-        is_resolve: list.is_resolve,
+        userName: list.userName,
+        profileImg: list.User.profileImg,
+        isResolve: list.isResolve,
         createdAt: list.createdAt,
-        honey_tip: list.QnaLikes.length,
-        is_honey_tip,
-        is_bookmark,
+        like: list.QnaLikes.length,
+        isLike,
+        isBookmark,
         cntcomment: list.QnaComments.length,
         category: list.category,
         tag,
@@ -88,7 +88,7 @@ class SearchService {
     });
   };
 
-  PostSearch = async (keyWords, user_name, page_count, page) => {
+  PostSearch = async (keyWords, userName, page_count, page) => {
     if (!keyWords || keyWords.trim() === '')
       throw new BadRequestException('검색 조건이 옳지 않습니다.');
 
@@ -112,10 +112,10 @@ class SearchService {
         [Op.or]: searchKeywords,
       },
       include: [
-        { model: User, attributes: ['profile_img'] },
+        { model: User, attributes: ['profileImg'] },
         { model: PostTag, attributes: ['tag'] },
-        { model: PostLike, attributes: ['id', 'user_name'] },
-        { model: PostBookmark, attributes: ['user_name'] },
+        { model: PostLike, attributes: ['id', 'userName'] },
+        { model: PostBookmark, attributes: ['userName'] },
         { model: PostComment, attributes: ['id'] },
       ],
     });
@@ -123,28 +123,28 @@ class SearchService {
 
     return lists.map((list) => {
       let tag = [];
-      let is_bookmark = false;
-      let is_honey_tip = false;
+      let isBookmark = false;
+      let isLike = false;
       for (let i = 0; i < list.PostTags.length; i++) {
         tag.push(list.PostTags[i]?.tag);
       }
       for (let i = 0; i < list.PostBookmarks.length; i++) {
-        if (list.PostBookmarks[i]?.user_name === user_name) is_bookmark = true;
+        if (list.PostBookmarks[i]?.userName === userName) isBookmark = true;
       }
       for (let i = 0; i < list.PostLikes.length; i++) {
-        if (list.PostLikes[i]?.user_name === user_name) is_honey_tip = true;
+        if (list.PostLikes[i]?.userName === userName) isLike = true;
       }
 
       return {
         id: list.id,
         title: list.title,
-        user_name: list.user_name,
-        profile_img: list.User.profile_img,
-        is_resolve: list.is_resolve,
+        userName: list.userName,
+        profileImg: list.User.profileImg,
+        isResolve: list.isResolve,
         createdAt: list.createdAt,
-        honey_tip: list.PostLikes.length,
-        is_honey_tip,
-        is_bookmark,
+        like: list.PostLikes.length,
+        isLike,
+        isBookmark,
         cntcomment: list.PostComments.length,
         tag,
       };
