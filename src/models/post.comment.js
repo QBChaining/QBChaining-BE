@@ -14,23 +14,23 @@ export default class PostComment extends Sequelize.Model {
       {
         sequelize,
         timestamps: true,
-        underscored: true,
-        tableName: 'post_comment',
+        underscored: false,
+        tableName: 'postComment',
         charset: 'utf8',
         collate: 'utf8_general_ci',
       }
     );
   }
   static associate(db) {
-    db.post_comment.belongsTo(db.post, {
+    db.postComment.belongsTo(db.post, {
       onUpdate: 'cascade',
       onDelete: 'cascade',
-      foreignKey: 'post_id',
+      foreignKey: 'postId',
       targetKey: 'id',
     });
-    db.post_comment.belongsTo(db.user, {
-      foreignKey: 'user_name',
-      targetKey: 'user_name',
+    db.postComment.belongsTo(db.user, {
+      foreignKey: 'userName',
+      targetKey: 'userName',
     });
   }
 }

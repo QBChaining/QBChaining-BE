@@ -12,16 +12,16 @@ export default class PostTag extends Sequelize.Model {
       {
         sequelize,
         timestamps: false,
-        underscored: true,
-        tableName: 'post_tag',
+        underscored: false,
+        tableName: 'postTag',
         charset: 'utf8',
         collate: 'utf8_general_ci',
       }
     );
   }
   static associate(db) {
-    db.post_tag.belongsTo(db.post, {
-      foreignKey: 'post_id',
+    db.postTag.belongsTo(db.post, {
+      foreignKey: 'postId',
       targetKey: 'id',
     });
   }

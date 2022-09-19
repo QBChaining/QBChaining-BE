@@ -1,5 +1,5 @@
 import exceptionHandler from '../errorhandler/customException_handler.js';
-import Notification_Service from '../services/notification_service.js';
+import Notification_Service from '../services/notification.service.js';
 
 export default class Notification_controller {
   notification_Service = new Notification_Service();

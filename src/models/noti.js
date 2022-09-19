@@ -10,7 +10,7 @@ export default class Notification extends Sequelize.Model {
           type: Sequelize.STRING(50),
           allowNull: false,
         },
-        created_at: {
+        createdAt: {
           type: Sequelize.DATE,
           allowNull: true,
           defaultValue: Sequelize.NOW,
@@ -23,7 +23,7 @@ export default class Notification extends Sequelize.Model {
       {
         sequelize,
         timestamps: false,
-        underscored: true,
+        underscored: false,
         tableName: 'notification',
         charset: 'utf8',
         collate: 'utf8_general_ci',
@@ -32,18 +32,18 @@ export default class Notification extends Sequelize.Model {
   }
   static associate(db) {
     db.notification.belongsTo(db.post, {
-      foreignKey: 'post_id',
+      foreignKey: 'postId',
       targetKey: 'id',
       onDelete: 'cascade',
     });
     db.notification.belongsTo(db.qna, {
-      foreignKey: 'qna_id',
+      foreignKey: 'qnaId',
       targetKey: 'id',
       onDelete: 'cascade',
     });
     db.notification.belongsTo(db.user, {
-      foreignKey: 'user_name',
-      targetKey: 'user_name',
+      foreignKey: 'userName',
+      targetKey: 'userName',
       onDelete: 'cascade',
     });
   }
