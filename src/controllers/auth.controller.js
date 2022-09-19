@@ -5,7 +5,7 @@ export default class AuthController {
   authService = new AuthService();
 
   updateInfo = async (req, res, next) => {
-    const userId = req.decoded.id;
+    const userId = req.decoded.userId;
     try {
       const user = await this.authService.infoUpdate(userId);
 
@@ -34,7 +34,7 @@ export default class AuthController {
     const gender = req.body.gender;
     const job = req.body.job;
     const career = req.body.career;
-    const user = req.decoded.id;
+    const user = req.decoded.userId;
 
     try {
       const userInfo = await this.authService.userInfoCreate(
@@ -60,7 +60,7 @@ export default class AuthController {
     const gender = req.body.gender;
     const job = req.body.job;
     const career = req.body.career;
-    const user = req.decoded.id;
+    const user = req.decoded.userId;
 
     try {
       const userInfo = await this.authService.userInfoUpdate(
@@ -81,10 +81,10 @@ export default class AuthController {
   };
 
   getActivity = async (req, res, next) => {
-    const user = req.decoded.name;
+    const userName = req.decoded.userName;
 
     try {
-      const userActivity = await this.authService.getUserActivity(user);
+      const userActivity = await this.authService.getUserActivity(userName);
 
       return res.status(200).json({
         Activity: userActivity,
