@@ -16,32 +16,32 @@ import QnaLike from '../models/qna.like.js';
 import QnaBookmark from '../models/qna.bookmark.js';
 
 class QnaService {
-  CreateQna = async (title, content, category, tags, user_name) => {
+  CreateQna = async (title, content, category, tags, userName) => {
     if (!title || !content || !category || tags.length > 5) {
       throw new BadRequestException(`입력값이 없거나 잘못 되었습니다.`);
     }
 
     const qnaTag = [];
-    const qna = await Qna.create({ title, content, category, user_name });
+    const qna = await Qna.create({ title, content, category, userName });
     for (const tag of tags) {
-      const tagdata = await QnaTag.create({ qna_id: qna.id, tag });
+      const tagdata = await QnaTag.create({ qnaId: qna.id, tag });
       qnaTag.push(tagdata.tag);
     }
 
     return {
-      is_resolve: qna.is_resolve,
+      isResolve: qna.isResolve,
       id: qna.id,
-      user_name: qna.user_name,
+      userName: qna.userName,
       title: qna.title,
       content: qna.content,
       category: qna.category,
       updatedAt: qna.updatedAt,
-      honey_tip: 0,
+      like: 0,
       qnaTag,
     };
   };
 
-  FindAllQna = async (user_name, page_count, page) => {
+  FindAllQna = async (userName, page_count, page) => {
     if (!page_count) throw new BadRequestException('page_count is null');
     const qnaLists = await Qna.findAll({
       order: [['createdAt', 'DESC']],
@@ -50,44 +50,44 @@ class QnaService {
       attributes: [
         'id',
         'title',
-        'is_resolve',
+        'isResolve',
         'createdAt',
         'category',
-        'user_name',
+        'userName',
       ],
       include: [
-        { model: User, attributes: ['profile_img'] },
+        { model: User, attributes: ['profileImg'] },
         { model: QnaComment, attributes: ['id'] },
         { model: QnaTag, attributes: ['tag'] },
-        { model: QnaLike, attributes: ['user_name'] },
-        { model: QnaBookmark, attributes: ['user_name'] },
+        { model: QnaLike, attributes: ['userName'] },
+        { model: QnaBookmark, attributes: ['userName'] },
       ],
     });
 
     return qnaLists.map((list) => {
       let tag = [];
-      let is_bookmark = false;
-      let is_honey_tip = false;
+      let isBookmark = false;
+      let isLike = false;
       for (let i = 0; i < list.QnaTags.length; i++) {
         tag.push(list.QnaTags[i]?.tag);
       }
       for (let i = 0; i < list.QnaBookmarks.length; i++) {
-        if (list.QnaBookmarks[i]?.user_name === user_name) is_bookmark = true;
+        if (list.QnaBookmarks[i]?.userName === userName) isBookmark = true;
       }
       for (let i = 0; i < list.QnaLikes.length; i++) {
-        if (list.QnaLikes[i]?.user_name === user_name) is_honey_tip = true;
+        if (list.QnaLikes[i]?.userName === userName) isLike = true;
       }
 
       return {
         id: list.id,
         title: list.title,
-        user_name: list.user_name,
-        profile_img: list.User.profile_img,
-        is_resolve: list.is_resolve,
+        userName: list.userName,
+        profileImg: list.User.profileImg,
+        isResolve: list.isResolve,
         createdAt: list.createdAt,
-        honey_tip: list.QnaLikes.length,
-        is_honey_tip,
-        is_bookmark,
+        like: list.QnaLikes.length,
+        isLike,
+        isBookmark,
         cntcomment: list.QnaComments.length,
         category: list.category,
         tag,
@@ -95,7 +95,7 @@ class QnaService {
     });
   };
 
-  FindOneQna = async (id, user_name) => {
+  FindOneQna = async (id, userName) => {
     const lists = await Qna.findOne({
       where: { id },
       attributes: [
@@ -103,76 +103,76 @@ class QnaService {
         'title',
         'content',
         'category',
-        'is_resolve',
+        'isResolve',
         'createdAt',
-        'user_name',
+        'userName',
       ],
       include: [
-        { model: User, attributes: ['profile_img'] },
+        { model: User, attributes: ['profileImg'] },
         { model: QnaTag, attributes: ['tag'] },
-        { model: QnaLike, attributes: ['user_name'] },
+        { model: QnaLike, attributes: ['userName'] },
       ],
     });
     const tag = [];
     for (let i = 0; i < lists.QnaTags?.length; i++)
       tag.push(lists.QnaTags[i]?.dataValues.tag);
 
-    let is_honey_tip = false;
+    let isLike = false;
     for (let i = 0; i < lists.QnaLikes?.length; i++)
-      if (lists.QnaLikes[i].user_name === user_name) is_honey_tip = true;
+      if (lists.QnaLikes[i].userName === userName) isLike = true;
 
     return {
       id: lists.id,
       title: lists.title,
       content: lists.content,
-      user_name: lists.user_name,
-      profile_img: lists.User.profile_img,
-      is_resolve: lists.is_resolve,
-      honey_tip: lists.QnaLikes.length,
-      is_honey_tip,
+      userName: lists.userName,
+      profileImg: lists.User.profileImg,
+      isResolve: lists.isResolve,
+      like: lists.QnaLikes.length,
+      isLike,
       createdAt: lists.createdAt,
       category: lists.category,
       tag,
     };
   };
 
-  AddBookMark = async (qna_id, user_name) => {
+  AddBookMark = async (qnaId, userName) => {
     const existLike = await QnaBookmark.findOne({
-      where: { qna_id, user_name },
+      where: { qnaId, userName },
     });
     if (existLike) throw new ConflictException('반복해서 눌렀습니다.');
-    else await QnaBookmark.create({ qna_id, user_name });
+    else await QnaBookmark.create({ qnaId, userName });
   };
 
-  RemoveBookMark = async (qna_id, user_name) => {
+  RemoveBookMark = async (qnaId, userName) => {
     const existLike = await QnaBookmark.findOne({
-      where: { qna_id, user_name },
+      where: { qnaId, userName },
     });
     if (!existLike) throw new ConflictException('반복해서 눌렀습니다.');
-    else await QnaBookmark.destroy({ where: { qna_id, user_name } });
+    else await QnaBookmark.destroy({ where: { qnaId, userName } });
   };
 
-  LikeQna = async (qna_id, user_name) => {
-    const existLike = await QnaLike.findOne({ where: { qna_id, user_name } });
+  LikeQna = async (qnaId, userName) => {
+    const existLike = await QnaLike.findOne({ where: { qnaId, userName } });
     if (existLike) throw new ConflictException('반복해서 눌렀습니다.');
-    else await QnaLike.create({ qna_id, user_name });
+    else await QnaLike.create({ qnaId, userName });
   };
 
-  RemoveLikeQna = async (qna_id, user_name) => {
-    const existLike = await QnaLike.findOne({ where: { qna_id, user_name } });
+  RemoveLikeQna = async (qnaId, userName) => {
+    const existLike = await QnaLike.findOne({ where: { qnaId, userName } });
     if (!existLike) throw new ConflictException('반복해서 눌렀습니다.');
-    else await QnaLike.destroy({ where: { qna_id, user_name } });
+    else await QnaLike.destroy({ where: { qnaId, userName } });
   };
 
-  FindBookMark = async (user_name, page, page_count) => {
+  FindBookMark = async (userName, page, page_count) => {
     if (!page_count) throw new BadRequestException('page_count is null');
     const bookmarkLists = await QnaBookmark.findAll({
       offset: page * page_count,
       limit: page_count,
-      where: { user_name },
+      where: { userName },
       attributes: [],
       include: [
-        { model: Qna, attributes: ['id', 'title', 'createdAt', 'user_name'] },
+        { model: Qna, attributes: ['id', 'title', 'createdAt', 'userName'] },
       ],
     });
     return bookmarkLists.map((list) => {
@@ -180,12 +180,12 @@ class QnaService {
         id: list.Qna.id,
         title: list.Qna.title,
         createdAt: list.Qna.createdAt,
-        user_name: list.Qna.user_name,
+        userName: list.Qna.userName,
       };
     });
   };
 
-  FindCategories = async (category, page, page_count, user_name) => {
+  FindCategories = async (category, page, page_count, userName) => {
     if (!page_count) throw new BadRequestException('page_count is null');
     const filterlists = await Qna.findAll({
       offset: page * page_count,
@@ -195,38 +195,38 @@ class QnaService {
         exclude: ['updatedAt', 'UserId', 'content'],
       },
       include: [
-        { model: User, attributes: ['profile_img'] },
+        { model: User, attributes: ['profileImg'] },
         { model: QnaComment, attributes: ['id'] },
         { model: QnaTag, attributes: ['tag'] },
-        { model: QnaLike, attributes: ['id', 'user_name'] },
-        { model: QnaBookmark, attributes: ['user_name'] },
+        { model: QnaLike, attributes: ['id', 'userName'] },
+        { model: QnaBookmark, attributes: ['userName'] },
       ],
     });
 
     return filterlists.map((list) => {
       let tag = [];
-      let is_bookmark = false;
-      let is_honey_tip = false;
+      let isBookmark = false;
+      let isLike = false;
       for (let i = 0; i < list.QnaTags.length; i++) {
         tag.push(list.QnaTags[i]?.tag);
       }
       for (let i = 0; i < list.QnaBookmarks.length; i++) {
-        if (list.QnaBookmarks[i]?.user_name === user_name) is_bookmark = true;
+        if (list.QnaBookmarks[i]?.userName === userName) isBookmark = true;
       }
       for (let i = 0; i < list.QnaLikes.length; i++) {
-        if (list.QnaLikes[i]?.user_name === user_name) is_honey_tip = true;
+        if (list.QnaLikes[i]?.userName === userName) isLike = true;
       }
 
       return {
         id: list.id,
         title: list.title,
-        profile_img: list.User.profile_img,
-        user_name: list.user_name,
-        honey_tip: list.QnaLikes.length,
+        profileImg: list.User.profileImg,
+        userName: list.userName,
+        like: list.QnaLikes.length,
         cntcomment: list.QnaComments.length,
-        is_resolve: list.is_resolve,
-        is_honey_tip,
-        is_bookmark,
+        isResolve: list.isResolve,
+        isLike,
+        isBookmark,
         category: list.category,
         createdAt: list.createdAt,
         tag,
@@ -234,11 +234,11 @@ class QnaService {
     });
   };
 
-  FindUserQna = async (user_name, compare_id) => {
-    const is_mine = user_name * 1 === compare_id;
+  FindUserQna = async (userName, compare_id) => {
+    const is_mine = userName * 1 === compare_id;
     const qnalists = await Qna.findAll({
-      where: { user_name },
-      attributes: ['id', 'title', 'is_resolve', 'createdAt'],
+      where: { userName },
+      attributes: ['id', 'title', 'isResolve', 'createdAt'],
     });
     return { is_mine, qnalists };
   };
