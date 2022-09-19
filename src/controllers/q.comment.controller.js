@@ -1,19 +1,19 @@
-import QnaCommentService from '../services/q_comment_service.js';
+import QnaCommentService from '../services/q.comment.service.js';
 
-import exceptionHandler from '../errorhandler/customException_handler.js';
+import exceptionHandler from '../errorhandler/customException.handler.js';
 
 class QnaCommentController {
   qnaCommentService = new QnaCommentService();
 
   CreateQnaComment = async (req, res, next) => {
-    const qna_id = req.params.id;
+    const qnaId = req.params.id;
     const { comment } = req.body;
-    const { name } = req.decoded;
+    const { userName } = req.decoded;
 
     try {
       const data = await this.qnaCommentService.CreateQnaComment(
-        qna_id,
-        name,
+        qnaId,
+        userName,
         comment
       );
 
@@ -33,11 +33,11 @@ class QnaCommentController {
   FindAllComment = async (req, res, next) => {
     const { page_count, page } = req.query;
     const { id } = req.params;
-    const user_name = req.user?.name;
+    const userName = req.user?.userName;
     try {
       const data = await this.qnaCommentService.FindAllComment(
         id,
-        user_name,
+        userName,
         page_count * 1,
         page * 1
       );
@@ -55,10 +55,10 @@ class QnaCommentController {
   };
 
   LikeComment = async (req, res, next) => {
-    const { name } = req.decoded;
+    const { userName } = req.decoded;
     const { id } = req.params;
     try {
-      await this.qnaCommentService.LikeComment(id, name);
+      await this.qnaCommentService.LikeComment(id, userName);
       return res.status(200).json({ success: true, message: '댓글 추천 완료' });
     } catch (err) {
       console.log(err);
@@ -71,10 +71,10 @@ class QnaCommentController {
   };
 
   RemoveLikeComment = async (req, res, next) => {
-    const { name } = req.decoded;
+    const { userName } = req.decoded;
     const { id } = req.params;
     try {
-      await this.qnaCommentService.RemoveLikeComment(id, name);
+      await this.qnaCommentService.RemoveLikeComment(id, userName);
       return res.status(200).json({ success: true, message: '댓글 삭제 완료' });
     } catch (err) {
       console.log(err);
@@ -88,10 +88,10 @@ class QnaCommentController {
 
   ChooseComment = async (req, res, next) => {
     const comment_id = req.params.id;
-    const user_name = req.decoded.name;
+    const userName = req.decoded.userName;
 
     try {
-      await this.qnaCommentService.ChooseComment(comment_id, user_name);
+      await this.qnaCommentService.ChooseComment(comment_id, userName);
       return res.status(200).json({ success: true, message: '댓글 채택 완료' });
     } catch (err) {
       console.log(err);

@@ -1,5 +1,5 @@
-import exceptionHandler from '../errorhandler/customException_handler.js';
-import SearchService from '../services/search_service.js';
+import exceptionHandler from '../errorhandler/customException.handler.js';
+import SearchService from '../services/search.service.js';
 
 class SearchCotroller {
   searchService = new SearchService();
@@ -7,11 +7,11 @@ class SearchCotroller {
   QnaSearch = async (req, res, next) => {
     const { page_count, page } = req.query;
     const { q } = req.query;
-    const user_name = req.user?.name;
+    const userName = req.user?.userName;
     try {
       const data = await this.searchService.QnaSearch(
         q,
-        user_name,
+        userName,
         page_count * 1,
         page * 1
       );
@@ -31,11 +31,11 @@ class SearchCotroller {
   PostSearch = async (req, res, next) => {
     const { page_count, page } = req.query;
     const { q } = req.query;
-    const user_name = req.user?.name;
+    const userName = req.user?.userName;
     try {
       const data = await this.searchService.PostSearch(
         q,
-        user_name,
+        userName,
         page_count * 1,
         page * 1
       );
