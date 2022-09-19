@@ -26,7 +26,7 @@ const github = () => {
       async (accessToken, refreshToken, profile, done) => {
         try {
           const exUser = await User.findOne({
-            where: { user_name: profile.username },
+            where: { userName: profile.username },
           });
           if (exUser) {
             done(null, exUser);
