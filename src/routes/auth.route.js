@@ -22,9 +22,9 @@ router.get(
     const token = jwt.sign(
       {
         userId: req.user.id,
-        userName: req.user.user_name,
-        isNew: req.user.is_new,
-        profileImg: req.user.profile_img,
+        userName: req.user.userName,
+        isNew: req.user.isNew,
+        profileImg: req.user.profileImg,
       },
       process.env.JWT_SECRET,
       {
@@ -32,9 +32,7 @@ router.get(
       }
     );
 
-    return res.redirect(
-      `http://qb-chaning.s3-website.ap-northeast-2.amazonaws.com/login?token=${token}`
-    );
+    return res.redirect(`http://localhost:3000/login?token=${token}`);
   }
 );
 
