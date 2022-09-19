@@ -17,11 +17,11 @@ export default class QnaBookmark extends Sequelize.Model {
     );
   }
   static associate(db) {
-    db.qna_bookmark.belongsTo(db.qna, {
+    db.qnaBookmark.belongsTo(db.qna, {
       foreignKey: 'qnaId',
       targetKey: 'id',
     });
-    db.qna_bookmark.belongsTo(db.user, {
+    db.qnaBookmark.belongsTo(db.user, {
       foreignKey: 'userName',
       targetKey: 'userName',
     });
