@@ -20,7 +20,7 @@ export default class QnaTag extends Sequelize.Model {
     );
   }
   static associate(db) {
-    db.qna_tag.belongsTo(db.qna, {
+    db.qnaTag.belongsTo(db.qna, {
       foreignKey: 'qnaId',
       targetKey: 'id',
     });
