@@ -16,24 +16,24 @@ import QnaBookmark from '../models/qna.bookmark.js';
 import Notification from '../models/noti.js';
 
 class QnaCommentService {
-  CreateQnaComment = async (qna_id, user_name, comment) => {
+  CreateQnaComment = async (qnaId, userName, comment) => {
     if (!comment) throw new BadRequestException('내용 입력은 필수');
 
-    const existQna = await Qna.findOne({ where: { id: qna_id } });
+    const existQna = await Qna.findOne({ where: { id: qnaId } });
     if (!existQna) throw new NotFoundException('게시물이 존재 하지 않음');
 
-    const commentdata = await QnaComment.create({ qna_id, user_name, comment });
+    const commentdata = await QnaComment.create({ qnaId, userName, comment });
 
     const findQna = await QnaBookmark.findAll({
-      where: { qna_id },
+      where: { qnaId },
     });
 
     if (findQna.length === 0) {
       await Notification.create({
         type: 'qna',
         check: false,
-        qna_id: existQna.id,
-        user_name: existQna.user_name,
+        qnaId: existQna.id,
+        userName: existQna.userName,
       });
     }
 
@@ -42,88 +42,87 @@ class QnaCommentService {
         await Notification.create({
           type: 'qna',
           check: false,
-          qna_id,
-          user_name: findQna[i].user_name,
+          qnaId,
+          userName: findQna[i].userName,
         });
       }
     }
     return {
       id: commentdata.id,
       comment: commentdata.comment,
-      user_name: commentdata.user_name,
+      userName: commentdata.userName,
       createdAt: commentdata.createdAt,
     };
   };
 
-  FindAllComment = async (qna_id, user_name, page_count, page) => {
+  FindAllComment = async (qnaId, userName, page_count, page) => {
     if (!page_count) throw new BadRequestException('page_count is null');
     const commentLists = await QnaComment.findAll({
-      where: { qna_id },
+      where: { qnaId },
       offset: page_count * page,
       limit: page_count,
       attributes: {
-        include: ['id', 'comment', 'is_choose', 'createdAt', 'user_name'],
+        include: ['id', 'comment', 'isChoose', 'createdAt', 'userName'],
       },
       include: [
-        { model: QnaCommentLike, attributes: ['user_name'] },
-        { model: User, attributes: ['profile_img'] },
+        { model: QnaCommentLike, attributes: ['userName'] },
+        { model: User, attributes: ['profileImg'] },
       ],
     });
     return commentLists
       .map((list) => {
-        let is_honey_tip = false;
+        let isLike = false;
 
         for (let i = 0; i < list.QnaCommentLikes?.length; i++) {
-          if (list.QnaCommentLikes[i]?.user_name === user_name)
-            is_honey_tip = true;
+          if (list.QnaCommentLikes[i]?.userName === userName) isLike = true;
         }
 
         return {
           id: list.id,
           comment: list.comment,
-          user_name: list.user_name,
-          profile_img: list.User.profile_img,
+          userName: list.userName,
+          profileImg: list.User.profileImg,
           createdAt: list.createdAt,
-          honey_tip: list.QnaCommentLikes.length,
-          is_choose: list.is_choose,
-          is_honey_tip,
+          like: list.QnaCommentLikes.length,
+          isChoose: list.isChoose,
+          isLike,
         };
       })
       .sort((a, b) => {
-        a = a.honey_tip;
-        b = b.honey_tip;
+        a = a.like;
+        b = b.like;
         return b - a;
       });
   };
 
-  LikeComment = async (qna_comment_id, user_name) => {
+  LikeComment = async (qnaCommentId, userName) => {
     const existLike = await QnaCommentLike.findOne({
-      where: { qna_comment_id, user_name },
+      where: { qnaCommentId, userName },
     });
     if (existLike) throw new ConflictException('반복해서 눌렀습니다.');
-    else await QnaCommentLike.create({ qna_comment_id, user_name });
+    else await QnaCommentLike.create({ qnaCommentId, userName });
   };
 
-  RemoveLikeComment = async (qna_comment_id, user_name) => {
+  RemoveLikeComment = async (qnaCommentId, userName) => {
     const existLike = await QnaCommentLike.findOne({
-      where: { qna_comment_id, user_name },
+      where: { qnaCommentId, userName },
     });
     if (!existLike) throw new ConflictException('반복해서 눌렀습니다.');
-    else await QnaCommentLike.destroy({ where: { qna_comment_id, user_name } });
+    else await QnaCommentLike.destroy({ where: { qnaCommentId, userName } });
   };
 
-  ChooseComment = async (qna_comment_id, user_name) => {
-    const existComment = await QnaComment.findByPk(qna_comment_id);
+  ChooseComment = async (qnaCommentId, userName) => {
+    const existComment = await QnaComment.findByPk(qnaCommentId);
     if (!existComment) throw new ConflictException('존재하지 않는 댓글입니다.');
 
     const qna = await existComment.getQna();
-    if (qna.user_name !== user_name)
+    if (qna.userName !== userName)
       throw new ConflictException('채택은 게시글 작성자만 가능합니다.');
     else {
-      await Qna.update({ is_resolve: true }, { where: { id: qna.id } });
+      await Qna.update({ isResolve: true }, { where: { id: qna.id } });
       await QnaComment.update(
-        { is_choose: true },
-        { where: { id: qna_comment_id } }
+        { isChoose: true },
+        { where: { id: qnaCommentId } }
       );
     }
   };

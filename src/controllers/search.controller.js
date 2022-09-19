@@ -1,5 +1,5 @@
-import exceptionHandler from '../errorhandler/customException_handler.js';
-import SearchService from '../services/search_service.js';
+import exceptionHandler from '../errorhandler/customException.handler.js';
+import SearchService from '../services/search.service.js';
 
 class SearchCotroller {
   searchService = new SearchService();

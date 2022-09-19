@@ -1,5 +1,5 @@
 import PostService from '../services/post_service.js';
-import exceptionHandler from '../errorhandler/customException_handler.js';
+import exceptionHandler from '../errorhandler/customException.handler.js';
 
 export default class PostController {
   postService = new PostService();

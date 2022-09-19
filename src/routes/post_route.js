@@ -1,7 +1,7 @@
 import express from 'express';
 import PostController from '../controllers/post_controller.js';
 import verifyToken from '../middlewares/auth.js';
-import check_signin from '../middlewares/check_signin.js';
+import check_signin from '../middlewares/check.signin.js';
 import SearchCotroller from '../controllers/search_controller.js';
 const router = express.Router();
 
