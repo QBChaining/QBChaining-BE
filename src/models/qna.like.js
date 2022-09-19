@@ -17,11 +17,11 @@ export default class QnaLike extends Sequelize.Model {
     );
   }
   static associate(db) {
-    db.qna_like.belongsTo(db.qna, {
+    db.qnaLike.belongsTo(db.qna, {
       foreignKey: 'qnaId',
       targetKey: 'id',
     });
-    db.qna_like.belongsTo(db.user, {
+    db.qnaLike.belongsTo(db.user, {
       foreignKey: 'userName',
       targetKey: 'userName',
     });
