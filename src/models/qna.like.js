@@ -22,7 +22,7 @@ export default class QnaLike extends Sequelize.Model {
       targetKey: 'id',
     });
     db.qnaLike.belongsTo(db.user, {
-      sourceKey: 'userName',
+      targetKey: 'userName',
       foreignKey: 'userName',
     });
   }

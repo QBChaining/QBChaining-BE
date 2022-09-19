@@ -62,23 +62,23 @@ export default class User extends Sequelize.Model {
       foreignKey: 'userName',
     });
     db.user.hasMany(db.post, {
+      sourceKey: 'userName',
       foreignKey: 'userName',
-      targetKey: 'userName',
       onDelete: 'cascade',
     });
     db.user.hasMany(db.postLike, {
       foreignKey: 'userName',
-      targetKey: 'userName',
+      sourceKey: 'userName',
       onDelete: 'cascade',
     });
     db.user.hasMany(db.postComment, {
       foreignKey: 'userName',
-      targetKey: 'userName',
+      sourceKey: 'userName',
       onDelete: 'cascade',
     });
     db.user.hasMany(db.notification, {
       foreignKey: 'userName',
-      targetKey: 'userName',
+      sourceKey: 'userName',
     });
   }
 }
