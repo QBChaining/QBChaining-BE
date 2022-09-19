@@ -1,5 +1,5 @@
 import PostCommentServices from '../services/post.comment.service.js';
-import exceptionHandler from '../errorhandler/customException_handler.js';
+import exceptionHandler from '../errorhandler/customException.handler.js';
 
 export default class PostCommentController {
   postCommentServices = new PostCommentServices();
