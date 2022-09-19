@@ -9,7 +9,7 @@ export default class QnaBookmark extends Sequelize.Model {
       {
         sequelize,
         timestamps: false,
-        underscored: true,
+        underscored: false,
         tableName: 'qna_bookmark',
         charset: 'utf8',
         collate: 'utf8_general_ci',
@@ -18,12 +18,12 @@ export default class QnaBookmark extends Sequelize.Model {
   }
   static associate(db) {
     db.qna_bookmark.belongsTo(db.qna, {
-      foreignKey: 'qna_id',
+      foreignKey: 'qnaId',
       targetKey: 'id',
     });
     db.qna_bookmark.belongsTo(db.user, {
-      foreignKey: 'user_name',
-      targetKey: 'user_name',
+      foreignKey: 'userName',
+      targetKey: 'userName',
     });
   }
 }

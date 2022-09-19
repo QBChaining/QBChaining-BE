@@ -10,10 +10,10 @@ import {
 
 import User from '../models/user.js';
 import Qna from '../models/qna.js';
-import QnaTag from '../models/qna_tag.js';
-import QnaLike from '../models/qna_like.js';
-import QnaComment from '../models/qna_comment.js';
-import QnaBookmark from '../models/qna_bookmark.js';
+import QnaTag from '../models/qna.tag.js';
+import QnaLike from '../models/qna.like.js';
+import QnaComment from '../models/qna.comment.js';
+import QnaBookmark from '../models/qna.bookmark.js';
 import Post from '../models/post.js';
 import PostTag from '../models/post_tag.js';
 import PostLike from '../models/post_like.js';
