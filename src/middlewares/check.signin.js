@@ -1,6 +1,6 @@
-import exceptionHandler from '../errorhandler/customException_handler.js';
+import exceptionHandler from '../errorhandler/customException.handler.js';
 import Jwt from 'jsonwebtoken';
-const check_signin = (req, res, next) => {
+export default checkSignin = (req, res, next) => {
   if (!req.headers.authorization) return next();
   try {
     const [type, value] = req.headers.authorization.split(' ');
@@ -14,4 +14,3 @@ const check_signin = (req, res, next) => {
       .json({ success: exception.success, message: exception.message });
   }
 };
-export default check_signin;
