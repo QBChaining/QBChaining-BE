@@ -22,9 +22,9 @@ router.get(
     const token = jwt.sign(
       {
         userId: req.user.id,
-        userName: req.user.user_name,
-        isNew: req.user.is_new,
-        profileImg: req.user.profile_img,
+        userName: req.user.userName,
+        isNew: req.user.isNew,
+        profileImg: req.user.profileImg,
       },
       process.env.JWT_SECRET,
       {
