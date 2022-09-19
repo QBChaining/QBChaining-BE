@@ -22,7 +22,7 @@ export default class QnaCommentLike extends Sequelize.Model {
     );
   }
   static associate(db) {
-    db.qna_comment_like.belongsTo(db.qnaComment, {
+    db.qnaCommentLike.belongsTo(db.qnaComment, {
       foreignKey: 'qnaCommentId',
       targetKey: 'id',
     });
