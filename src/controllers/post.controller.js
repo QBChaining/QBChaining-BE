@@ -1,13 +1,13 @@
 import PostService from '../services/post.service.js';
-import exceptionHandler from '../errorhandler/customException_handler.js';
+import exceptionHandler from '../errorhandler/customException.handler.js';
 
 export default class PostController {
   postService = new PostService();
 
   PostShowAll = async (req, res, next) => {
-    const user_name = req.user?.name;
+    const userName = req.user?.name;
     try {
-      const postShowAll = await this.postService.PostShowAll(user_name);
+      const postShowAll = await this.postService.PostShowAll(userName);
       return res.status(200).json({
         success: true,
         message: '조회 성공',
@@ -25,9 +25,9 @@ export default class PostController {
   };
 
   PostShowComment = async (req, res, next) => {
-    const user_name = req.user?.name;
+    const userName = req.user?.name;
     try {
-      const postShowComment = await this.postService.PostShowComment(user_name);
+      const postShowComment = await this.postService.PostShowComment(userName);
       return res.status(200).json({
         success: true,
         message: '조회 성공1',
@@ -44,9 +44,9 @@ export default class PostController {
   };
 
   PostShowLike = async (req, res, next) => {
-    const user_name = req.user?.name;
+    const userName = req.user?.name;
     try {
-      const postShowAll = await this.postService.PostShowLike(user_name);
+      const postShowAll = await this.postService.PostShowLike(userName);
       return res.status(200).json({
         success: true,
         message: '조회 성공',
@@ -63,9 +63,9 @@ export default class PostController {
   };
 
   PostShowhit = async (req, res, next) => {
-    const user_name = req.user?.name;
+    const userName = req.user?.name;
     try {
-      const postShowhit = await this.postService.PostShowhit(user_name);
+      const postShowhit = await this.postService.PostShowhit(userName);
       return res.status(200).json({
         success: true,
         message: '히트상품조회성공',
@@ -82,13 +82,10 @@ export default class PostController {
   };
 
   PostShowOne = async (req, res, next) => {
-    const user_name = req.user?.name;
-    const post_id = req.params.post_id;
+    const userName = req.user?.name;
+    const postId = req.params.postId;
     try {
-      const postShowOne = await this.postService.PostShowOne(
-        user_name,
-        post_id
-      );
+      const postShowOne = await this.postService.PostShowOne(userName, postId);
 
       return res.status(200).json({
         success: true,
@@ -106,14 +103,14 @@ export default class PostController {
   };
 
   PostShowMy = async (req, res, next) => {
-    const user_name = req.params.user_name;
-    const user_name1 = req.user?.name;
-    const profile_img = req.user?.profile_img;
+    const userName = req.params.userName;
+    const userName1 = req.user?.name;
+    const profileImg = req.user?.profileImg;
     try {
       const PostShowMy = await this.postService.PostShowMy(
-        user_name,
-        user_name1,
-        profile_img
+        userName,
+        userName1,
+        profileImg
       );
 
       return res.status(200).json({
@@ -133,15 +130,15 @@ export default class PostController {
 
   PostCreate = async (req, res, next) => {
     const { title, content, tag } = req.body;
-    const user_name = req.decoded.name;
-    const profile_img = req.decoded.profile_img;
+    const userName = req.decoded.name;
+    const profileImg = req.decoded.profileImg;
     try {
       const postCreate = await this.postService.PostCreate(
         title,
         content,
         tag,
-        user_name,
-        profile_img
+        userName,
+        profileImg
       );
       return res.status(200).json({
         success: true,
@@ -160,21 +157,21 @@ export default class PostController {
   };
 
   PostUpdate = async (req, res, next) => {
-    const user_name = req.decoded.name;
+    const userName = req.decoded.name;
     const title = req.body.title;
     const content = req.body.content;
     const tag = req.body.tag;
-    const post_id = req.params.post_id;
-    const profile_img = req.decoded.profile_img;
+    const postId = req.params.postId;
+    const profileImg = req.decoded.profileImg;
 
     try {
       const postUpdate = await this.postService.PostUpdate(
         title,
         content,
         tag,
-        user_name,
-        post_id,
-        profile_img
+        userName,
+        postId,
+        profileImg
       );
 
       return res.status(200).json({
@@ -193,11 +190,11 @@ export default class PostController {
   };
 
   PostDelete = async (req, res, next) => {
-    const user_name = req.decoded.name;
-    const post_id = req.params.post_id;
+    const userName = req.decoded.name;
+    const postId = req.params.postId;
 
     try {
-      const postDelete = await this.postService.PostDelete(post_id, user_name);
+      const postDelete = await this.postService.PostDelete(postId, userName);
       return res.status(200).json({
         success: true,
         message: '삭제 성공',
@@ -211,9 +208,9 @@ export default class PostController {
     }
   };
   PostLikeShow = async (req, res, next) => {
-    const user_name = req.decoded.name;
+    const userName = req.decoded.name;
     try {
-      const post = await this.postService.PostLikeShow(user_name);
+      const post = await this.postService.PostLikeShow(userName);
       return res.status(200).json({
         success: true,
         message: 'success',
@@ -230,10 +227,10 @@ export default class PostController {
   };
 
   PostLike = async (req, res, next) => {
-    const user_name = req.decoded.name;
-    const post_id = req.params.post_id;
+    const userName = req.decoded.name;
+    const postId = req.params.postId;
     try {
-      const postLike = await this.postService.PostLike(post_id, user_name);
+      const postLike = await this.postService.PostLike(postId, userName);
       return res.status(200).json({
         success: true,
         message: '좋아요 성공',
@@ -249,12 +246,12 @@ export default class PostController {
   };
 
   PostLikeDelete = async (req, res, next) => {
-    const user_name = req.decoded.name;
-    const post_id = req.params.post_id;
+    const userName = req.decoded.name;
+    const postId = req.params.postId;
     try {
       const postLikeDelete = await this.postService.PostLikeDelete(
-        post_id,
-        user_name
+        postId,
+        userName
       );
       return res.status(200).json({
         success: true,
@@ -271,13 +268,13 @@ export default class PostController {
   };
 
   PostBookMark = async (req, res, next) => {
-    const user_name = req.decoded.name;
-    const post_id = req.params.post_id;
+    const userName = req.decoded.name;
+    const postId = req.params.postId;
 
     try {
       const PostBookMark = await this.postService.PostBookMark(
-        post_id,
-        user_name
+        postId,
+        userName
       );
       return res.status(200).json({
         success: true,
@@ -294,13 +291,13 @@ export default class PostController {
   };
 
   PostBookMarkDelete = async (req, res, next) => {
-    const user_name = req.decoded.name;
-    const post_id = req.params.post_id;
+    const userName = req.decoded.name;
+    const postId = req.params.postId;
 
     try {
       const PostBookMark = await this.postService.PostBookMarkDelete(
-        post_id,
-        user_name
+        postId,
+        userName
       );
       return res.status(200).json({
         success: true,
@@ -317,11 +314,11 @@ export default class PostController {
   };
 
   PostBookMarkView = async (req, res, next) => {
-    const user_name = req.decoded.name;
+    const userName = req.decoded.name;
 
     try {
       const PostBookMarkView = await this.postService.PostBookMarkView(
-        user_name
+        userName
       );
       return res.status(200).json({
         success: true,
@@ -340,13 +337,13 @@ export default class PostController {
 
   PostTagShow = async (req, res, next) => {
     const tag = req.query.tag;
-    const user_name = req.user?.name;
-    const profile_img = req.user.profile_img;
+    const userName = req.user?.name;
+    const profileImg = req.user.profileImg;
     try {
       const postTagShow = await this.postService.PostTagShow(
         tag,
-        user_name,
-        profile_img
+        userName,
+        profileImg
       );
       return res.status(200).json({
         success: true,
