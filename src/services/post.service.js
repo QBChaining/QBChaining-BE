@@ -23,6 +23,7 @@ export default class PostServices {
       ],
       order: [['createdAt', 'DESC']],
     });
+    console.log(post);
 
     return post.map((post) => {
       const postTag = [];

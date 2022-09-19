@@ -28,32 +28,32 @@ export default class Post extends Sequelize.Model {
   static associate(db) {
     db.post.hasMany(db.postComment, {
       foreignKey: 'postId',
-      targetKey: 'id',
+      sourceKey: 'id',
       onDelete: 'cascade',
     });
     db.post.belongsTo(db.user, {
       foreignKey: 'userName',
-      targetKey: 'userName',
+      sourceKey: 'userName',
       onDelete: 'cascade',
     });
     db.post.hasMany(db.postLike, {
       foreignKey: 'postId',
-      targetKey: 'id',
+      sourceKey: 'id',
       onDelete: 'cascade',
     });
     db.post.hasMany(db.postBookmark, {
       foreignKey: 'postId',
-      targetKey: 'id',
+      sourceKey: 'id',
       onDelete: 'cascade',
     });
     db.post.hasMany(db.postTag, {
       foreignKey: 'postId',
-      targetKey: 'id',
+      sourceKey: 'id',
       onDelete: 'cascade',
     });
     db.post.hasMany(db.notification, {
       foreignKey: 'postId',
-      targetKey: 'id',
+      sourceKey: 'id',
       onDelete: 'cascade',
     });
   }

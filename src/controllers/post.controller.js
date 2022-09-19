@@ -132,6 +132,7 @@ export default class PostController {
   PostCreate = async (req, res, next) => {
     const { title, content, tag } = req.body;
     const { userName, profileImg } = req.decoded;
+    console.log(req.decoded);
     try {
       const postCreate = await this.postService.PostCreate(
         title,
