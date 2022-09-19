@@ -9,8 +9,8 @@ export default class PostLike extends Sequelize.Model {
       {
         sequelize,
         timestamps: false,
-        underscored: true,
-        tableName: 'post_like',
+        underscored: false,
+        tableName: 'postLike',
         charset: 'utf8',
         collate: 'utf8_general_ci',
       }
@@ -18,13 +18,13 @@ export default class PostLike extends Sequelize.Model {
   }
   static associate(db) {
     db.post_like.belongsTo(db.post, {
-      foreignKey: 'post_id',
+      foreignKey: 'postId',
       targetKey: 'id',
       onDelete: 'cascade',
     });
     db.post_like.belongsTo(db.user, {
-      foreignKey: 'user_name',
-      targetKey: 'user_name',
+      foreignKey: 'userName',
+      targetKey: 'userName',
       onDelete: 'cascade',
     });
   }

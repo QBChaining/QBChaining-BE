@@ -1,9 +1,9 @@
 import Post from '../models/post.js';
 import User from '../models/user.js';
-import PostComment from '../models/post_comment.js';
-import PostLike from '../models/post_like.js';
-import PostBookmark from '../models/post_bookmark.js';
-import PostTag from '../models/post_tag.js';
+import PostComment from '../models/post.comment.js';
+import PostLike from '../models/post.like.js';
+import PostBookmark from '../models/post.bookmark.js';
+import PostTag from '../models/post.tag.js';
 import {
   BadRequestException,
   ConflictException,
@@ -37,7 +37,7 @@ export default class PostServices {
           is_bookmark = true;
         }
       }
-
+      // cntcomment
       return {
         id: post.id,
         title: post.title,

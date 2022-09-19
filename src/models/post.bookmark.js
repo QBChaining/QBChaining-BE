@@ -11,8 +11,8 @@ export default class PostBookmark extends Sequelize.Model {
       {
         sequelize,
         timestamps: false,
-        underscored: true,
-        tableName: 'post_bookmark',
+        underscored: false,
+        tableName: 'postBookmark',
         charset: 'utf8',
         collate: 'utf8_general_ci',
       }
@@ -20,13 +20,13 @@ export default class PostBookmark extends Sequelize.Model {
   }
   static associate(db) {
     db.post_bookmark.belongsTo(db.post, {
-      foreignKey: 'post_id',
+      foreignKey: 'postId',
       targetKey: 'id',
       onDelete: 'cascade',
     });
     db.post_bookmark.belongsTo(db.user, {
-      foreignKey: 'user_name',
-      targetKey: 'user_name',
+      foreignKey: 'userName',
+      targetKey: 'userName',
       onDelete: 'cascade',
     });
   }

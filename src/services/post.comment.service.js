@@ -1,4 +1,4 @@
-import PostComment from '../models/post_comment.js';
+import PostComment from '../models/post.comment.js';
 import User from '../models/user.js';
 import Post from '../models/post.js';
 import {
@@ -10,7 +10,7 @@ import {
   UnauthorizedException,
   UnkownException,
 } from '../exception/customException.js';
-import PostBookmark from '../models/post_bookmark.js';
+import PostBookmark from '../models/post.bookmark.js';
 import Notification from '../models/noti.js';
 
 export default class PostCommentServices {

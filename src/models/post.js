@@ -18,7 +18,7 @@ export default class Post extends Sequelize.Model {
       {
         sequelize,
         timestamps: true,
-        underscored: true,
+        underscored: false,
         tableName: 'post',
         charset: 'utf8',
         collate: 'utf8_general_ci',
@@ -31,8 +31,8 @@ export default class Post extends Sequelize.Model {
       onUpdate: 'cascade',
     });
     db.post.belongsTo(db.user, {
-      foreignKey: 'user_name',
-      targetKey: 'user_name',
+      foreignKey: 'userName',
+      targetKey: 'userName',
       onDelete: 'cascade',
       onUpdate: 'cascade',
     });
