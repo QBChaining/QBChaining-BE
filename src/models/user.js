@@ -43,49 +43,42 @@ export default class User extends Sequelize.Model {
   }
   static associate(db) {
     db.user.hasOne(db.userInfo, { foreignKey: 'user', sourceKey: 'id' });
+    db.user.hasMany(db.language);
+    db.user.hasMany(db.job);
+    db.user.hasMany(db.qna, {
+      sourceKey: 'userName',
+      foreignKey: 'userName',
+    });
+    db.user.hasMany(db.qnaComment, {
+      sourceKey: 'userName',
+      foreignKey: 'userName',
+    });
+    db.user.hasMany(db.qnaLike, {
+      sourceKey: 'userName',
+      foreignKey: 'userName',
+    });
+    db.user.hasMany(db.qnaBookmark, {
+      sourceKey: 'userName',
+      foreignKey: 'userName',
+    });
     db.user.hasMany(db.post, {
       foreignKey: 'userName',
       targetKey: 'userName',
       onDelete: 'cascade',
-    });
-    db.user.hasMany(db.language);
-    db.user.hasMany(db.job);
-    db.user.hasMany(db.qna, {
-      foreignKey: 'userName',
-      targetKey: 'userName',
     });
     db.user.hasMany(db.postLike, {
       foreignKey: 'userName',
       targetKey: 'userName',
       onDelete: 'cascade',
     });
-    db.user.hasMany(db.qnaLike, {
-      foreignKey: 'userName',
-      targetKey: 'userName',
-    });
     db.user.hasMany(db.postComment, {
       foreignKey: 'userName',
       targetKey: 'userName',
       onDelete: 'cascade',
     });
-    db.user.hasMany(db.postBookmark, {
-      foreignKey: 'userName',
-      targetKey: 'userName',
-      onDelete: 'cascade',
-    });
-    db.user.hasMany(db.qnaBookmark, {
-      foreignKey: 'userName',
-      targetKey: 'userName',
-    });
-    db.user.hasMany(db.qnaComment, {
-      foreignKey: 'userName',
-      targetKey: 'userName',
-      constraints: false,
-    });
     db.user.hasMany(db.notification, {
       foreignKey: 'userName',
       targetKey: 'userName',
-      onDelete: 'cascade',
     });
   }
 }

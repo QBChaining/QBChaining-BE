@@ -32,8 +32,8 @@ export default class QnaComment extends Sequelize.Model {
   }
   static associate(db) {
     db.qnaComment.belongsTo(db.user, {
+      sourceKey: 'userName',
       foreignKey: 'userName',
-      targetKey: 'userName',
     });
     db.qnaComment.belongsTo(db.qna, {
       foreignKey: 'qnaId',
