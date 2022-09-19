@@ -2,7 +2,7 @@ import express from 'express';
 import passport from 'passport';
 import verifyToken from '../middlewares/auth.js';
 import jwt from 'jsonwebtoken';
-import AuthController from '../controllers/authController.js';
+import AuthController from '../controllers/auth.controller.js';
 
 const router = express.Router();
 
