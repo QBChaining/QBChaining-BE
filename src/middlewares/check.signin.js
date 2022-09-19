@@ -1,6 +1,6 @@
 import exceptionHandler from '../errorhandler/customException.handler.js';
 import Jwt from 'jsonwebtoken';
-export default checkSignin = (req, res, next) => {
+export default (req, res, next) => {
   if (!req.headers.authorization) return next();
   try {
     const [type, value] = req.headers.authorization.split(' ');
