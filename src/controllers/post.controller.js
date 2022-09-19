@@ -5,7 +5,8 @@ export default class PostController {
   postService = new PostService();
 
   PostShowAll = async (req, res, next) => {
-    const userName = req.user?.name;
+    // 유저네임 저거 바꾸기
+    const userName = req.user?.userName;
     try {
       const postShowAll = await this.postService.PostShowAll(userName);
       return res.status(200).json({
@@ -25,7 +26,7 @@ export default class PostController {
   };
 
   PostShowComment = async (req, res, next) => {
-    const userName = req.user?.name;
+    const userName = req.user?.userName;
     try {
       const postShowComment = await this.postService.PostShowComment(userName);
       return res.status(200).json({
@@ -44,7 +45,7 @@ export default class PostController {
   };
 
   PostShowLike = async (req, res, next) => {
-    const userName = req.user?.name;
+    const userName = req.user?.userName;
     try {
       const postShowAll = await this.postService.PostShowLike(userName);
       return res.status(200).json({
@@ -63,7 +64,7 @@ export default class PostController {
   };
 
   PostShowhit = async (req, res, next) => {
-    const userName = req.user?.name;
+    const userName = req.user?.userName;
     try {
       const postShowhit = await this.postService.PostShowhit(userName);
       return res.status(200).json({
@@ -82,7 +83,7 @@ export default class PostController {
   };
 
   PostShowOne = async (req, res, next) => {
-    const userName = req.user?.name;
+    const userName = req.user?.userName;
     const postId = req.params.postId;
     try {
       const postShowOne = await this.postService.PostShowOne(userName, postId);
@@ -104,7 +105,7 @@ export default class PostController {
 
   PostShowMy = async (req, res, next) => {
     const userName = req.params.userName;
-    const userName1 = req.user?.name;
+    const userName1 = req.user?.userName;
     const profileImg = req.user?.profileImg;
     try {
       const PostShowMy = await this.postService.PostShowMy(
@@ -130,8 +131,7 @@ export default class PostController {
 
   PostCreate = async (req, res, next) => {
     const { title, content, tag } = req.body;
-    const userName = req.decoded.name;
-    const profileImg = req.decoded.profileImg;
+    const { userName, profileImg } = req.decoded;
     try {
       const postCreate = await this.postService.PostCreate(
         title,
@@ -157,12 +157,9 @@ export default class PostController {
   };
 
   PostUpdate = async (req, res, next) => {
-    const userName = req.decoded.name;
-    const title = req.body.title;
-    const content = req.body.content;
-    const tag = req.body.tag;
+    const { userName, profileImg } = req.decoded;
+    const { title, content, tag } = req.body;
     const postId = req.params.postId;
-    const profileImg = req.decoded.profileImg;
 
     try {
       const postUpdate = await this.postService.PostUpdate(
@@ -190,7 +187,7 @@ export default class PostController {
   };
 
   PostDelete = async (req, res, next) => {
-    const userName = req.decoded.name;
+    const { userName } = req.decoded;
     const postId = req.params.postId;
 
     try {
@@ -208,7 +205,7 @@ export default class PostController {
     }
   };
   PostLikeShow = async (req, res, next) => {
-    const userName = req.decoded.name;
+    const { userName } = req.decoded;
     try {
       const post = await this.postService.PostLikeShow(userName);
       return res.status(200).json({
@@ -227,7 +224,7 @@ export default class PostController {
   };
 
   PostLike = async (req, res, next) => {
-    const userName = req.decoded.name;
+    const { userName } = req.decoded;
     const postId = req.params.postId;
     try {
       const postLike = await this.postService.PostLike(postId, userName);
@@ -246,7 +243,7 @@ export default class PostController {
   };
 
   PostLikeDelete = async (req, res, next) => {
-    const userName = req.decoded.name;
+    const { userName } = req.decoded;
     const postId = req.params.postId;
     try {
       const postLikeDelete = await this.postService.PostLikeDelete(
@@ -268,7 +265,7 @@ export default class PostController {
   };
 
   PostBookMark = async (req, res, next) => {
-    const userName = req.decoded.name;
+    const { userName } = req.decoded;
     const postId = req.params.postId;
 
     try {
@@ -291,7 +288,7 @@ export default class PostController {
   };
 
   PostBookMarkDelete = async (req, res, next) => {
-    const userName = req.decoded.name;
+    const { userName } = req.decoded;
     const postId = req.params.postId;
 
     try {
@@ -314,7 +311,7 @@ export default class PostController {
   };
 
   PostBookMarkView = async (req, res, next) => {
-    const userName = req.decoded.name;
+    const { userName } = req.decoded;
 
     try {
       const PostBookMarkView = await this.postService.PostBookMarkView(
@@ -337,7 +334,7 @@ export default class PostController {
 
   PostTagShow = async (req, res, next) => {
     const tag = req.query.tag;
-    const userName = req.user?.name;
+    const userName = req.user?.userName;
     const profileImg = req.user.profileImg;
     try {
       const postTagShow = await this.postService.PostTagShow(
