@@ -9,10 +9,10 @@ import {
 } from '../exception/customException.js';
 
 import Qna from '../models/qna.js';
-import QnaComment from '../models/qna_comment.js';
-import QnaCommentLike from '../models/qna_comment_like.js';
+import QnaComment from '../models/qna.comment.js';
+import QnaCommentLike from '../models/qna.comment.like.js';
 import User from '../models/user.js';
-import QnaBookmark from '../models/qna_bookmark.js';
+import QnaBookmark from '../models/qna.bookmark.js';
 import Notification from '../models/noti.js';
 
 class QnaCommentService {

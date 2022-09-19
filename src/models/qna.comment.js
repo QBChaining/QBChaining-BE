@@ -15,7 +15,7 @@ export default class QnaComment extends Sequelize.Model {
           defaultValue: false,
           allowNull: false,
         },
-        user_name: {
+        userName: {
           type: Sequelize.STRING(30),
           allowNull: false,
         },
@@ -23,22 +23,22 @@ export default class QnaComment extends Sequelize.Model {
       {
         sequelize,
         timestamps: true,
-        underscored: true,
-        tableName: 'qna_comment',
+        underscored: false,
+        tableName: 'qnaComment',
         charset: 'utf8',
         collate: 'utf8_general_ci',
       }
     );
   }
   static associate(db) {
-    db.qna_comment.belongsTo(db.qna, {
-      foreignKey: 'qna_id',
+    db.qnaComment.belongsTo(db.qna, {
+      foreignKey: 'qnaId',
       targetKey: 'id',
     });
-    db.qna_comment.hasMany(db.qna_comment_like);
-    db.qna_comment.belongsTo(db.user, {
-      foreignKey: 'user_name',
-      targetKey: 'user_name',
+    db.qnaComment.hasMany(db.qnaCommentLike);
+    db.qnaComment.belongsTo(db.user, {
+      foreignKey: 'userName',
+      targetKey: 'userName',
     });
   }
 }

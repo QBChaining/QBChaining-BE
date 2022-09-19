@@ -10,31 +10,31 @@ export default class User extends Sequelize.Model {
           type: Sequelize.STRING(50),
           allowNull: true,
         },
-        profile_url: {
+        profileUrl: {
           type: Sequelize.STRING(50),
           allowNull: true,
         },
-        user_name: {
+        userName: {
           type: Sequelize.STRING(20),
           unique: true,
           allowNull: false,
         },
-        rank_point: {
+        rankPoint: {
           type: Sequelize.INTEGER,
           allowNull: true,
         },
-        profile_img: {
+        profileImg: {
           type: Sequelize.STRING(200),
           allowNull: true,
         },
-        is_new: {
+        isNew: {
           type: Sequelize.STRING(10),
         },
       },
       {
         sequelize,
         timestamps: true,
-        underscored: true,
+        underscored: false,
         tableName: 'user',
         charset: 'utf8',
         collate: 'utf8_general_ci',
@@ -42,16 +42,15 @@ export default class User extends Sequelize.Model {
     );
   }
   static associate(db) {
-    db.user.hasOne(db.user_info, { foreignKey: 'user', sourceKey: 'id' });
+    db.user.hasOne(db.userInfo, { foreignKey: 'user', sourceKey: 'id' });
     db.user.hasMany(db.post);
     db.user.hasMany(db.language);
     db.user.hasMany(db.job);
     db.user.hasMany(db.qna);
-    db.user.hasMany(db.qna, { sourceKey: 'id' });
-    db.user.hasMany(db.post_like);
-    db.user.hasMany(db.qna_like);
-    db.user.hasMany(db.qna_bookmark);
-    db.user.hasMany(db.post_comment);
-    db.user.hasMany(db.qna_comment);
+    db.user.hasMany(db.postLike);
+    db.user.hasMany(db.qnaLike);
+    db.user.hasMany(db.qnaBookmark);
+    db.user.hasMany(db.postComment);
+    db.user.hasMany(db.qnaComment);
   }
 }

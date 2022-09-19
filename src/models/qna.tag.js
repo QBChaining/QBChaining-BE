@@ -1,29 +1,27 @@
 import Sequelize from 'sequelize';
 
-import { sequelize } from './sequelize.js';
-
-export default class QnaCommentLike extends Sequelize.Model {
+export default class QnaTag extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
-        user_name: {
-          type: Sequelize.STRING(30),
+        tag: {
+          type: Sequelize.STRING(50),
           allowNull: false,
         },
       },
       {
         sequelize,
         timestamps: false,
-        underscored: true,
-        tableName: 'qna_comment_like',
+        underscored: false,
+        tableName: 'qnaTag',
         charset: 'utf8',
         collate: 'utf8_general_ci',
       }
     );
   }
   static associate(db) {
-    db.qna_comment_like.belongsTo(db.qna_comment, {
-      foreignKey: 'qna_comment_id',
+    db.qnaTag.belongsTo(db.qna, {
+      foreignKey: 'qnaId',
       targetKey: 'id',
     });
   }

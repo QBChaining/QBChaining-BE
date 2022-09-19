@@ -9,11 +9,11 @@ import {
 } from '../exception/customException.js';
 
 import Qna from '../models/qna.js';
-import QnaComment from '../models/qna_comment.js';
-import QnaTag from '../models/qna_tag.js';
+import QnaComment from '../models/qna.comment.js';
+import QnaTag from '../models/qna.tag.js';
 import User from '../models/user.js';
-import QnaLike from '../models/qna_like.js';
-import QnaBookmark from '../models/qna_bookmark.js';
+import QnaLike from '../models/qna.like.js';
+import QnaBookmark from '../models/qna.bookmark.js';
 
 class QnaService {
   CreateQna = async (title, content, category, tags, user_name) => {
