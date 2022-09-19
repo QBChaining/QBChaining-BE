@@ -2,7 +2,7 @@ import express from 'express';
 import passport from 'passport';
 import verifyToken from '../middlewares/auth.js';
 import jwt from 'jsonwebtoken';
-import AuthController from '../controllers/auth_controller.js';
+import AuthController from '../controllers/authController.js';
 
 const router = express.Router();
 
@@ -21,10 +21,10 @@ router.get(
   (req, res) => {
     const token = jwt.sign(
       {
-        id: req.user.id,
-        name: req.user.user_name,
-        is_new: req.user.is_new,
-        profile_img: req.user.profile_img,
+        userId: req.user.id,
+        userName: req.user.user_name,
+        isNew: req.user.is_new,
+        profileImg: req.user.profile_img,
       },
       process.env.JWT_SECRET,
       {

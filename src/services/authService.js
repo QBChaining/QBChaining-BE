@@ -1,13 +1,13 @@
 import User from '../models/user.js';
-import UserInfo from '../models/user_info.js';
+import UserInfo from '../models/userInfo.js';
 import Language from '../models/language.js';
 import Job from '../models/job.js';
 
 export default class AuthService {
-  infoUpdate = async (user_id) => {
+  infoUpdate = async (userId) => {
     const user = await User.update(
-      { is_new: 'false' },
-      { where: { id: user_id } }
+      { isNew: 'false' },
+      { where: { id: userId } }
     );
     // const user = User.findOne({ where: { id: user_id } });
     return user;
@@ -35,8 +35,8 @@ export default class AuthService {
       where: { id: user },
     });
 
-    const findLanguage = await Language.findAll({ where: { user_id: user } });
-    const findJob = await Job.findAll({ where: { user_id: user } });
+    const findLanguage = await Language.findAll({ where: { userId: user } });
+    const findJob = await Job.findAll({ where: { userId: user } });
 
     if (findLanguage.length > 0 && findJob.length > 0) {
       return {};
@@ -105,8 +105,8 @@ export default class AuthService {
 
       await findUser.setLanguages(lanArr);
       await findUser.setJobs(jobArr);
-      await Language.destroy({ where: { user_id: null } });
-      await Job.destroy({ where: { user_id: null } });
+      await Language.destroy({ where: { userId: null } });
+      await Job.destroy({ where: { userId: null } });
     } else {
       console.log('NO USER 정보 FOUND');
     }
@@ -116,7 +116,7 @@ export default class AuthService {
 
   getUserActivity = async (user) => {
     const findUser = await User.findOne({
-      where: { user_name: user },
+      where: { userName: user },
     });
 
     const posts = await findUser.getPosts();
