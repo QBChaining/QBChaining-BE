@@ -10,7 +10,7 @@ export default class QnaComment extends Sequelize.Model {
           type: Sequelize.TEXT,
           allowNull: false,
         },
-        is_choose: {
+        isChoose: {
           type: Sequelize.BOOLEAN,
           defaultValue: false,
           allowNull: false,
@@ -31,6 +31,10 @@ export default class QnaComment extends Sequelize.Model {
     );
   }
   static associate(db) {
+    db.qnaComment.belongsTo(db.user, {
+      foreignKey: 'userName',
+      targetKey: 'userName',
+    });
     db.qnaComment.belongsTo(db.qna, {
       foreignKey: 'qnaId',
       targetKey: 'id',
@@ -38,10 +42,6 @@ export default class QnaComment extends Sequelize.Model {
     db.qnaComment.hasMany(db.qnaCommentLike, {
       foreignKey: 'qnaCommentId',
       targetKey: 'id',
-    });
-    db.qnaComment.belongsTo(db.user, {
-      foreignKey: 'userName',
-      targetKey: 'userName',
     });
   }
 }
