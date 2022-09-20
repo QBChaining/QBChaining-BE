@@ -33,7 +33,7 @@ export default class Post extends Sequelize.Model {
     });
     db.post.belongsTo(db.user, {
       foreignKey: 'userName',
-      sourceKey: 'userName',
+      targetKey: 'userName',
       onDelete: 'cascade',
     });
     db.post.hasMany(db.postLike, {

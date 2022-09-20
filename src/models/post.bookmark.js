@@ -1,6 +1,4 @@
 import Sequelize from 'sequelize';
-import Post from './post.js';
-import User from './user.js';
 
 import { sequelize } from './sequelize.js';
 
@@ -21,12 +19,12 @@ export default class PostBookmark extends Sequelize.Model {
   static associate(db) {
     db.postBookmark.belongsTo(db.post, {
       foreignKey: 'postId',
-      sourceKey: 'id',
+      targetKey: 'id',
       onDelete: 'cascade',
     });
     db.postBookmark.belongsTo(db.user, {
       foreignKey: 'userName',
-      sourceKey: 'userName',
+      targetKey: 'userName',
       onDelete: 'cascade',
     });
   }

@@ -15,20 +15,20 @@ router.get('/like', checkSignin, postController.PostShowLike);
 router.get('/hits', checkSignin, postController.PostShowhit);
 router.get('/bookmark', verifyToken, postController.PostBookMarkView);
 router.get('/tags', checkSignin, postController.PostTagShow);
-router.get('/:post_id', checkSignin, postController.PostShowOne);
-router.get('/users/:user_name', checkSignin, postController.PostShowMy);
+router.get('/:postId', checkSignin, postController.PostShowOne);
+router.get('/users/:userName', checkSignin, postController.PostShowUser);
 
 router.post('/', verifyToken, postController.PostCreate);
-router.put('/:post_id', verifyToken, postController.PostUpdate);
-router.delete('/:post_id', verifyToken, postController.PostDelete);
+router.put('/:postId', verifyToken, postController.PostUpdate);
+router.delete('/:postId', verifyToken, postController.PostDelete);
 
-router.post('/like/:post_id', verifyToken, postController.PostLike);
+router.post('/like/:postId', verifyToken, postController.PostLike);
 router.get('/like/all', verifyToken, postController.PostLikeShow);
-router.delete('/like/:post_id', verifyToken, postController.PostLikeDelete);
+router.delete('/like/:postId', verifyToken, postController.PostLikeDelete);
 
-router.post('/bookmark/:post_id', verifyToken, postController.PostBookMark);
+router.post('/bookmark/:postId', verifyToken, postController.PostBookMark);
 router.delete(
-  '/bookmark/:post_id',
+  '/bookmark/:postId',
   verifyToken,
   postController.PostBookMarkDelete
 );

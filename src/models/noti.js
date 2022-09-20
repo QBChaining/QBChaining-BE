@@ -33,16 +33,16 @@ export default class Notification extends Sequelize.Model {
   static associate(db) {
     db.notification.belongsTo(db.post, {
       foreignKey: 'postId',
-      sourceKey: 'id',
+      targetKey: 'id',
       onDelete: 'cascade',
     });
     db.notification.belongsTo(db.qna, {
       foreignKey: 'qnaId',
-      sourceKey: 'id',
+      targetKey: 'id',
     });
     db.notification.belongsTo(db.user, {
       foreignKey: 'userName',
-      sourceKey: 'userName',
+      targetKey: 'userName',
       onDelete: 'cascade',
     });
   }

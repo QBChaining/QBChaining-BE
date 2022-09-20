@@ -1,78 +1,57 @@
-import Post from '../models/post.js';
-import User from '../models/user.js';
-import PostComment from '../models/post.comment.js';
-import PostLike from '../models/post.like.js';
-import PostBookmark from '../models/post.bookmark.js';
-import PostTag from '../models/post.tag.js';
+import PostRepository from '../repositories/post.repository.js';
 import {
   BadRequestException,
   ConflictException,
+  NotFoundException,
 } from '../exception/customException.js';
 
 export default class PostServices {
+  postRepository = new PostRepository();
   // 최신순 정렬
   PostShowAll = async (userName) => {
-    const post = await Post.findAll({
-      where: {},
-      include: [
-        { model: User, attributes: ['userName', 'profileImg'] },
-        { model: PostComment, attributes: ['userName', 'comment'] },
-        { model: PostLike, attributes: ['userName'] },
-        { model: PostBookmark, attributes: ['userName'] },
-        { model: PostTag, attributes: ['tag'], raw: true },
-      ],
-      order: [['createdAt', 'DESC']],
-    });
-    console.log(post);
-
-    return post.map((post) => {
-      const postTag = [];
-      for (let i = 0; i < post.PostTags.length; i++) {
-        postTag.push(post.PostTags[i]?.postTag);
-      }
-
-      let isBookmark = false;
-
-      for (let i = 0; i < post.PostBookmarks.length; i++) {
-        if (post.PostBookmarks[i]?.userName === userName) {
-          isBookmark = true;
+    try {
+      const post = await this.postRepository.PostShowAll();
+      return post.map((post) => {
+        const postTag = [];
+        for (let i = 0; i < post.PostTags.length; i++) {
+          postTag.push(post.PostTags[i]?.tag);
         }
-      }
 
-      return {
-        id: post.id,
-        title: post.title,
-        content: post.content,
-        createdAt: post.createdAt,
-        updatedAt: post.updatedAt,
-        userName: post.User.userName,
-        isBookmark,
-        postTag,
-        cntComment: post.PostComments.length,
-        like: post.PostLikes.length,
-        profileImg: post.User.profileImg,
-      };
-    });
+        let isBookmark = false;
+
+        for (let i = 0; i < post.PostBookmarks.length; i++) {
+          if (post.PostBookmarks[i]?.userName === userName) {
+            isBookmark = true;
+          }
+        }
+
+        return {
+          id: post.id,
+          title: post.title,
+          content: post.content,
+          createdAt: post.createdAt,
+          updatedAt: post.updatedAt,
+          userName: post.User.userName,
+          isBookmark,
+          postTag,
+          cntComment: post.PostComments.length,
+          like: post.PostLikes.length,
+          profileImg: post.User.profileImg,
+        };
+      });
+    } catch (error) {
+      next(error);
+    }
   };
 
   // 댓글순 정렬
   PostShowComment = async (userName) => {
-    const postcmt = await Post.findAll({
-      where: {},
-      include: [
-        { model: User, attributes: ['userName', 'profileImg'] },
-        { model: PostComment, attributes: ['userName', 'comment'] },
-        { model: PostLike, attributes: ['userName'] },
-        { model: PostBookmark, attributes: ['userName'] },
-        { model: PostTag, attributes: ['tag'], raw: true },
-      ],
-      order: [['createdAt', 'DESC']],
-    });
+    const postcmt = await this.postRepository.PostShowAll();
     return postcmt
       .map((post) => {
         const postTag = [];
         for (let i = 0; i < post.PostTags.length; i++) {
-          postTag.push(post.PostTags[i]?.postTag);
+          postTag.push(post.PostTags[i]?.tag);
         }
 
         let isBookmark = false;
@@ -104,23 +83,13 @@ export default class PostServices {
 
   // 추천순 정렬
   PostShowLike = async (userName) => {
-    const postshowlike = await Post.findAll({
-      where: {},
-      include: [
-        { model: User, attributes: ['userName', 'profileImg'] },
-        { model: PostComment, attributes: ['userName', 'comment'] },
-        { model: PostLike },
-        { model: PostBookmark, attributes: ['userName'] },
-        { model: PostTag, attributes: ['tag'], raw: true },
-      ],
-      order: [['createdAt', 'DESC']],
-    });
+    const postshowlike = await this.postRepository.PostShowAll();
 
     return postshowlike
       .map((post) => {
-        const tag = [];
+        const postTag = [];
         for (let i = 0; i < post.PostTags.length; i++) {
-          tag.push(post.PostTags[i]?.tag);
+          postTag.push(post.PostTags[i]?.tag);
         }
 
         let isBookmark = false;
@@ -138,7 +107,7 @@ export default class PostServices {
           updatedAt: post.updatedAt,
           userName: post.User.userName,
           isBookmark,
-          tag,
+          postTag,
           profileImg: post.User.profileImg,
           cntComment: post.PostComments.length,
           like: post.PostLikes.length,
@@ -150,22 +119,12 @@ export default class PostServices {
   };
 
   PostShowhit = async (userName) => {
-    const posthit = await Post.findAll({
-      where: {},
-      include: [
-        { model: User, attributes: ['userName', 'profileImg'] },
-        { model: PostComment, attributes: ['userName', 'comment'] },
-        { model: PostLike, attributes: ['userName'] },
-        { model: PostBookmark, attributes: ['userName'] },
-        { model: PostTag, attributes: ['tag'], raw: true },
-      ],
-      order: [['createdAt', 'DESC']],
-    });
+    const posthit = await this.postRepository.PostShowAll();
 
     const posthitmap = posthit.map((post) => {
       const postTag = [];
       for (let i = 0; i < post.PostTags.length; i++) {
-        postTag.push(post.PostTags[i]?.postTag);
+        postTag.push(post.PostTags[i]?.tag);
       }
 
       let isLike = false;
@@ -180,7 +139,7 @@ export default class PostServices {
         id: post.id,
         title: post.title,
         content: post.content,
-        tag,
+        postTag,
         createdAt: post.createdAt,
         updatedAt: post.updatedAt,
         userName: post.User.userName,
@@ -212,74 +171,48 @@ export default class PostServices {
   };
 
   PostShowOne = async (userName, postId) => {
-    const post = await Post.findOne({
-      where: { id: postId },
-      include: [
-        { model: User, attributes: ['userName', 'profileImg'] },
-        { model: PostComment, attributes: ['userName'] },
-        { model: PostBookmark, attributes: ['userName'] },
-        { model: PostLike, attributes: ['userName'] },
-        { model: PostTag, attributes: ['tag'], raw: true },
-      ],
-    });
+    const post = await this.postRepository.PostShowOne(postId);
 
-    return post.map((post) => {
-      const postTag = [];
-      for (let i = 0; i < post.PostTags.length; i++) {
-        postTag.push(post.PostTags[i]?.postTag);
+    const postTag = [];
+    for (let i = 0; i < post.PostTags.length; i++) {
+      postTag.push(post.PostTags[i]?.tag);
+    }
+    let isBookmark = false;
+    for (let i = 0; i < post.PostBookmarks.length; i++) {
+      if (post.PostBookmarks[i]?.userName === userName) {
+        isBookmark = true;
       }
+    }
 
-      let isBookmark = false;
-      for (let i = 0; i < post.PostBookmarks.length; i++) {
-        if (post.PostBookmarks[i]?.userName === userName) {
-          isBookmark = true;
-        }
+    let isLike = false;
+    for (let i = 0; i < post.PostLikes.length; i++) {
+      if (post.PostLikes[i]?.userName === userName) {
+        isLike = true;
       }
+    }
 
-      let isLike = false;
-      for (let i = 0; i < post.PostLikes.length; i++) {
-        if (post.PostLikes[i]?.userName === userName) {
-          isLike = true;
-        }
-      }
-      return {
-        id: post.id,
-        title: post.title,
-        content: post.content,
-        postTag,
-        created_at: post.createdAt,
-        isBookmark,
-        isLike,
-        profileImg: post.User.profileImg,
-        userName: post.User.userName,
-        cntComment: post.PostComments.length,
-        like: post.PostLikes.length,
-      };
-    });
+    return {
+      id: post.id,
+      title: post.title,
+      content: post.content,
+      postTag,
+      created_at: post.createdAt,
+      isBookmark,
+      isLike,
+      profileImg: post.User.profileImg,
+      userName: post.User.userName,
+      cntComment: post.PostComments.length,
+      like: post.PostLikes.length,
+    };
   };
 
-  PostShowMy = async (userName, userName1, profileImg) => {
-    const post = await Post.findAll({
-      where: { userName: userName },
-      include: [
-        { model: PostLike, attributes: ['userName'] },
-        { model: PostTag, attributes: ['tag'], raw: true },
-      ],
-      attributes: [
-        'id',
-        'title',
-        'content',
-        'createdAt',
-        'updatedAt',
-        'userName',
-      ],
-      order: [['createdAt', 'DESC']],
-    });
+  PostShowUser = async (userName, userName1) => {
+    const post = await this.postRepository.PostShowUser(userName);
 
     return post.map((post) => {
       const postTag = [];
       for (let i = 0; i < post.PostTags.length; i++) {
-        postTag.push(post.PostTags[i]?.postTag);
+        postTag.push(post.PostTags[i]?.tag);
       }
 
       let isLike = false;
@@ -303,53 +236,48 @@ export default class PostServices {
     });
   };
 
-  PostCreate = async (title, content, tags, userName, profileImg) => {
+  PostCreate = async (title, content, postTag, userName, profileImg) => {
     if (content.length === 0 || title.length === 0) {
-      throw new ConflictException('내용을 입력해주세요');
+      throw new BadRequestException('내용을 입력해주세요');
     }
-
-    const postTag = [];
-    const post = await Post.create({
+    const post = await this.postRepository.PostCreate(
       title,
       content,
+      postTag,
       userName,
-    });
-    for (const tag of tags) {
-      const tagdata = await PostTag.create({ postId: post.id, tag });
-      postTag.push(tagdata.tag);
-    }
+      profileImg
+    );
 
     return {
       id: post.id,
       title: post.title,
       content: post.content,
-      created_at: post.createdAt,
+      createdAt: post.createdAt,
       postTag,
       userName,
       profileImg,
     };
   };
 
-  PostUpdate = async (title, content, tag, userName, postId, profileImg) => {
+  PostUpdate = async (title, content, userName, postId, profileImg) => {
     if (content.length === 0 || title.length === 0)
-      throw new ConflictException('내용이나 제목을 입력해주세요');
-    const post1 = await Post.findOne({
-      where: { id: postId },
-    });
+      throw new BadRequestException('내용이나 제목을 입력해주세요');
+    const post1 = await this.postRepository.PostFindOne(postId);
 
     if (userName !== post1.userName) {
-      throw new ConflictException('본인의 글만 수정이 가능합니다');
+      throw new BadRequestException('본인의 글만 수정이 가능합니다');
     }
 
-    const post = await Post.update(
-      { title, content, tag, userName },
-      { where: { id: postId, userName: userName } }
+    const post = await this.postRepository.PostUpdate(
+      title,
+      content,
+      userName,
+      postId
     );
     if (post) {
       return {
         title,
         content,
-        tag,
         userName,
         id: parseInt(postId),
         profileImg,
@@ -358,19 +286,17 @@ export default class PostServices {
   };
 
   PostDelete = async (postId, userName) => {
-    const find = await Post.findOne({
-      where: { id: postId },
-    });
+    const find = await this.postRepository.PostFindOne(postId);
 
-    if (!find) throw new BadRequestException('게시물이 존재하지 않습니다');
+    if (!find) throw new NotFoundException('게시물이 존재하지 않습니다');
 
     if (find.userName !== userName) {
       throw new NotFoundException('본인의 글만 삭제 가능합니다');
-    } else {
-      const post = await Post.destroy({
-        where: { id: postId, userName: userName },
-      });
     }
+
+    const post = await this.postRepository.PostDelete(postId, userName);
+
+    return post;
   };
   PostLikeShow = async (userName) => {
     const findLike = await PostLike.findAll({
@@ -380,38 +306,24 @@ export default class PostServices {
   };
 
   PostLike = async (postId, userName) => {
-    const findLike = await PostLike.findOne({
-      where: { userName: userName, postId: postId },
-    });
-    if (findLike === null) {
-      const like = await PostLike.create({ userName, postId });
-    } else {
-      throw new ConflictException('이미 좋아요한 게시물입니다');
+    const findLike = await this.postRepository.PostLikeOne(postId, userName);
+    if (findLike) throw new BadRequestException('이미 좋아요한 게시물입니다');
+    if (!findLike) {
+      const like = await this.postRepository.PostLike(postId, userName);
     }
   };
 
   PostLikeDelete = async (postId, userName) => {
-    const findLike = await PostLike.findOne({
-      where: { userName: userName, postId: postId },
-    });
+    const findLike = await this.postRepository.PostLikeOne(postId, userName);
     if (findLike === null) {
-      throw new ConflictException('좋아요를 하지 않았습니다');
+      throw new BadRequestException('좋아요를 하지 않았습니다');
     } else {
-      const like = await PostLike.destroy({
-        where: { postId: postId, userName: userName },
-      });
+      const like = await this.postRepository.PostLikeDestroy(postId, userName);
     }
   };
 
   PostBookMarkView = async (userName) => {
-    const findBookMark = await PostBookmark.findAll({
-      where: { userName: userName },
-      include: {
-        model: Post,
-        attributes: ['title', 'userName', 'createdAt', 'id'],
-      },
-      attributes: [],
-    });
+    const findBookMark = await this.postRepository.PostBookmarkView(userName);
 
     return findBookMark.map((bookmark) => {
       return {
@@ -424,69 +336,63 @@ export default class PostServices {
   };
 
   PostBookMark = async (postId, userName) => {
-    const findBookMark = await PostBookmark.findOne({
-      where: { userName: userName, postId: postId },
-    });
+    const findBookMark = await this.postRepository.PostBookmarkOne(
+      postId,
+      userName
+    );
 
     if (findBookMark === null) {
-      const bookmark = await PostBookmark.create({
-        userName,
-        postId,
-      });
+      const bookmark = await this.postRepository.PostBookmark(postId, userName);
     } else {
       throw new BadRequestException('북마크를 이미 하였습니다');
     }
   };
 
   PostBookMarkDelete = async (postId, userName) => {
-    const findBookMark = await PostBookmark.findOne({
-      where: { userName: userName, postId: postId },
-    });
+    const findBookMark = await this.postRepository.PostBookmarkOne(
+      postId,
+      userName
+    );
 
     if (findBookMark === null) {
       throw new BadRequestException('즐겨찾기한 북마크가 없습니다');
     } else {
-      const bookmark = await PostBookmark.destroy({
-        where: { postId: postId, userName: userName },
-      });
+      const bookmark = await this.postRepository.PostBookmarkDestroy(
+        postId,
+        userName
+      );
     }
   };
 
   // 태그로 조회
   PostTagShow = async (tag, userName) => {
-    const findTag = await PostTag.findAll({
-      where: { tag: tag },
-    });
+    const findTag = await this.postRepository.FindTag(tag);
+
     const postList = [];
     for (let i = 0; i < findTag.length; i++) {
-      const post = await Post.findOne({
-        where: { id: findTag[i].postId },
-        include: [
-          { model: PostTag, attributes: ['tag'], raw: true },
-          { model: PostBookmark, attributes: ['userName'] },
-        ],
-      });
+      const num = findTag[i].postId;
+      const post = await this.postRepository.PostTags(num);
       postList.push(post);
     }
 
     const postLists = postList.reverse();
 
     return postLists.map((post) => {
-      let is_bookmark = false;
+      let isBookmark = false;
       for (let i = 0; i < post.PostBookmarks.length; i++) {
         if (post.PostBookmarks[i]?.userName === userName) {
-          is_bookmark = true;
+          isBookmark = true;
         }
       }
       return {
         id: post.id,
         title: post.title,
         content: post.content,
-        created_at: post.createdAt,
-        updated_at: post.updatedAt,
+        createdAt: post.createdAt,
+        updatedAt: post.updatedAt,
         userName: post.User,
-        tag: post.PostTags,
-        is_bookmark,
+        postTag: post.PostTags,
+        isBookmark,
       };
     });
   };
