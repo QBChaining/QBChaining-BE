@@ -16,7 +16,7 @@ router.use(checkSignin);
 
 router.get('/bookmark', verifyToken, qnaController.FindBookMark);
 router.get('/search', searchController.QnaSearch);
-router.get('/test ', qnaController.GetAllQnaCompletion);
+router.get('/completion ', qnaController.GetAllQnaCompletion);
 router.get('/incompletion', qnaController.GetAllIncompletion);
 router.get('/categories/:category', qnaController.FindCategories);
 router.get('/users/:user_name', qnaController.FindUserQna);
