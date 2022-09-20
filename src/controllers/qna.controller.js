@@ -30,11 +30,37 @@ class QnaController {
     }
   };
 
-  FindAllQna = async (req, res, next) => {
+  GetAllQnaCompletion = async (req, res, next) => {
     try {
+      console.log('여기는 해결된');
       const { page_count, page } = req.query;
       const userName = req.user?.userName;
-      const data = await this.qnaService.FindAllQna(
+      const data = await this.qnaService.GetAllQnaCompletion(
+        userName,
+        page_count * 1,
+        page * 1
+      );
+
+      return res
+        .status(200)
+        .json({ success: true, message: '전체 조회 성공', data });
+    } catch (err) {
+      console.log(err);
+      const exception = exceptionHandler(err);
+
+      return res
+        .status(exception.statusCode)
+        .json({ success: exception.success, message: exception.message });
+    }
+  };
+
+  GetAllIncompletion = async (req, res, next) => {
+    try {
+      console.log('여기는 해결된');
+
+      const { page_count, page } = req.query;
+      const userName = req.user?.userName;
+      const data = await this.qnaService.GetAllIncompletion(
         userName,
         page_count * 1,
         page * 1
@@ -54,6 +80,7 @@ class QnaController {
   };
 
   FindOneQna = async (req, res, next) => {
+    console.log('gd');
     const { id } = req.params;
     const userName = req.user?.userName;
     try {
@@ -190,10 +217,10 @@ class QnaController {
 
   FindUserQna = async (req, res, next) => {
     const { userName } = req.params;
-    const compare_id = req.user.id;
+    const compareName = req.user?.userName;
 
     try {
-      const data = await this.qnaService.FindUserQna(userName, compare_id);
+      const data = await this.qnaService.FindUserQna(userName, compareName);
       return res
         .status(200)
         .json({ success: true, message: '유저 게시글 조회 완료', data });

@@ -38,7 +38,6 @@ export default class Notification_Service {
         { model: Qna, attributes: ['title'] },
       ],
     });
-    console.log(findNoti);
     return findNoti.map((notification) => {
       return {
         id: notification.id,

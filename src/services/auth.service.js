@@ -14,7 +14,6 @@ export default class AuthService {
   };
 
   userInfoCreate = async (language, age, gender, job, career, user) => {
-    console.log('shibal');
     const userInfo = await UserInfo.findOne({
       where: {
         user,
