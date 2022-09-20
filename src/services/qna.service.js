@@ -14,6 +14,9 @@ import QnaTag from '../models/qna.tag.js';
 import User from '../models/user.js';
 import QnaLike from '../models/qna.like.js';
 import QnaBookmark from '../models/qna.bookmark.js';
+import sequelize from 'sequelize';
+
+const Op = sequelize.Op;
 
 class QnaService {
   CreateQna = async (title, content, category, tags, userName) => {
@@ -41,9 +44,69 @@ class QnaService {
     };
   };
 
-  FindAllQna = async (userName, page_count, page) => {
+  GetAllQnaCompletion = async (userName, page_count, page) => {
     if (!page_count) throw new BadRequestException('page_count is null');
     const qnaLists = await Qna.findAll({
+      where: {
+        isResolve: { [Op.eq]: true },
+      },
+      order: [['createdAt', 'DESC']],
+      offset: page_count * page,
+      limit: page_count,
+      attributes: [
+        'id',
+        'title',
+        'isResolve',
+        'createdAt',
+        'category',
+        'userName',
+      ],
+      include: [
+        { model: User, attributes: ['profileImg'] },
+        { model: QnaComment, attributes: ['id'] },
+        { model: QnaTag, attributes: ['tag'] },
+        { model: QnaLike, attributes: ['userName'] },
+        { model: QnaBookmark, attributes: ['userName'] },
+      ],
+    });
+
+    return qnaLists.map((list) => {
+      let tag = [];
+      let isBookmark = false;
+      let isLike = false;
+      for (let i = 0; i < list.QnaTags.length; i++) {
+        tag.push(list.QnaTags[i]?.tag);
+      }
+      for (let i = 0; i < list.QnaBookmarks.length; i++) {
+        if (list.QnaBookmarks[i]?.userName === userName) isBookmark = true;
+      }
+      for (let i = 0; i < list.QnaLikes.length; i++) {
+        if (list.QnaLikes[i]?.userName === userName) isLike = true;
+      }
+
+      return {
+        id: list.id,
+        title: list.title,
+        userName: list.userName,
+        profileImg: list.User.profileImg,
+        isResolve: list.isResolve,
+        createdAt: list.createdAt,
+        like: list.QnaLikes.length,
+        isLike,
+        isBookmark,
+        cntcomment: list.QnaComments.length,
+        category: list.category,
+        tag,
+      };
+    });
+  };
+
+  GetAllIncompletion = async (userName, page_count, page) => {
+    if (!page_count) throw new BadRequestException('page_count is null');
+    const qnaLists = await Qna.findAll({
+      where: {
+        isResolve: { [Op.eq]: false },
+      },
       order: [['createdAt', 'DESC']],
       offset: page_count * page,
       limit: page_count,
@@ -234,8 +297,8 @@ class QnaService {
     });
   };
 
-  FindUserQna = async (userName, compare_id) => {
-    const is_mine = userName * 1 === compare_id;
+  FindUserQna = async (userName, compareName) => {
+    const is_mine = userName === compareName;
     const qnalists = await Qna.findAll({
       where: { userName },
       attributes: ['id', 'title', 'isResolve', 'createdAt'],
