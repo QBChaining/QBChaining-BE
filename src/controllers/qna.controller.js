@@ -32,7 +32,6 @@ class QnaController {
 
   GetAllQnaCompletion = async (req, res, next) => {
     try {
-      console.log('여기는 해결된');
       const { page_count, page } = req.query;
       const userName = req.user?.userName;
       const data = await this.qnaService.GetAllQnaCompletion(
@@ -56,8 +55,6 @@ class QnaController {
 
   GetAllIncompletion = async (req, res, next) => {
     try {
-      console.log('여기는 해결된');
-
       const { page_count, page } = req.query;
       const userName = req.user?.userName;
       const data = await this.qnaService.GetAllIncompletion(
@@ -80,7 +77,6 @@ class QnaController {
   };
 
   FindOneQna = async (req, res, next) => {
-    console.log('gd');
     const { id } = req.params;
     const userName = req.user?.userName;
     try {
