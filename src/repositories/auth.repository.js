@@ -2,7 +2,6 @@ import User from '../models/user.js';
 import UserInfo from '../models/user.info.js';
 import Language from '../models/language.js';
 import Job from '../models/job.js';
-import { use } from 'passport';
 
 export default class AuthRepository {
   findUserByName = async (userName) => {
