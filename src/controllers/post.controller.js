@@ -95,6 +95,7 @@ export default class PostController {
       });
     } catch (error) {
       const exception = exceptionHandler(error);
+      console.log(error);
 
       res.status(exception.statusCode).json({
         success: exception.success,
@@ -103,12 +104,13 @@ export default class PostController {
     }
   };
 
-  PostShowMy = async (req, res, next) => {
+  PostShowUser = async (req, res, next) => {
     const userName = req.params.userName;
     const userName1 = req.user?.userName;
     const profileImg = req.user?.profileImg;
+    console.log(profileImg);
     try {
-      const PostShowMy = await this.postService.PostShowMy(
+      const PostShowMy = await this.postService.PostShowUser(
         userName,
         userName1,
         profileImg
@@ -121,6 +123,7 @@ export default class PostController {
       });
     } catch (error) {
       const exception = exceptionHandler(error);
+      console.log(error);
 
       res.status(exception.statusCode).json({
         success: exception.success,
@@ -130,13 +133,14 @@ export default class PostController {
   };
 
   PostCreate = async (req, res, next) => {
-    const { title, content, tag } = req.body;
+    const { title, content, postTag } = req.body;
     const { userName, profileImg } = req.decoded;
+    // console.log(req.decoded);
     try {
       const postCreate = await this.postService.PostCreate(
         title,
         content,
-        tag,
+        postTag,
         userName,
         profileImg
       );
@@ -158,14 +162,13 @@ export default class PostController {
 
   PostUpdate = async (req, res, next) => {
     const { userName, profileImg } = req.decoded;
-    const { title, content, tag } = req.body;
+    const { title, content } = req.body;
     const postId = req.params.postId;
 
     try {
       const postUpdate = await this.postService.PostUpdate(
         title,
         content,
-        tag,
         userName,
         postId,
         profileImg
@@ -198,6 +201,7 @@ export default class PostController {
       });
     } catch (error) {
       const exception = exceptionHandler(error);
+      console.log(error);
       res.status(exception.statusCode).json({
         success: exception.success,
         message: exception.message,
