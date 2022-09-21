@@ -13,9 +13,9 @@ export default class AuthService {
   };
 
   userInfoCreate = async (language, age, gender, job, career, userId) => {
-    const findUser = await this.authRepository.findUserById(userId);
-    const findLanguage = await this.authRepository.findLanguageById(userId);
-    const findJob = await this.authRepository.findJobById(userId);
+    const user = await this.authRepository.findUserById(userId);
+    const userLanguage = await this.authRepository.findLanguageById(userId);
+    const userJob = await this.authRepository.findJobById(userId);
     const userInfo = await this.authRepository.findUserInfoByID(userId);
 
     if (userInfo) {
@@ -24,7 +24,7 @@ export default class AuthService {
       await this.authRepository.createUserInfo(age, gender, career, userId);
     }
 
-    if (findLanguage.length > 0 && findJob.length > 0) {
+    if (userLanguage.length > 0 && userJob.length > 0) {
       return {};
     } else {
       const lanArr = await Promise.all(
@@ -38,8 +38,8 @@ export default class AuthService {
         })
       );
 
-      await findUser.addLanguages(lanArr);
-      await findUser.addJobs(jobArr);
+      await user.addLanguages(lanArr);
+      await user.addJobs(jobArr);
     }
 
     return {};
