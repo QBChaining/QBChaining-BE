@@ -5,11 +5,9 @@ export default class PostCommentController {
   postCommentServices = new PostCommentServices();
 
   CommentShowAll = async (req, res, next) => {
-    const post_id = req.params.post_id;
+    const postId = req.params.postId;
     try {
-      const postcomment = await this.postCommentServices.CommentShowAll(
-        post_id
-      );
+      const postcomment = await this.postCommentServices.CommentShowAll(postId);
 
       return res.status(200).json({
         success: true,
@@ -28,15 +26,15 @@ export default class PostCommentController {
 
   CommentCreate = async (req, res, next) => {
     const comment = req.body.comment;
-    const user_name = req.decoded.name;
-    const post_id = req.params.post_id;
-    const profile_img = req.decoded.profile_img;
+    const { user_name, profileImg } = req.decoded;
+    const postId = req.params.postId;
+
     try {
       const commentcreate = await this.postCommentServices.CommentCreate(
         comment,
         user_name,
-        post_id,
-        profile_img
+        postId,
+        profileImg
       );
       return res.status(200).json({
         success: true,
@@ -54,15 +52,14 @@ export default class PostCommentController {
 
   CommentUpdate = async (req, res, next) => {
     const comment = req.body.comment;
-    const comment_id = req.params.comment_id;
-    const user_name = req.decoded.name;
-    const profile_img = req.decoded.profile_img;
+    const commentId = req.params.commentId;
+    const { userName, profileImg } = req.decoded;
     try {
       const commentUpdate = await this.postCommentServices.CommentUpdate(
         comment,
-        comment_id,
-        user_name,
-        profile_img
+        commentId,
+        userName,
+        profileImg
       );
       return res.status(200).json({
         success: true,
@@ -79,12 +76,12 @@ export default class PostCommentController {
   };
 
   CommentDelete = async (req, res, next) => {
-    const comment_id = req.params.comment_id;
-    const user_name = req.decoded.name;
+    const commentId = req.params.commentId;
+    const userName = req.decoded.userName;
     try {
       const commentDelete = await this.postCommentServices.CommentDelete(
-        comment_id,
-        user_name
+        commentId,
+        userName
       );
       return res.status(200).json({
         success: true,

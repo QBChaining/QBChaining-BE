@@ -1,6 +1,4 @@
 import Sequelize from 'sequelize';
-import Post from './post.js';
-import User from './user.js';
 
 import { sequelize } from './sequelize.js';
 
