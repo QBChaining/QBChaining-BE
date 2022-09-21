@@ -14,14 +14,6 @@ import {
 } from '../exception/customException.js';
 
 export default class PostCommentRepository {
-  CommentShowOne = async (commentId) => {
-    const postcomment = await PostComment.findOne({
-      where: { id: commentId },
-    });
-
-    return postcomment;
-  };
-
   PostFindOne = async (postId) => {
     const findpost = await Post.findOne({
       where: { id: postId },
@@ -42,7 +34,7 @@ export default class PostCommentRepository {
     const notification = await Notification.create({
       type: 'posts',
       check: false,
-      post_id: findpost.id,
+      postId: findpost.id,
       userName: findpost.userName,
     });
 
@@ -75,5 +67,34 @@ export default class PostCommentRepository {
         where: { id: commentId, userName: userName },
       }
     );
+
+    return postcomment;
+  };
+
+  CommentFindOneName = async (commentId, userName) => {
+    const postcomment = await PostComment.findOne({
+      where: { id: commentId, userName: userName },
+    });
+
+    return postcomment;
+  };
+
+  CommentDestroy = async (commentId, userName) => {
+    const postdestroy = await PostComment.destroy({
+      where: { id: commentId, userName: userName },
+    });
+
+    return postdestroy;
+  };
+
+  CommentBookmark = async (postId, num) => {
+    const commentbookmark = await Notification.create({
+      type: 'posts',
+      check: false,
+      postId,
+      userName: num,
+    });
+
+    return commentbookmark;
   };
 }

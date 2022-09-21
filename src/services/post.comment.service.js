@@ -18,15 +18,7 @@ export default class PostCommentServices {
     if (postcomment) return postcomment;
   };
 
-  CommentShowOne = async (commentId) => {
-    const postcomment = this.postCommentRepository.CommentShowOne(commentId);
-
-    if (!postcomment) throw new BadRequestException('게시물이 없습니다');
-
-    return postcomment;
-  };
-
-  CommentCreate = async (comment, userName, postId) => {
+  CommentCreate = async (comment, userName, postId, profileImg) => {
     if (comment.length === 0) {
       throw new BadRequestException('내용을 입력해주세요');
     }
@@ -43,7 +35,6 @@ export default class PostCommentServices {
     }
     // 여기쯤부터 하면댈듯
     const findBookMark = await this.postCommentRepository.PostBookmark(postId);
-
     if (findBookMark.length === 0) {
       const notification = await this.postCommentRepository.Notification(
         findpost
@@ -51,18 +42,16 @@ export default class PostCommentServices {
     }
     if (findBookMark) {
       for (let i = 0; i < findBookMark.length; i++) {
-        await Notification.create({
-          type: 'posts',
-          check: false,
-          post_id,
-          user_name: findBookMark[i].user_name,
-        });
+        const num = findBookMark[i].userName;
+
+        const commentbookmark =
+          await this.postCommentRepository.CommentBookmark(postId, num);
       }
       return {
         id: postcomment.id,
         comment: postcomment.comment,
-        created_at: postcomment.createdAt,
-        updated_at: postcomment.updatedAt,
+        createdAt: postcomment.createdAt,
+        updatedAt: postcomment.updatedAt,
         profileImg,
         userName,
       };
@@ -70,11 +59,10 @@ export default class PostCommentServices {
   };
 
   CommentUpdate = async (comment, commentId, userName, profileImg) => {
-    // 여기 안했는데 무지성 레포생성해도대나
-    const find = await PostComment.findOne({
-      where: { id: comment_id, user_name: user_name },
-    });
-
+    const find = await this.postCommentRepository.CommentFindOneName(
+      commentId,
+      userName
+    );
     if (find === null) {
       throw new NotFoundException('수정할 수 없습니다');
     }
@@ -85,24 +73,26 @@ export default class PostCommentServices {
         userName
       );
       if (postcomment) {
-        return { comment, id: parseInt(comment_id), user_name, profile_img };
+        return { comment, id: parseInt(commentId), userName, profileImg };
       }
     } else {
       throw new BadRequestException('내용을 입력해주세요');
     }
   };
 
-  CommentDelete = async (comment_id, user_name) => {
-    const find = await PostComment.findOne({
-      where: { id: comment_id, user_name: user_name },
-    });
+  CommentDelete = async (commentId, userName) => {
+    const find = await this.postCommentRepository.CommentFindOneName(
+      commentId,
+      userName
+    );
 
     if (find === null) {
       throw new NotFoundException('삭제할 수 없습니다');
     } else {
-      const postcomment = await PostComment.destroy({
-        where: { id: comment_id, user_name: user_name },
-      });
+      const postcomment = await this.postCommentRepository.CommentDestroy(
+        commentId,
+        userName
+      );
     }
   };
 }
