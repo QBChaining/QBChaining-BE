@@ -23,7 +23,6 @@ router.put('/:postId', verifyToken, postController.PostUpdate);
 router.delete('/:postId', verifyToken, postController.PostDelete);
 
 router.post('/like/:postId', verifyToken, postController.PostLike);
-router.get('/like/all', verifyToken, postController.PostLikeShow);
 router.delete('/like/:postId', verifyToken, postController.PostLikeDelete);
 
 router.post('/bookmark/:postId', verifyToken, postController.PostBookMark);

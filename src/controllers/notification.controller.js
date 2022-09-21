@@ -5,13 +5,13 @@ export default class Notification_controller {
   notification_Service = new Notification_Service();
 
   NotiCheck = async (req, res, next) => {
-    const noti_id = req.params.noti_id;
-    const user_name = req.decoded.name;
+    const notiId = req.params.notiId;
+    const userName = req.decoded.userName;
 
     try {
       const NotiCheck = await this.notification_Service.NotiCheck(
-        noti_id,
-        user_name
+        notiId,
+        userName
       );
       return res.status(200).json({
         success: true,
@@ -29,10 +29,10 @@ export default class Notification_controller {
   };
 
   NotiNoti = async (req, res, next) => {
-    const user_name = req.decoded.name;
+    const userName = req.decoded.userName;
 
     try {
-      const NotiNoti = await this.notification_Service.NotiNoti(user_name);
+      const NotiNoti = await this.notification_Service.NotiNoti(userName);
       return res.status(200).json({
         success: true,
         message: '알림 기능 성공',

@@ -161,7 +161,7 @@ export default class PostRepository {
     return bookmark;
   };
 
-  FindTag = async (tag, userName) => {
+  FindTag = async (tag) => {
     const findTag = await PostTag.findAll({
       where: { tag: tag },
     });

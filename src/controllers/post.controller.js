@@ -208,24 +208,6 @@ export default class PostController {
       });
     }
   };
-  PostLikeShow = async (req, res, next) => {
-    const { userName } = req.decoded;
-    try {
-      const post = await this.postService.PostLikeShow(userName);
-      return res.status(200).json({
-        success: true,
-        message: 'success',
-        data: post,
-      });
-    } catch (error) {
-      const exception = exceptionHandler(error);
-
-      res.status(exception.statusCode).json({
-        success: exception.success,
-        message: exception.message,
-      });
-    }
-  };
 
   PostLike = async (req, res, next) => {
     const { userName } = req.decoded;
@@ -353,6 +335,7 @@ export default class PostController {
       });
     } catch (error) {
       const exception = exceptionHandler(error);
+      console.log(error);
 
       res.status(exception.statusCode).json({
         success: exception.success,

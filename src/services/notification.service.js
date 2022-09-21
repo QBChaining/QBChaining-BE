@@ -13,13 +13,13 @@ import Qna from '../models/qna.js';
 
 export default class Notification_Service {
   // 알람을 눌렀을때 동작하는 포스트요청
-  NotiCheck = async (noti_id, user_name) => {
+  NotiCheck = async (notiId, userName) => {
     const findNoti = await Notification.findOne({
-      where: { id: noti_id, user_name: user_name },
+      where: { id: notiId, userName: userName },
     });
 
     if (findNoti.check === false) {
-      await Notification.update({ check: true }, { where: { id: noti_id } });
+      await Notification.update({ check: true }, { where: { id: notiId } });
       return true;
     }
     if (findNoti.check === true) {
@@ -29,9 +29,9 @@ export default class Notification_Service {
     return findNoti;
   };
   // 알람을 확인하는 겟 요청
-  NotiNoti = async (user_name) => {
+  NotiNoti = async (userName) => {
     const findNoti = await Notification.findAll({
-      where: { user_name: user_name },
+      where: { userName: userName },
       order: [['created_At', 'DESC']],
       include: [
         { model: Post, attributes: ['title'] },
@@ -44,11 +44,11 @@ export default class Notification_Service {
         type: notification.type,
         created_at: notification.created_at,
         check: notification.check,
-        post_id: notification.post_id,
-        qna_id: notification.qna_id,
+        postId: notification.postId,
+        qnaId: notification.qnaId,
         qna_title: notification.Qna?.title,
         post_title: notification.Post?.title,
-        user_name: notification.user_name,
+        userName: notification.userName,
       };
     });
   };

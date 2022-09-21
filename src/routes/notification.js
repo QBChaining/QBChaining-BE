@@ -5,7 +5,7 @@ import Notification_Controller from '../controllers/notification.controller.js';
 const router = express.Router();
 const notification_Controller = new Notification_Controller();
 
-router.post('/:noti_id', verifyToken, notification_Controller.NotiCheck);
+router.post('/:notiId', verifyToken, notification_Controller.NotiCheck);
 router.get('/', verifyToken, notification_Controller.NotiNoti);
 
 export default router;

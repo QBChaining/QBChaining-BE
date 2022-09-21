@@ -1,6 +1,3 @@
-import PostComment from '../models/post.comment.js';
-import User from '../models/user.js';
-import Post from '../models/post.js';
 import {
   CustomException,
   ForbiddenException,
@@ -10,115 +7,92 @@ import {
   UnauthorizedException,
   UnkownException,
 } from '../exception/customException.js';
-import PostBookmark from '../models/post.bookmark.js';
-import Notification from '../models/noti.js';
+import PostCommentRepository from '../repositories/post.comment.repository.js';
 
 export default class PostCommentServices {
-  CommentShowAll = async (post_id) => {
-    const postcomment = await PostComment.findAll({
-      where: { post_id: post_id },
-      attributes: ['id', 'comment', 'createdAt', 'updatedAt'],
-      include: [{ model: User, attributes: ['user_name', 'profile_img'] }],
-    });
-    if (postcomment) {
-      return postcomment;
-    } else {
-      throw new BadRequestException('게시물이 없습니다');
-    }
+  postCommentRepository = new PostCommentRepository();
+
+  CommentShowAll = async (postId) => {
+    const postcomment = this.postCommentRepository.CommentShowAll(postId);
+    if (!postcomment) throw new BadRequestException('게시물이 없습니다');
+    if (postcomment) return postcomment;
   };
 
-  CommentShowOne = async (comment_id) => {
-    const postcomment = await PostComment.findOne({
-      where: { id: comment_id },
-    });
-
-    return postcomment;
-  };
-
-  CommentCreate = async (comment, user_name, post_id, profile_img) => {
+  CommentCreate = async (comment, userName, postId, profileImg) => {
     if (comment.length === 0) {
       throw new BadRequestException('내용을 입력해주세요');
     }
-    const postcomment = await PostComment.create({
+    const postcomment = await this.postCommentRepository.CommentCreate(
       comment,
-      user_name,
-      post_id,
-    });
+      userName,
+      postId
+    );
 
-    const findpost = await Post.findOne({
-      where: { id: post_id },
-    });
+    const findpost = await this.postCommentRepository.PostFindOne(postId);
 
     if (!findpost) {
       throw new NotFoundException('게시물이 없습니다');
     }
-
-    const findBookMark = await PostBookmark.findAll({
-      where: { post_id: post_id },
-    });
-
+    // 여기쯤부터 하면댈듯
+    const findBookMark = await this.postCommentRepository.PostBookmark(postId);
     if (findBookMark.length === 0) {
-      await Notification.create({
-        type: 'posts',
-        check: false,
-        post_id: findpost.id,
-        user_name: findpost.user_name,
-      });
+      const notification = await this.postCommentRepository.Notification(
+        findpost
+      );
     }
     if (findBookMark) {
       for (let i = 0; i < findBookMark.length; i++) {
-        await Notification.create({
-          type: 'posts',
-          check: false,
-          post_id,
-          user_name: findBookMark[i].user_name,
-        });
+        const num = findBookMark[i].userName;
+
+        const commentbookmark =
+          await this.postCommentRepository.CommentBookmark(postId, num);
       }
       return {
         id: postcomment.id,
         comment: postcomment.comment,
-        created_at: postcomment.createdAt,
-        updated_at: postcomment.updatedAt,
-        profile_img,
-        user_name,
+        createdAt: postcomment.createdAt,
+        updatedAt: postcomment.updatedAt,
+        profileImg,
+        userName,
       };
     }
   };
 
-  CommentUpdate = async (comment, comment_id, user_name, profile_img) => {
-    const find = await PostComment.findOne({
-      where: { id: comment_id, user_name: user_name },
-    });
-
+  CommentUpdate = async (comment, commentId, userName, profileImg) => {
+    const find = await this.postCommentRepository.CommentFindOneName(
+      commentId,
+      userName
+    );
     if (find === null) {
       throw new NotFoundException('수정할 수 없습니다');
     }
     if (comment.length !== 0) {
-      const postcomment = await PostComment.update(
-        { comment },
-        {
-          where: { id: comment_id, user_name: user_name },
-        }
+      const postcomment = await this.postCommentRepository.CommentUpdate(
+        comment,
+        commentId,
+        userName
       );
       if (postcomment) {
-        return { comment, id: parseInt(comment_id), user_name, profile_img };
+        return { comment, id: parseInt(commentId), userName, profileImg };
       }
     } else {
       throw new BadRequestException('내용을 입력해주세요');
     }
   };
 
-  CommentDelete = async (comment_id, user_name) => {
-    const find = await PostComment.findOne({
-      where: { id: comment_id, user_name: user_name },
-    });
+  CommentDelete = async (commentId, userName) => {
+    const find = await this.postCommentRepository.CommentFindOneName(
+      commentId,
+      userName
+    );
 
     if (find === null) {
       throw new NotFoundException('삭제할 수 없습니다');
     } else {
-      const postcomment = await PostComment.destroy({
-        where: { id: comment_id, user_name: user_name },
-      });
+      const postcomment = await this.postCommentRepository.CommentDestroy(
+        commentId,
+        userName
+      );
     }
   };
 }

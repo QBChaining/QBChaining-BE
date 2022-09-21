@@ -298,12 +298,6 @@ export default class PostServices {
 
     return post;
   };
-  PostLikeShow = async (userName) => {
-    const findLike = await PostLike.findAll({
-      where: { userName: userName },
-    });
-    return findLike;
-  };
 
   PostLike = async (postId, userName) => {
     const findLike = await this.postRepository.PostLikeOne(postId, userName);
