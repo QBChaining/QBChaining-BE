@@ -26,13 +26,13 @@ export default class PostCommentController {
 
   CommentCreate = async (req, res, next) => {
     const comment = req.body.comment;
-    const { user_name, profileImg } = req.decoded;
+    const { userName, profileImg } = req.decoded;
     const postId = req.params.postId;
 
     try {
       const commentcreate = await this.postCommentServices.CommentCreate(
         comment,
-        user_name,
+        userName,
         postId,
         profileImg
       );
@@ -42,6 +42,7 @@ export default class PostCommentController {
       });
     } catch (error) {
       const exception = exceptionHandler(error);
+      console.log(error);
 
       res.status(exception.statusCode).json({
         success: exception.success,

@@ -7,9 +7,9 @@ const router = express.Router();
 
 const postCommentController = new PostCommentController();
 
-router.get('/:post_id', checkSignin, postCommentController.CommentShowAll);
-router.post('/:post_id', verifyToken, postCommentController.CommentCreate);
-router.put('/:comment_id', verifyToken, postCommentController.CommentUpdate);
-router.delete('/:comment_id', verifyToken, postCommentController.CommentDelete);
+router.get('/:postId', checkSignin, postCommentController.CommentShowAll);
+router.post('/:postId', verifyToken, postCommentController.CommentCreate);
+router.put('/:commentId', verifyToken, postCommentController.CommentUpdate);
+router.delete('/:commentId', verifyToken, postCommentController.CommentDelete);
 
 export default router;
