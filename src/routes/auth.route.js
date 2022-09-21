@@ -12,7 +12,6 @@ router.get(
   '/github',
   passport.authenticate('github', { scope: ['user:email'], session: false })
 );
-
 router.get(
   '/github/callback',
   passport.authenticate('github', {
@@ -36,16 +35,12 @@ router.get(
     return res.json({ token });
   }
 );
-
-router.put('/user/isnew', verifyToken, authController.updateInfo);
-
+router.put('/user/isnew', verifyToken, authController.updateUser);
 router.post('/user/info', verifyToken, authController.createUserInfo);
 router.put('/user/info', verifyToken, authController.updateUserInfo);
-
 router.get('/test', verifyToken, (req, res) => {
   res.json(req.decoded);
 });
-
 router.get('/user/activity', verifyToken, authController.getActivity);
 
 export default router;

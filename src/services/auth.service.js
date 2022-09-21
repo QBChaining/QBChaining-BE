@@ -2,41 +2,27 @@ import User from '../models/user.js';
 import UserInfo from '../models/user.info.js';
 import Language from '../models/language.js';
 import Job from '../models/job.js';
+import AuthRepository from '../repositories/auth.repository.js';
 
 export default class AuthService {
-  infoUpdate = async (userId) => {
-    const user = await User.update(
-      { isNew: 'false' },
-      { where: { id: userId } }
-    );
+  authRepository = new AuthRepository();
 
+  userUpdate = async (userId) => {
+    const user = await this.authRepository.updateUserById(userId);
     return user;
   };
 
-  userInfoCreate = async (language, age, gender, job, career, user) => {
-    const userInfo = await UserInfo.findOne({
-      where: {
-        user,
-      },
-    });
+  userInfoCreate = async (language, age, gender, job, career, userId) => {
+    const findUser = await this.authRepository.findUserById(userId);
+    const findLanguage = await this.authRepository.findLanguageById(userId);
+    const findJob = await this.authRepository.findJobById(userId);
+    const userInfo = await this.authRepository.findUserInfoByID(userId);
 
     if (userInfo) {
       return {};
     } else {
-      await UserInfo.create({
-        age,
-        gender,
-        career,
-        user,
-      });
+      await this.authRepository.createUserInfo(age, gender, career, userId);
     }
-
-    const findUser = await User.findOne({
-      where: { id: user },
-    });
-
-    const findLanguage = await Language.findAll({ where: { userId: user } });
-    const findJob = await Job.findAll({ where: { userId: user } });
 
     if (findLanguage.length > 0 && findJob.length > 0) {
       return {};
@@ -46,7 +32,6 @@ export default class AuthService {
           return Language.create({ language: e });
         })
       );
-
       const jobArr = await Promise.all(
         job.map((e) => {
           return Job.create({ job: e });
@@ -60,21 +45,22 @@ export default class AuthService {
     return {};
   };
 
-  userInfoUpdate = async (language, age, gender, job, career, user) => {
+  userInfoUpdate = async (language, age, gender, job, career, userId) => {
     const findUserInfo = await UserInfo.findOne({
       where: {
-        user,
+        userId,
       },
     });
 
     if (findUserInfo) {
       await UserInfo.update(
         {
+          isNew: 'false',
           age,
           gender,
           career,
         },
-        { where: { user } }
+        { where: { userId } }
       );
     } else {
       console.log('NO USER FOUND');
@@ -115,10 +101,7 @@ export default class AuthService {
   };
 
   getUserActivity = async (userName) => {
-    const findUser = await User.findOne({
-      where: { userName },
-    });
-
+    const findUser = await this.authRepository.findUserByName(userName);
     const posts = await findUser.getPosts();
     const qnas = await findUser.getQnas();
 

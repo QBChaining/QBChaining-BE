@@ -4,10 +4,10 @@ import AuthService from '../services/auth.service.js';
 export default class AuthController {
   authService = new AuthService();
 
-  updateInfo = async (req, res, next) => {
+  updateUser = async (req, res, next) => {
     const userId = req.decoded.userId;
     try {
-      const user = await this.authService.infoUpdate(userId);
+      const user = await this.authService.userUpdate(userId);
 
       const token = jwt.sign(
         {
@@ -34,7 +34,7 @@ export default class AuthController {
     const gender = req.body.gender;
     const job = req.body.job;
     const career = req.body.career;
-    const user = req.decoded.userId;
+    const userId = req.decoded.userId;
 
     try {
       const userInfo = await this.authService.userInfoCreate(
@@ -43,7 +43,7 @@ export default class AuthController {
         gender,
         job,
         career,
-        user
+        userId
       );
 
       return res
@@ -60,7 +60,7 @@ export default class AuthController {
     const gender = req.body.gender;
     const job = req.body.job;
     const career = req.body.career;
-    const user = req.decoded.userId;
+    const userId = req.decoded.userId;
 
     try {
       const userInfo = await this.authService.userInfoUpdate(
@@ -69,7 +69,7 @@ export default class AuthController {
         gender,
         job,
         career,
-        user
+        userId
       );
 
       return res
