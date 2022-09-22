@@ -14,6 +14,10 @@ export default class Post extends Sequelize.Model {
           type: Sequelize.STRING(10000),
           allowNull: false,
         },
+        tags: {
+          type: Sequelize.STRING(100),
+          allowNull: false,
+        },
       },
       {
         sequelize,
@@ -42,11 +46,6 @@ export default class Post extends Sequelize.Model {
       onDelete: 'cascade',
     });
     db.post.hasMany(db.postBookmark, {
-      foreignKey: 'postId',
-      sourceKey: 'id',
-      onDelete: 'cascade',
-    });
-    db.post.hasMany(db.postTag, {
       foreignKey: 'postId',
       sourceKey: 'id',
       onDelete: 'cascade',

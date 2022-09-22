@@ -9,39 +9,30 @@ export default class PostServices {
   postRepository = new PostRepository();
   // 최신순 정렬
   PostShowAll = async (userName) => {
-    try {
-      const post = await this.postRepository.PostShowAll();
-      return post.map((post) => {
-        const tags = [];
-        for (let i = 0; i < post.PostTags.length; i++) {
-          tags.push(post.PostTags[i]?.tag);
+    const post = await this.postRepository.PostShowAll();
+    return post.map((post) => {
+      let isBookmark = false;
+
+      for (let i = 0; i < post.PostBookmarks.length; i++) {
+        if (post.PostBookmarks[i]?.userName === userName) {
+          isBookmark = true;
         }
+      }
 
-        let isBookmark = false;
-
-        for (let i = 0; i < post.PostBookmarks.length; i++) {
-          if (post.PostBookmarks[i]?.userName === userName) {
-            isBookmark = true;
-          }
-        }
-
-        return {
-          id: post.id,
-          title: post.title,
-          content: post.content,
-          createdAt: post.createdAt,
-          updatedAt: post.updatedAt,
-          userName: post.User.userName,
-          isBookmark,
-          tags,
-          cntComment: post.PostComments.length,
-          like: post.PostLikes.length,
-          profileImg: post.User.profileImg,
-        };
-      });
-    } catch (error) {
-      next(error);
-    }
+      return {
+        id: post.id,
+        title: post.title,
+        content: post.content,
+        createdAt: post.createdAt,
+        updatedAt: post.updatedAt,
+        userName: post.User.userName,
+        isBookmark,
+        tags: post.tags.split(),
+        cntComment: post.PostComments.length,
+        like: post.PostLikes.length,
+        profileImg: post.User.profileImg,
+      };
+    });
   };
 
   // 댓글순 정렬
@@ -49,11 +40,6 @@ export default class PostServices {
     const postcmt = await this.postRepository.PostShowAll();
     return postcmt
       .map((post) => {
-        const tags = [];
-        for (let i = 0; i < post.PostTags.length; i++) {
-          tags.push(post.PostTags[i]?.tag);
-        }
-
         let isBookmark = false;
 
         for (let i = 0; i < post.PostBookmarks.length; i++) {
@@ -70,7 +56,7 @@ export default class PostServices {
           updatedAt: post.updatedAt,
           userName: post.User.userName,
           isBookmark,
-          tags,
+          tags: post.tags.split(),
           profileImg: post.User.profileImg,
           cntComment: post.PostComments.length,
           like: post.PostLikes.length,
@@ -87,11 +73,6 @@ export default class PostServices {
 
     return postshowlike
       .map((post) => {
-        const tags = [];
-        for (let i = 0; i < post.PostTags.length; i++) {
-          tags.push(post.PostTags[i]?.tag);
-        }
-
         let isBookmark = false;
 
         for (let i = 0; i < post.PostBookmarks.length; i++) {
@@ -107,7 +88,7 @@ export default class PostServices {
           updatedAt: post.updatedAt,
           userName: post.User.userName,
           isBookmark,
-          tags,
+          tags: post.tags.split(),
           profileImg: post.User.profileImg,
           cntComment: post.PostComments.length,
           like: post.PostLikes.length,
@@ -122,11 +103,6 @@ export default class PostServices {
     const posthit = await this.postRepository.PostShowAll();
 
     const posthitmap = posthit.map((post) => {
-      const tags = [];
-      for (let i = 0; i < post.PostTags.length; i++) {
-        tags.push(post.PostTags[i]?.tag);
-      }
-
       let isLike = false;
 
       for (let i = 0; i < post.PostLikes.length; i++) {
@@ -139,7 +115,7 @@ export default class PostServices {
         id: post.id,
         title: post.title,
         content: post.content,
-        tags,
+        tags: post.tags.split(),
         createdAt: post.createdAt,
         updatedAt: post.updatedAt,
         userName: post.User.userName,
@@ -173,10 +149,6 @@ export default class PostServices {
   PostShowOne = async (userName, postId) => {
     const post = await this.postRepository.PostShowOne(postId);
 
-    const tags = [];
-    for (let i = 0; i < post.PostTags.length; i++) {
-      tags.push(post.PostTags[i]?.tag);
-    }
     let isBookmark = false;
     for (let i = 0; i < post.PostBookmarks.length; i++) {
       if (post.PostBookmarks[i]?.userName === userName) {
@@ -195,8 +167,8 @@ export default class PostServices {
       id: post.id,
       title: post.title,
       content: post.content,
-      tags,
-      created_at: post.createdAt,
+      tags: post.tags.split(),
+      createdAt: post.createdAt,
       isBookmark,
       isLike,
       profileImg: post.User.profileImg,
@@ -210,11 +182,6 @@ export default class PostServices {
     const post = await this.postRepository.PostShowUser(userName);
 
     return post.map((post) => {
-      const tags = [];
-      for (let i = 0; i < post.PostTags.length; i++) {
-        tags.push(post.PostTags[i]?.tag);
-      }
-
       let isLike = false;
 
       for (let i = 0; i < post.PostLikes.length; i++) {
@@ -229,7 +196,7 @@ export default class PostServices {
         createdAt: post.createdAt,
         updatedAt: post.updatedAt,
         userName: post.userName,
-        tags,
+        tags: post.tags.split(),
         isLike,
         profileImg: post.User.profileImg,
       };
@@ -240,6 +207,11 @@ export default class PostServices {
     if (content.length === 0 || title.length === 0) {
       throw new BadRequestException('내용을 입력해주세요');
     }
+
+    tags = tags.toString();
+
+    // console.log(tagstr.split(','));
+
     const post = await this.postRepository.PostCreate(
       title,
       content,
@@ -359,35 +331,26 @@ export default class PostServices {
   };
 
   // 태그로 조회
-  PostTagShow = async (tag, userName) => {
-    const findTag = await this.postRepository.FindTag(tag);
+  //   PostTagShow = async (tag, userName) => {
+  //     const postLists = tag.reverse();
 
-    const tags = [];
-    for (let i = 0; i < findTag.length; i++) {
-      const num = findTag[i].postId;
-      const post = await this.postRepository.PostTags(num);
-      tags.push(post);
-    }
-
-    const postLists = tags.reverse();
-
-    return postLists.map((post) => {
-      let isBookmark = false;
-      for (let i = 0; i < post.PostBookmarks.length; i++) {
-        if (post.PostBookmarks[i]?.userName === userName) {
-          isBookmark = true;
-        }
-      }
-      return {
-        id: post.id,
-        title: post.title,
-        content: post.content,
-        createdAt: post.createdAt,
-        updatedAt: post.updatedAt,
-        userName: post.User,
-        tags: post.PostTags,
-        isBookmark,
-      };
-    });
-  };
+  //     return postLists.map((post) => {
+  //       let isBookmark = false;
+  //       for (let i = 0; i < post.PostBookmarks.length; i++) {
+  //         if (post.PostBookmarks[i]?.userName === userName) {
+  //           isBookmark = true;
+  //         }
+  //       }
+  //       return {
+  //         id: post.id,
+  //         title: post.title,
+  //         content: post.content,
+  //         createdAt: post.createdAt,
+  //         updatedAt: post.updatedAt,
+  //         userName: post.User,
+  //         tags: post.PostTags,
+  //         isBookmark,
+  //       };
+  //     });
+  //   };
 }
