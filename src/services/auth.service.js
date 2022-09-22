@@ -70,12 +70,11 @@ export default class AuthService {
     });
 
     const userLanguages = await findUser.getLanguages();
-    const userJobs = await findUser.getJobs();
 
     // 기존의 언어/직업을 찾고
     // 기존의 언어/직업을 새로운 언어/직업으로 업데이트
 
-    if (userLanguages.length > 0 && userJobs.length > 0) {
+    if (userLanguages.length > 0) {
       const lanArr = await Promise.all(
         language.map((e) => {
           return Language.create({ language: e });
