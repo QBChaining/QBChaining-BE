@@ -111,4 +111,25 @@ export default class AuthService {
 
     return sumArr;
   };
+
+  /*
+    {
+      success: '',
+      message: '',
+
+      userName: '',
+      profileImg: '',
+      age: '',
+      gender: '',
+      job: '',
+      career: '',
+
+      language: [python, java, node],
+      
+    }
+  */
+  getUserPage = async (userName) => {
+    const user = await this.authRepository.findUserByName(userName);
+    console.log(user);
+  };
 }

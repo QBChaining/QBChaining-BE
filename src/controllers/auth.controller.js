@@ -93,4 +93,18 @@ export default class AuthController {
       return next(error);
     }
   };
+
+  getUserPage = async (req, res, next) => {
+    const userName = req.params.userName;
+
+    try {
+      await this.authService.getUserPage(userName);
+    } catch (error) {
+      return next(error);
+    }
+
+    next();
+  };
+
+  getUserRank = async () => {};
 }
