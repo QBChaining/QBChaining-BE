@@ -28,11 +28,12 @@ export default class AuthRepository {
     return user;
   };
 
-  createUserInfo = async (age, gender, career, userId) => {
+  createUserInfo = async (age, gender, career, job, userId) => {
     const userInfo = await UserInfo.create({
       age,
       gender,
       career,
+      job,
       userId,
     });
 
@@ -47,6 +48,20 @@ export default class AuthRepository {
     });
 
     return userInfo;
+  };
+
+  updateUserInfoById = async (age, gender, job, career, userId) => {
+    await UserInfo.update(
+      {
+        age,
+        gender,
+        job,
+        career,
+      },
+      { where: { userId } }
+    );
+    console.log('ok');
+    return;
   };
 
   findLanguageById = async (userId) => {

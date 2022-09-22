@@ -41,7 +41,7 @@ router.put('/user/info', verifyToken, authController.updateUserInfo);
 router.get('/test', verifyToken, (req, res) => {
   res.json(req.decoded);
 });
-router.get('/user/activity/userName', verifyToken, authController.getActivity);
-router.get('/user/page/:userName', verifyToken, authController.getUserPage);
+router.get('/user/activity/:userName', authController.getActivity);
+router.get('/user/page/:userName', authController.getUserPage);
 
 export default router;

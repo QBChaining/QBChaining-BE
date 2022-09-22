@@ -18,6 +18,9 @@ export default class UserInfo extends Sequelize.Model {
           type: Sequelize.STRING(50),
           allowNull: true,
         },
+        job: {
+          type: Sequelize.STRING(30),
+        },
       },
       {
         sequelize,
@@ -30,7 +33,7 @@ export default class UserInfo extends Sequelize.Model {
     );
   }
   static associate(db) {
-    db.userInfo.belongsTo(db.user, { foreignKey: 'user', targetKey: 'id' });
+    db.userInfo.belongsTo(db.user, { foreignKey: 'userId', targetKey: 'id' });
     // db.user_info.hasMany(db.language, {
     //   foreignKey: 'info',
     // });
