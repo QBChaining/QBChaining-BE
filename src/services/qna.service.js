@@ -17,7 +17,7 @@ class QnaService {
     if (!title || !content || !category || tags.length > 5) {
       throw new BadRequestException(`입력값이 없거나 잘못 되었습니다.`);
     }
-    tags = tags.join(',');
+    tags = tags.join();
 
     const qnainfo = await this.qnaRepository.CreateQna(
       title,
@@ -56,14 +56,13 @@ class QnaService {
       else isBookmark = list.QnaBookmarks[0]?.userName === userName;
 
       let isLike = false;
-      if (userName) {
-        for (let i = 0; i < list.QnaLikes.length; i++) {
-          if (list.QnaLikes[i]?.userName === userName) {
-            isLike = true;
-            break;
-          }
+      for (let i = 0; i < list.QnaLikes.length; i++) {
+        if (list.QnaLikes[i]?.userName === userName) {
+          isLike = true;
+          break;
         }
       }
+
       return {
         id: list.id,
         title: list.title,
@@ -178,12 +177,10 @@ class QnaService {
       else isBookmark = list.QnaBookmarks[0]?.userName === userName;
 
       let isLike = false;
-      if (userName) {
-        for (let i = 0; i < list.QnaLikes.length; i++) {
-          if (list.QnaLikes[i]?.userName === userName) {
-            isLike = true;
-            break;
-          }
+      for (let i = 0; i < list.QnaLikes.length; i++) {
+        if (list.QnaLikes[i]?.userName === userName) {
+          isLike = true;
+          break;
         }
       }
       return {

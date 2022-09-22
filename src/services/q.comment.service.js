@@ -64,19 +64,16 @@ class QnaCommentService {
       page_count,
       page
     );
-    // return commentLists;
+
     return commentLists
       .map((list) => {
         let isLike = false;
-        if (userName) {
-          for (let i = 0; i < list.QnaCommentLike?.length; i++) {
-            if (list.QnaLikes[i]?.userName === userName) {
-              isLike = true;
-              break;
-            }
+        for (let i = 0; i < list.QnaCommentLikes.length; i++) {
+          if (list.QnaCommentLikes[i]?.userName === userName) {
+            isLike = true;
+            break;
           }
         }
-
         return {
           id: list.id,
           comment: list.comment,
