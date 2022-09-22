@@ -82,14 +82,14 @@ export default class PostRepository {
     return post;
   };
 
-  PostCreate = async (title, content, postTags, userName) => {
+  PostCreate = async (title, content, tags, userName) => {
     const post = await Post.create({
       title,
       content,
       userName,
     });
     const postTag = [];
-    for (const tag of postTags) {
+    for (const tag of tags) {
       const tagdata = await PostTag.create({
         postId: post.id,
         tag,

@@ -86,6 +86,7 @@ export default class PostCommentController {
       );
       return res.status(200).json({
         success: true,
+        message: '삭제 성공',
       });
     } catch (error) {
       const exception = exceptionHandler(error);

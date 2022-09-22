@@ -12,9 +12,9 @@ export default class PostServices {
     try {
       const post = await this.postRepository.PostShowAll();
       return post.map((post) => {
-        const postTag = [];
+        const tags = [];
         for (let i = 0; i < post.PostTags.length; i++) {
-          postTag.push(post.PostTags[i]?.tag);
+          tags.push(post.PostTags[i]?.tag);
         }
 
         let isBookmark = false;
@@ -33,7 +33,7 @@ export default class PostServices {
           updatedAt: post.updatedAt,
           userName: post.User.userName,
           isBookmark,
-          postTag,
+          tags,
           cntComment: post.PostComments.length,
           like: post.PostLikes.length,
           profileImg: post.User.profileImg,
@@ -49,9 +49,9 @@ export default class PostServices {
     const postcmt = await this.postRepository.PostShowAll();
     return postcmt
       .map((post) => {
-        const postTag = [];
+        const tags = [];
         for (let i = 0; i < post.PostTags.length; i++) {
-          postTag.push(post.PostTags[i]?.tag);
+          tags.push(post.PostTags[i]?.tag);
         }
 
         let isBookmark = false;
@@ -70,7 +70,7 @@ export default class PostServices {
           updatedAt: post.updatedAt,
           userName: post.User.userName,
           isBookmark,
-          postTag,
+          tags,
           profileImg: post.User.profileImg,
           cntComment: post.PostComments.length,
           like: post.PostLikes.length,
@@ -87,9 +87,9 @@ export default class PostServices {
 
     return postshowlike
       .map((post) => {
-        const postTag = [];
+        const tags = [];
         for (let i = 0; i < post.PostTags.length; i++) {
-          postTag.push(post.PostTags[i]?.tag);
+          tags.push(post.PostTags[i]?.tag);
         }
 
         let isBookmark = false;
@@ -107,7 +107,7 @@ export default class PostServices {
           updatedAt: post.updatedAt,
           userName: post.User.userName,
           isBookmark,
-          postTag,
+          tags,
           profileImg: post.User.profileImg,
           cntComment: post.PostComments.length,
           like: post.PostLikes.length,
@@ -122,9 +122,9 @@ export default class PostServices {
     const posthit = await this.postRepository.PostShowAll();
 
     const posthitmap = posthit.map((post) => {
-      const postTag = [];
+      const tags = [];
       for (let i = 0; i < post.PostTags.length; i++) {
-        postTag.push(post.PostTags[i]?.tag);
+        tags.push(post.PostTags[i]?.tag);
       }
 
       let isLike = false;
@@ -139,7 +139,7 @@ export default class PostServices {
         id: post.id,
         title: post.title,
         content: post.content,
-        postTag,
+        tags,
         createdAt: post.createdAt,
         updatedAt: post.updatedAt,
         userName: post.User.userName,
@@ -173,9 +173,9 @@ export default class PostServices {
   PostShowOne = async (userName, postId) => {
     const post = await this.postRepository.PostShowOne(postId);
 
-    const postTag = [];
+    const tags = [];
     for (let i = 0; i < post.PostTags.length; i++) {
-      postTag.push(post.PostTags[i]?.tag);
+      tags.push(post.PostTags[i]?.tag);
     }
     let isBookmark = false;
     for (let i = 0; i < post.PostBookmarks.length; i++) {
@@ -195,7 +195,7 @@ export default class PostServices {
       id: post.id,
       title: post.title,
       content: post.content,
-      postTag,
+      tags,
       created_at: post.createdAt,
       isBookmark,
       isLike,
@@ -210,9 +210,9 @@ export default class PostServices {
     const post = await this.postRepository.PostShowUser(userName);
 
     return post.map((post) => {
-      const postTag = [];
+      const tags = [];
       for (let i = 0; i < post.PostTags.length; i++) {
-        postTag.push(post.PostTags[i]?.tag);
+        tags.push(post.PostTags[i]?.tag);
       }
 
       let isLike = false;
@@ -229,21 +229,21 @@ export default class PostServices {
         createdAt: post.createdAt,
         updatedAt: post.updatedAt,
         userName: post.userName,
-        postTag,
+        tags,
         isLike,
         profileImg: post.User.profileImg,
       };
     });
   };
 
-  PostCreate = async (title, content, postTag, userName, profileImg) => {
+  PostCreate = async (title, content, tags, userName, profileImg) => {
     if (content.length === 0 || title.length === 0) {
       throw new BadRequestException('내용을 입력해주세요');
     }
     const post = await this.postRepository.PostCreate(
       title,
       content,
-      postTag,
+      tags,
       userName,
       profileImg
     );
@@ -253,7 +253,7 @@ export default class PostServices {
       title: post.title,
       content: post.content,
       createdAt: post.createdAt,
-      postTag,
+      tags,
       userName,
       profileImg,
     };
@@ -362,14 +362,14 @@ export default class PostServices {
   PostTagShow = async (tag, userName) => {
     const findTag = await this.postRepository.FindTag(tag);
 
-    const postList = [];
+    const tags = [];
     for (let i = 0; i < findTag.length; i++) {
       const num = findTag[i].postId;
       const post = await this.postRepository.PostTags(num);
-      postList.push(post);
+      tags.push(post);
     }
 
-    const postLists = postList.reverse();
+    const postLists = tags.reverse();
 
     return postLists.map((post) => {
       let isBookmark = false;
@@ -385,7 +385,7 @@ export default class PostServices {
         createdAt: post.createdAt,
         updatedAt: post.updatedAt,
         userName: post.User,
-        postTag: post.PostTags,
+        tags: post.PostTags,
         isBookmark,
       };
     });
