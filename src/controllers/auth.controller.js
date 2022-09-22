@@ -37,7 +37,7 @@ export default class AuthController {
     const userId = req.decoded.userId;
 
     try {
-      const userInfo = await this.authService.userInfoCreate(
+      await this.authService.userInfoCreate(
         language,
         age,
         gender,
@@ -98,12 +98,14 @@ export default class AuthController {
     const userName = req.params.userName;
 
     try {
-      await this.authService.getUserPage(userName);
+      const userPageInfo = await this.authService.getUserPage(userName);
+
+      return res
+        .status(200)
+        .json({ success: 'ok', message: `${userName}의 페이지`, userPageInfo });
     } catch (error) {
       return next(error);
     }
-
-    next();
   };
 
   getUserRank = async () => {};

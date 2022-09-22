@@ -112,24 +112,19 @@ export default class AuthService {
     return sumArr;
   };
 
-  /*
-    {
-      success: '',
-      message: '',
-
-      userName: '',
-      profileImg: '',
-      age: '',
-      gender: '',
-      job: '',
-      career: '',
-
-      language: [python, java, node],
-      
-    }
-  */
   getUserPage = async (userName) => {
     const user = await this.authRepository.findUserByName(userName);
-    console.log(user);
+    const name = user.userName;
+    const profileImg = user.profileImg;
+    const age = user.age;
+    const gender = user.gender;
+    const job = user.job;
+    const career = user.career;
+    const language = await user.getLanguages();
+    const languages = language.map((e) => {
+      return e.dataValues.language;
+    });
+
+    return { user, name, profileImg, age, gender, job, career, languages };
   };
 }
