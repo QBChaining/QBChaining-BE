@@ -1,7 +1,6 @@
 import User from '../models/user.js';
 import UserInfo from '../models/user.info.js';
 import Language from '../models/language.js';
-import Job from '../models/job.js';
 
 export default class AuthRepository {
   findUserByName = async (userName) => {
@@ -54,11 +53,5 @@ export default class AuthRepository {
     const language = await Language.findAll({ where: { userId } });
 
     return language;
-  };
-
-  findJobById = async (userId) => {
-    const job = await Job.findAll({ where: { userId } });
-
-    return job;
   };
 }
