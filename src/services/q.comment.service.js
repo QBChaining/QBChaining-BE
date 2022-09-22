@@ -89,42 +89,39 @@ class QnaCommentService {
         };
       })
       .sort((a, b) => {
-        a = a.like;
-        b = b.like;
-        return b - a;
+        b.like - a.like;
       });
   };
 
   LikeComment = async (qnaCommentId, userName) => {
-    const existLike = await QnaCommentLike.findOne({
-      where: { qnaCommentId, userName },
-    });
+    const existLike = await this.qnaCommentRepository.FindQnaLike(
+      qnaCommentId,
+      userName
+    );
     if (existLike) throw new ConflictException('반복해서 눌렀습니다.');
 
-    await QnaCommentLike.create({ qnaCommentId, userName });
+    this.qnaCommentRepository.LikeQna(qnaCommentId, userName);
   };
 
   RemoveLikeComment = async (qnaCommentId, userName) => {
-    const existLike = await QnaCommentLike.findOne({
-      where: { qnaCommentId, userName },
-    });
+    const existLike = await this.qnaCommentRepository.FindQnaLike(
+      qnaCommentId,
+      userName
+    );
     if (!existLike) throw new ConflictException('반복해서 눌렀습니다.');
-    else await QnaCommentLike.destroy({ where: { qnaCommentId, userName } });
+
+    this.qnaCommentRepository.RemoveLikeQna(qnaCommentId, userName);
   };
 
-  ChooseComment = async (qnaCommentId, userName) => {
-    const existComment = await QnaComment.findByPk(qnaCommentId);
+  ChooseComment = async (CommentId, userName) => {
+    const existComment = await this.qnaCommentRepository.FindComment(CommentId);
     if (!existComment) throw new ConflictException('존재하지 않는 댓글입니다.');
     const qna = await existComment.getQna();
     if (qna.userName !== userName)
       throw new ConflictException('채택은 게시글 작성자만 가능합니다.');
-    else {
-      await Qna.update({ isResolve: true }, { where: { id: qna.id } });
-      await QnaComment.update(
-        { isChoose: true },
-        { where: { id: qnaCommentId } }
-      );
-    }
+
+    this.qnaCommentRepository.UpdateStatusQna(qna.id);
+    this.qnaCommentRepository.UpdateStatusQna(CommentId);
   };
 }
 
