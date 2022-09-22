@@ -30,6 +30,9 @@ export default class User extends Sequelize.Model {
         isNew: {
           type: Sequelize.STRING(10),
         },
+        job: {
+          type: Sequelize.STRING(30),
+        },
       },
       {
         sequelize,
@@ -44,7 +47,6 @@ export default class User extends Sequelize.Model {
   static associate(db) {
     db.user.hasOne(db.userInfo, { foreignKey: 'user', sourceKey: 'id' });
     db.user.hasMany(db.language);
-    db.user.hasMany(db.job);
     db.user.hasMany(db.qna, {
       sourceKey: 'userName',
       foreignKey: 'userName',

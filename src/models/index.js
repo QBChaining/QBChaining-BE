@@ -5,7 +5,6 @@ import sequelize from './sequelize.js';
 // 유저, 포스트, 댓글, 좋아요 임포트
 import User from './user.js';
 import UserInfo from './user.info.js';
-import Job from './job.js';
 import Language from './language.js';
 import PostComment from './post.comment.js';
 import Post from './post.js';
@@ -23,7 +22,6 @@ const db = {};
 db.sequelize = sequelize;
 db.user = User;
 db.userInfo = UserInfo;
-db.job = Job;
 db.language = Language;
 db.post = Post;
 db.postComment = PostComment;
@@ -38,7 +36,6 @@ db.notification = Notification;
 
 User.init(sequelize);
 UserInfo.init(sequelize);
-Job.init(sequelize);
 Language.init(sequelize);
 Post.init(sequelize);
 PostComment.init(sequelize);
@@ -53,7 +50,6 @@ Notification.init(sequelize);
 
 User.associate(db);
 UserInfo.associate(db);
-Job.associate(db);
 Language.associate(db);
 Post.associate(db);
 PostComment.associate(db);

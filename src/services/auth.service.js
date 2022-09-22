@@ -1,7 +1,6 @@
 import User from '../models/user.js';
 import UserInfo from '../models/user.info.js';
 import Language from '../models/language.js';
-import Job from '../models/job.js';
 import AuthRepository from '../repositories/auth.repository.js';
 
 export default class AuthService {
@@ -15,16 +14,21 @@ export default class AuthService {
   userInfoCreate = async (language, age, gender, job, career, userId) => {
     const user = await this.authRepository.findUserById(userId);
     const userLanguage = await this.authRepository.findLanguageById(userId);
-    const userJob = await this.authRepository.findJobById(userId);
     const userInfo = await this.authRepository.findUserInfoByID(userId);
 
     if (userInfo) {
       return {};
     } else {
-      await this.authRepository.createUserInfo(age, gender, career, userId);
+      await this.authRepository.createUserInfo(
+        age,
+        gender,
+        job,
+        career,
+        userId
+      );
     }
 
-    if (userLanguage.length > 0 && userJob.length > 0) {
+    if (userLanguage.length > 0) {
       return {};
     } else {
       const lanArr = await Promise.all(
@@ -32,14 +36,8 @@ export default class AuthService {
           return Language.create({ language: e });
         })
       );
-      const jobArr = await Promise.all(
-        job.map((e) => {
-          return Job.create({ job: e });
-        })
-      );
 
       await user.addLanguages(lanArr);
-      await user.addJobs(jobArr);
     }
 
     return {};
@@ -58,6 +56,7 @@ export default class AuthService {
           isNew: 'false',
           age,
           gender,
+          job,
           career,
         },
         { where: { userId } }
@@ -71,28 +70,19 @@ export default class AuthService {
     });
 
     const userLanguages = await findUser.getLanguages();
-    const userJobs = await findUser.getJobs();
 
     // 기존의 언어/직업을 찾고
     // 기존의 언어/직업을 새로운 언어/직업으로 업데이트
 
-    if (userLanguages.length > 0 && userJobs.length > 0) {
+    if (userLanguages.length > 0) {
       const lanArr = await Promise.all(
         language.map((e) => {
           return Language.create({ language: e });
         })
       );
 
-      const jobArr = await Promise.all(
-        job.map((e) => {
-          return Job.create({ job: e });
-        })
-      );
-
       await findUser.setLanguages(lanArr);
-      await findUser.setJobs(jobArr);
       await Language.destroy({ where: { userId: null } });
-      await Job.destroy({ where: { userId: null } });
     } else {
       console.log('NO USER 정보 FOUND');
     }

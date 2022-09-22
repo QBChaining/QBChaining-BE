@@ -58,7 +58,6 @@ class SearchService {
     if (!lists.length) return '검색 결과가 없습니다.';
 
     return lists.map((list) => {
-      let tag = [];
       let isBookmark = false;
       let isLike = false;
 
@@ -81,7 +80,7 @@ class SearchService {
         isBookmark,
         cntcomment: list.QnaComments.length,
         category: list.category,
-        tag,
+        tags: list.tags.split(','),
       };
     });
   };
@@ -120,12 +119,9 @@ class SearchService {
     if (!lists.length) return '검색 결과가 없습니다.';
 
     return lists.map((list) => {
-      let tag = [];
       let isBookmark = false;
       let isLike = false;
-      for (let i = 0; i < list.PostTags.length; i++) {
-        tag.push(list.PostTags[i]?.tag);
-      }
+
       for (let i = 0; i < list.PostBookmarks.length; i++) {
         if (list.PostBookmarks[i]?.userName === userName) isBookmark = true;
       }
@@ -144,10 +140,10 @@ class SearchService {
         isLike,
         isBookmark,
         cntcomment: list.PostComments.length,
-        tag,
+        tags: list.tags.split(','),
       };
     });
   };
 }
-//수정:
+
 export default SearchService;

@@ -27,4 +27,29 @@ export default class QnaCommentRepository {
       ],
     });
   };
+  FindQnaLike = async (qnaCommentId, userName) => {
+    return await QnaCommentLike.findOne({
+      where: { qnaCommentId, userName },
+    });
+  };
+
+  LikeQna = (qnaCommentId, userName) => {
+    QnaCommentLike.create({ qnaCommentId, userName });
+  };
+
+  RemoveLikeQna = (qnaCommentId, userName) => {
+    QnaCommentLike.destroy({ where: { qnaCommentId, userName } });
+  };
+
+  FindComment = (qnaCommentId) => {
+    return QnaComment.findByPk(qnaCommentId);
+  };
+
+  UpdateStatusQna = (id) => {
+    Qna.update({ isResolve: true }, { where: { id } });
+  };
+
+  UpdateStatusQna = (id) => {
+    QnaComment.update({ isChoose: true }, { where: { id } });
+  };
 }

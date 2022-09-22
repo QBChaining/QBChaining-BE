@@ -36,7 +36,7 @@ class QnaService {
       category: qnainfo.category,
       updatedAt: qnainfo.updatedAt,
       like: 0,
-      qnaTag: qnainfo.tags.split(','),
+      tags: qnainfo.tags.split(','),
     };
   };
 
@@ -104,7 +104,7 @@ class QnaService {
       isBookmark,
       createdAt: list.createdAt,
       category: list.category,
-      tag: list.tags?.split(','),
+      tags: list.tags?.split(','),
     };
   };
 
