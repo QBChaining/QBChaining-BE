@@ -3,7 +3,6 @@ import User from '../models/user.js';
 import PostComment from '../models/post.comment.js';
 import PostLike from '../models/post.like.js';
 import PostBookmark from '../models/post.bookmark.js';
-import PostTag from '../models/post.tag.js';
 
 export default class PostRepository {
   PostFindOne = async (postId) => {
