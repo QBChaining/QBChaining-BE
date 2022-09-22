@@ -6,14 +6,14 @@ class QnaController {
 
   CreateQna = async (req, res, next) => {
     const { userName } = req.decoded;
-    const { title, content, category, tag } = req.body;
+    const { title, content, category, tags } = req.body;
 
     try {
       const data = await this.qnaService.CreateQna(
         title,
         content,
         category,
-        tag,
+        tags,
         userName
       );
 
