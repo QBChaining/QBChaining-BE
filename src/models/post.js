@@ -50,11 +50,6 @@ export default class Post extends Sequelize.Model {
       sourceKey: 'id',
       onDelete: 'cascade',
     });
-    db.post.hasMany(db.postTag, {
-      foreignKey: 'postId',
-      sourceKey: 'id',
-      onDelete: 'cascade',
-    });
     db.post.hasMany(db.notification, {
       foreignKey: 'postId',
       sourceKey: 'id',
