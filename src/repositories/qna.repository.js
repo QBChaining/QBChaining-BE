@@ -4,7 +4,7 @@ import QnaComment from '../models/qna.comment.js';
 import User from '../models/user.js';
 import QnaLike from '../models/qna.like.js';
 import QnaBookmark from '../models/qna.bookmark.js';
-import sequelize from 'sequelize';
+import sequelize, { where } from 'sequelize';
 
 const Op = sequelize.Op;
 
@@ -32,7 +32,10 @@ export default class QnaRepository {
       ],
 
       include: [
-        { model: User, attributes: ['profileImg'] },
+        {
+          model: User,
+          attributes: ['profileImg'],
+        },
 
         {
           model: QnaComment,
