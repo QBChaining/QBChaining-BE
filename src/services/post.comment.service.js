@@ -19,7 +19,7 @@ export default class PostCommentServices {
       return postcomment.map((comment) => {
         return {
           id: comment.id,
-          comment: comment.id,
+          comment: comment.comment,
           createdAt: comment.createdAt,
           updatedAt: comment.updatedAt,
           userName: comment.User.userName,
