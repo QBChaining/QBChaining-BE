@@ -21,6 +21,10 @@ export default class Qna extends Sequelize.Model {
           defaultValue: false,
           allowNull: false,
         },
+        tags: {
+          type: Sequelize.STRING(30),
+          allowNull: false,
+        },
       },
       {
         sequelize,
@@ -51,10 +55,7 @@ export default class Qna extends Sequelize.Model {
       foreignKey: 'qnaId',
       sourceKey: 'id',
     });
-    db.qna.hasMany(db.qnaTag, {
-      foreignKey: 'qnaId',
-      sourceKey: 'id',
-    });
+
     db.qna.hasMany(db.notification, {
       foreignKey: 'qnaId',
       sourceKey: 'id',

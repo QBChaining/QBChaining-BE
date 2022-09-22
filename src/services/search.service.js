@@ -10,7 +10,7 @@ import {
 
 import User from '../models/user.js';
 import Qna from '../models/qna.js';
-import QnaTag from '../models/qna.tag.js';
+
 import QnaLike from '../models/qna.like.js';
 import QnaComment from '../models/qna.comment.js';
 import QnaBookmark from '../models/qna.bookmark.js';
@@ -49,7 +49,7 @@ class SearchService {
       },
       include: [
         { model: User, attributes: ['profileImg'] },
-        { model: QnaTag, attributes: ['tag'] },
+
         { model: QnaLike, attributes: ['id', 'userName'] },
         { model: QnaBookmark, attributes: ['userName'] },
         { model: QnaComment, attributes: ['id'] },
@@ -61,9 +61,7 @@ class SearchService {
       let tag = [];
       let isBookmark = false;
       let isLike = false;
-      for (let i = 0; i < list.QnaTags.length; i++) {
-        tag.push(list.QnaTags[i]?.tag);
-      }
+
       for (let i = 0; i < list.QnaBookmarks.length; i++) {
         if (list.QnaBookmarks[i]?.userName === userName) isBookmark = true;
       }

@@ -30,12 +30,12 @@ class QnaCommentController {
     }
   };
 
-  FindAllComment = async (req, res, next) => {
+  GetQnaComment = async (req, res, next) => {
     const { page_count, page } = req.query;
     const { id } = req.params;
     const userName = req.user?.userName;
     try {
-      const data = await this.qnaCommentService.FindAllComment(
+      const data = await this.qnaCommentService.GetQnaComment(
         id,
         userName,
         page_count * 1,

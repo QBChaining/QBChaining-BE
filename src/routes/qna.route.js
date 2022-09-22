@@ -14,14 +14,13 @@ const searchController = new SearchCotroller();
 
 router.use(checkSignin);
 
-router.get('/bookmark', verifyToken, qnaController.FindBookMark);
+router.get('/bookmark', verifyToken, qnaController.GetUserBookmark);
 router.get('/search', searchController.QnaSearch);
-router.get('/completion ', qnaController.GetAllQnaCompletion);
-router.get('/incompletion', qnaController.GetAllIncompletion);
-router.get('/categories/:category', qnaController.FindCategories);
-router.get('/users/:user_name', qnaController.FindUserQna);
-router.get('/:id', qnaController.FindOneQna);
-router.get('/:id/comments', qnaCommentController.FindAllComment);
+router.get('/', qnaController.GetAllQna);
+router.get('/categories/:category', qnaController.GetCategories);
+router.get('/users/:user_name', qnaController.GetUserQna);
+router.get('/:id', qnaController.GetOneQna);
+router.get('/:id/comments', qnaCommentController.GetQnaComment);
 
 router.use(verifyToken);
 
