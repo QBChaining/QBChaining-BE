@@ -124,12 +124,13 @@ export default class AuthService {
 
   getUserPage = async (userName) => {
     const user = await this.authRepository.findUserByName(userName);
+    const userInfo = await this.authRepository.findUserInfoByID(user.id);
     const name = user.userName;
     const profileImg = user.profileImg;
-    const age = user.age;
-    const gender = user.gender;
-    const job = user.job;
-    const career = user.career;
+    const age = userInfo.age;
+    const gender = userInfo.gender;
+    const job = userInfo.job;
+    const career = userInfo.career;
     const language = await user.getLanguages();
     const languages = language.map((e) => {
       return e.dataValues.language;
