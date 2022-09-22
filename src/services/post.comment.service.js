@@ -13,9 +13,19 @@ export default class PostCommentServices {
   postCommentRepository = new PostCommentRepository();
 
   CommentShowAll = async (postId) => {
-    const postcomment = this.postCommentRepository.CommentShowAll(postId);
+    const postcomment = await this.postCommentRepository.CommentShowAll(postId);
     if (!postcomment) throw new BadRequestException('게시물이 없습니다');
-    if (postcomment) return postcomment;
+    if (postcomment)
+      return postcomment.map((comment) => {
+        return {
+          id: comment.id,
+          comment: comment.id,
+          createdAt: comment.createdAt,
+          updatedAt: comment.updatedAt,
+          userName: comment.User.userName,
+          profileImg: comment.User.profileImg,
+        };
+      });
   };
 
   CommentCreate = async (comment, userName, postId, profileImg) => {

@@ -330,27 +330,29 @@ export default class PostServices {
     }
   };
 
-  // 태그로 조회
-  //   PostTagShow = async (tag, userName) => {
-  //     const postLists = tag.reverse();
+  // // 태그로 조회
+  // PostTagShow = async (tag, userName) => {
+  //   const posttags = await this.postRepository.PostTags(tag);
 
-  //     return postLists.map((post) => {
-  //       let isBookmark = false;
-  //       for (let i = 0; i < post.PostBookmarks.length; i++) {
-  //         if (post.PostBookmarks[i]?.userName === userName) {
-  //           isBookmark = true;
-  //         }
-  //       }
-  //       return {
-  //         id: post.id,
-  //         title: post.title,
-  //         content: post.content,
-  //         createdAt: post.createdAt,
-  //         updatedAt: post.updatedAt,
-  //         userName: post.User,
-  //         tags: post.PostTags,
-  //         isBookmark,
-  //       };
-  //     });
-  //   };
+  //   // const postLists = tag.reverse();
+
+  //   // return postLists.map((post) => {
+  //   //   let isBookmark = false;
+  //   //   for (let i = 0; i < post.PostBookmarks.length; i++) {
+  //   //     if (post.PostBookmarks[i]?.userName === userName) {
+  //   //       isBookmark = true;
+  //   //     }
+  //   //   }
+  //   //   return {
+  //   //     id: post.id,
+  //   //     title: post.title,
+  //   //     content: post.content,
+  //   //     createdAt: post.createdAt,
+  //   //     updatedAt: post.updatedAt,
+  //   //     userName: post.User,
+  //   //     tags: post.PostTags,
+  //   //     isBookmark,
+  //   //   };
+  //   // });
+  // };
 }
