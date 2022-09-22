@@ -37,7 +37,6 @@ export default class PostRepository {
         { model: PostComment, attributes: ['userName', 'comment'] },
         { model: PostLike, attributes: ['userName'] },
         { model: PostBookmark, attributes: ['userName'] },
-        { model: PostTag, attributes: ['tag'], raw: true },
       ],
       order: [['createdAt', 'DESC']],
     });
@@ -53,7 +52,6 @@ export default class PostRepository {
         { model: PostComment, attributes: ['userName'] },
         { model: PostBookmark, attributes: ['userName'] },
         { model: PostLike, attributes: ['userName'] },
-        { model: PostTag, attributes: ['tag'], raw: true },
       ],
     });
 
@@ -65,8 +63,7 @@ export default class PostRepository {
       where: { userName: userName },
       include: [
         { model: PostLike, attributes: ['userName'] },
-        { model: PostTag, attributes: ['tag'], raw: true },
-        { model: User },
+        { model: User, attributes: ['userName', 'profileImg'] },
       ],
       attributes: [
         'id',
@@ -75,6 +72,7 @@ export default class PostRepository {
         'createdAt',
         'updatedAt',
         'userName',
+        'tags',
       ],
       order: [['createdAt', 'DESC']],
     });
@@ -86,16 +84,9 @@ export default class PostRepository {
     const post = await Post.create({
       title,
       content,
+      tags,
       userName,
     });
-    const postTag = [];
-    for (const tag of tags) {
-      const tagdata = await PostTag.create({
-        postId: post.id,
-        tag,
-      });
-      postTag.push(tagdata.tag);
-    }
 
     return post;
   };
@@ -161,21 +152,10 @@ export default class PostRepository {
     return bookmark;
   };
 
-  FindTag = async (tag) => {
-    const findTag = await PostTag.findAll({
-      where: { tag: tag },
-    });
-
-    return findTag;
-  };
-
-  PostTags = async (num) => {
+  PostTags = async (tag) => {
     const tags = await Post.findOne({
-      where: { id: num },
-      include: [
-        { model: PostTag, attributes: ['tag'], raw: true },
-        { model: PostBookmark, attributes: ['userName'] },
-      ],
+      where: { tags: tag },
+      include: [{ model: PostBookmark, attributes: ['userName'] }],
     });
 
     return tags;

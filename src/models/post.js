@@ -14,6 +14,10 @@ export default class Post extends Sequelize.Model {
           type: Sequelize.STRING(10000),
           allowNull: false,
         },
+        tags: {
+          type: Sequelize.STRING(100),
+          allowNull: false,
+        },
       },
       {
         sequelize,
