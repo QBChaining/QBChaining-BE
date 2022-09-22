@@ -196,7 +196,7 @@ export default class PostServices {
       title: post.title,
       content: post.content,
       tags,
-      created_at: post.createdAt,
+      createdAt: post.createdAt,
       isBookmark,
       isLike,
       profileImg: post.User.profileImg,
