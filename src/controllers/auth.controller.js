@@ -81,13 +81,13 @@ export default class AuthController {
   };
 
   getActivity = async (req, res, next) => {
-    const userName = req.decoded.userName;
+    const userName = req.params.userName;
 
     try {
       const userActivity = await this.authService.getUserActivity(userName);
 
       return res.status(200).json({
-        Activity: userActivity,
+        userActivity,
       });
     } catch (error) {
       return next(error);

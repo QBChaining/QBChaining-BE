@@ -44,32 +44,22 @@ export default class AuthService {
   };
 
   userInfoUpdate = async (language, age, gender, job, career, userId) => {
-    const findUserInfo = await UserInfo.findOne({
-      where: {
-        userId,
-      },
-    });
+    const user = await this.authRepository.findUserById(userId);
+    const userInfo = await this.authRepository.findUserInfoByID(userId);
 
-    if (findUserInfo) {
-      await UserInfo.update(
-        {
-          isNew: 'false',
-          age,
-          gender,
-          job,
-          career,
-        },
-        { where: { userId } }
+    if (userInfo) {
+      await this.authRepository.updateUserInfoById(
+        age,
+        gender,
+        job,
+        career,
+        userId
       );
     } else {
       console.log('NO USER FOUND');
     }
 
-    const findUser = await User.findOne({
-      where: { id: user },
-    });
-
-    const userLanguages = await findUser.getLanguages();
+    const userLanguages = await this.authRepository.findLanguageById(userId);
 
     // 기존의 언어/직업을 찾고
     // 기존의 언어/직업을 새로운 언어/직업으로 업데이트
@@ -81,7 +71,7 @@ export default class AuthService {
         })
       );
 
-      await findUser.setLanguages(lanArr);
+      await user.setLanguages(lanArr);
       await Language.destroy({ where: { userId: null } });
     } else {
       console.log('NO USER 정보 FOUND');
@@ -90,26 +80,46 @@ export default class AuthService {
     return {};
   };
 
+  /* 
+
+    오늘을 기준으로 30일 동안의 사용자 활동
+
+    출력 예시 : 
+
+    [
+      [
+        {type : post, date : 2022-09-30}, 
+        {type : post, date : 2022-09-30}, 
+        {type : post, date : 2022-09-30},
+      ],
+      [
+        {type : post, date : 2022-09-29}, 
+        {type : post, date : 2022-09-29}, 
+        {type : post, date : 2022-09-29},
+      ]
+    ]
+
+  */
   getUserActivity = async (userName) => {
     const findUser = await this.authRepository.findUserByName(userName);
     const posts = await findUser.getPosts();
-    const qnas = await findUser.getQnas();
+    // const qnas = await findUser.getQnas();
 
-    const postArr = posts.map((e) => {
-      let type = 'post';
-      let date = e.dataValues.updatedAt;
-      return { type, date };
-    });
+    // const postArr = posts.map((e) => {
+    //   let type = 'post';
+    //   let date = e.dataValues.updatedAt;
+    //   return { type, date };
+    // });
 
-    const qnaArr = qnas.map((e) => {
-      let type = 'qna';
-      let date = e.dataValues.updatedAt;
-      return { type, date };
-    });
+    // const qnaArr = qnas.map((e) => {
+    //   let type = 'qna';
+    //   let date = e.dataValues.updatedAt;
+    //   return { type, date };
+    // });
 
-    const sumArr = postArr.concat(qnaArr);
+    // const sumArr = postArr.concat(qnaArr);
 
-    return sumArr;
+    return {};
   };
 
   getUserPage = async (userName) => {
@@ -125,6 +135,6 @@ export default class AuthService {
       return e.dataValues.language;
     });
 
-    return { user, name, profileImg, age, gender, job, career, languages };
+    return { name, profileImg, age, gender, job, career, languages };
   };
 }
