@@ -108,7 +108,7 @@ export default class PostController {
     const userName = req.params.userName;
     const userName1 = req.user?.userName;
     const profileImg = req.user?.profileImg;
-    console.log(profileImg);
+
     try {
       const PostShowMy = await this.postService.PostShowUser(
         userName,
@@ -133,14 +133,14 @@ export default class PostController {
   };
 
   PostCreate = async (req, res, next) => {
-    const { title, content, postTag } = req.body;
+    const { title, content, tags } = req.body;
     const { userName, profileImg } = req.decoded;
     // console.log(req.decoded);
     try {
       const postCreate = await this.postService.PostCreate(
         title,
         content,
-        postTag,
+        tags,
         userName,
         profileImg
       );
@@ -321,7 +321,7 @@ export default class PostController {
   PostTagShow = async (req, res, next) => {
     const tag = req.query.tag;
     const userName = req.user?.userName;
-    const profileImg = req.user.profileImg;
+    const profileImg = req.user?.profileImg;
     try {
       const postTagShow = await this.postService.PostTagShow(
         tag,
