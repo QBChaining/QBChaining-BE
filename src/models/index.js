@@ -14,7 +14,7 @@ import QnaComment from './qna.comment.js';
 import PostLike from './post.like.js';
 import QnaLike from './qna.like.js';
 import QnaCommentLike from './qna.comment.like.js';
-import QnaTag from './qna.tag.js';
+
 import QnaBookmark from './qna.bookmark.js';
 import PostBookmark from './post.bookmark.js';
 import Notification from './noti.js';
@@ -35,7 +35,7 @@ db.qna = Qna;
 db.qnaComment = QnaComment;
 db.qnaLike = QnaLike;
 db.qnaCommentLike = QnaCommentLike;
-db.qnaTag = QnaTag;
+
 db.qnaBookmark = QnaBookmark;
 db.notification = Notification;
 db.postTag = PostTag;
@@ -52,7 +52,7 @@ Qna.init(sequelize);
 QnaComment.init(sequelize);
 QnaLike.init(sequelize);
 QnaCommentLike.init(sequelize);
-QnaTag.init(sequelize);
+
 QnaBookmark.init(sequelize);
 Notification.init(sequelize);
 PostTag.init(sequelize);
@@ -69,7 +69,7 @@ Qna.associate(db);
 QnaComment.associate(db);
 QnaLike.associate(db);
 QnaCommentLike.associate(db);
-QnaTag.associate(db);
+
 QnaBookmark.associate(db);
 Notification.associate(db);
 PostTag.associate(db);

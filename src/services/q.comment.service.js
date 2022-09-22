@@ -8,45 +8,47 @@ import {
   UnkownException,
 } from '../exception/customException.js';
 
-import Qna from '../models/qna.js';
-import QnaComment from '../models/qna.comment.js';
-import QnaCommentLike from '../models/qna.comment.like.js';
-import User from '../models/user.js';
-import QnaBookmark from '../models/qna.bookmark.js';
+import QnaCommentRepository from '../repositories/q.comment.repository.js';
 import Notification from '../models/noti.js';
 
 class QnaCommentService {
+  qnaCommentRepository = new QnaCommentRepository();
+
   CreateQnaComment = async (qnaId, userName, comment) => {
     if (!comment) throw new BadRequestException('내용 입력은 필수');
 
-    const existQna = await Qna.findOne({ where: { id: qnaId } });
+    const existQna = await this.qnaCommentRepository.FindQna(qnaId);
     if (!existQna) throw new NotFoundException('게시물이 존재 하지 않음');
 
-    const commentdata = await QnaComment.create({ qnaId, userName, comment });
+    const commentdata = await this.qnaCommentRepository.CreateComment(
+      qnaId,
+      userName,
+      comment
+    );
 
-    const findQna = await QnaBookmark.findAll({
-      where: { qnaId },
-    });
+    // const findQna = await QnaBookmark.findAll({
+    //   where: { qnaId },
+    // });
 
-    if (findQna.length === 0) {
-      await Notification.create({
-        type: 'qna',
-        check: false,
-        qnaId: existQna.id,
-        userName: existQna.userName,
-      });
-    }
+    // if (findQna.length === 0) {
+    //   await Notification.create({
+    //     type: 'qna',
+    //     check: false,
+    //     qnaId: existQna.id,
+    //     userName: existQna.userName,
+    //   });
+    // }
 
-    if (findQna) {
-      for (let i = 0; i < findQna.length; i++) {
-        await Notification.create({
-          type: 'qna',
-          check: false,
-          qnaId,
-          userName: findQna[i].userName,
-        });
-      }
-    }
+    // if (findQna) {
+    //   for (let i = 0; i < findQna.length; i++) {
+    //     await Notification.create({
+    //       type: 'qna',
+    //       check: false,
+    //       qnaId,
+    //       userName: findQna[i].userName,
+    //     });
+    //   }
+    // }
     return {
       id: commentdata.id,
       comment: commentdata.comment,
@@ -55,26 +57,24 @@ class QnaCommentService {
     };
   };
 
-  FindAllComment = async (qnaId, userName, page_count, page) => {
+  GetQnaComment = async (qnaId, userName, page_count, page) => {
     if (!page_count) throw new BadRequestException('page_count is null');
-    const commentLists = await QnaComment.findAll({
-      where: { qnaId },
-      offset: page_count * page,
-      limit: page_count,
-      attributes: {
-        include: ['id', 'comment', 'isChoose', 'createdAt', 'userName'],
-      },
-      include: [
-        { model: QnaCommentLike, attributes: ['userName'] },
-        { model: User, attributes: ['profileImg'] },
-      ],
-    });
+    const commentLists = await this.qnaCommentRepository.GetQnaComment(
+      qnaId,
+      page_count,
+      page
+    );
+    // return commentLists;
     return commentLists
       .map((list) => {
         let isLike = false;
-
-        for (let i = 0; i < list.QnaCommentLikes?.length; i++) {
-          if (list.QnaCommentLikes[i]?.userName === userName) isLike = true;
+        if (userName) {
+          for (let i = 0; i < list.QnaCommentLike?.length; i++) {
+            if (list.QnaLikes[i]?.userName === userName) {
+              isLike = true;
+              break;
+            }
+          }
         }
 
         return {
@@ -100,7 +100,8 @@ class QnaCommentService {
       where: { qnaCommentId, userName },
     });
     if (existLike) throw new ConflictException('반복해서 눌렀습니다.');
-    else await QnaCommentLike.create({ qnaCommentId, userName });
+
+    await QnaCommentLike.create({ qnaCommentId, userName });
   };
 
   RemoveLikeComment = async (qnaCommentId, userName) => {
@@ -114,7 +115,6 @@ class QnaCommentService {
   ChooseComment = async (qnaCommentId, userName) => {
     const existComment = await QnaComment.findByPk(qnaCommentId);
     if (!existComment) throw new ConflictException('존재하지 않는 댓글입니다.');
-
     const qna = await existComment.getQna();
     if (qna.userName !== userName)
       throw new ConflictException('채택은 게시글 작성자만 가능합니다.');

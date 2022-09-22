@@ -30,19 +30,20 @@ class QnaController {
     }
   };
 
-  GetAllQnaCompletion = async (req, res, next) => {
+  GetAllQna = async (req, res, next) => {
     try {
-      const { page_count, page } = req.query;
+      const { page_count, page, resolve } = req.query;
       const userName = req.user?.userName;
-      const data = await this.qnaService.GetAllQnaCompletion(
+      const data = await this.qnaService.GetAllQna(
         userName,
         page_count * 1,
-        page * 1
+        page * 1,
+        resolve
       );
 
       return res
         .status(200)
-        .json({ success: true, message: '전체 조회 성공', data });
+        .json({ success: true, message: ' 채택 게시글 전체 조회 성공', data });
     } catch (err) {
       console.log(err);
       const exception = exceptionHandler(err);
@@ -53,30 +54,7 @@ class QnaController {
     }
   };
 
-  GetAllIncompletion = async (req, res, next) => {
-    try {
-      const { page_count, page } = req.query;
-      const userName = req.user?.userName;
-      const data = await this.qnaService.GetAllIncompletion(
-        userName,
-        page_count * 1,
-        page * 1
-      );
-
-      return res
-        .status(200)
-        .json({ success: true, message: '전체 조회 성공', data });
-    } catch (err) {
-      console.log(err);
-      const exception = exceptionHandler(err);
-
-      return res
-        .status(exception.statusCode)
-        .json({ success: exception.success, message: exception.message });
-    }
-  };
-
-  FindOneQna = async (req, res, next) => {
+  GetOneQna = async (req, res, next) => {
     const { id } = req.params;
     const userName = req.user?.userName;
     try {
@@ -163,11 +141,11 @@ class QnaController {
     }
   };
 
-  FindBookMark = async (req, res, next) => {
+  GetUserBookmark = async (req, res, next) => {
     const { page, page_count } = req.query;
     const userName = req.decoded.userName;
     try {
-      const data = await this.qnaService.FindBookMark(
+      const data = await this.qnaService.GetUserBookmark(
         userName,
         page * 1,
         page_count * 1
@@ -186,17 +164,18 @@ class QnaController {
     }
   };
 
-  FindCategories = async (req, res, next) => {
-    const { page, page_count } = req.query;
+  GetCategories = async (req, res, next) => {
+    const { page, page_count, resolve } = req.query;
     const { category } = req.params;
     const userName = req.user?.userName;
 
     try {
-      const data = await this.qnaService.FindCategories(
+      const data = await this.qnaService.GetCategories(
         category,
         page * 1,
         page_count * 1,
-        userName
+        userName,
+        resolve
       );
       return res
         .status(200)
@@ -211,12 +190,12 @@ class QnaController {
     }
   };
 
-  FindUserQna = async (req, res, next) => {
+  GetUserQna = async (req, res, next) => {
     const { userName } = req.params;
     const compareName = req.user?.userName;
 
     try {
-      const data = await this.qnaService.FindUserQna(userName, compareName);
+      const data = await this.qnaService.GetUserQna(userName, compareName);
       return res
         .status(200)
         .json({ success: true, message: '유저 게시글 조회 완료', data });
