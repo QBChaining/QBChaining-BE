@@ -157,6 +157,8 @@ export default class PostRepository {
       include: [{ model: PostBookmark, attributes: ['userName'] }],
     });
 
+    console.log(tags);
+
     return tags;
   };
 }
