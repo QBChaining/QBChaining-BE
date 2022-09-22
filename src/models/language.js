@@ -22,6 +22,6 @@ export default class Language extends Sequelize.Model {
     );
   }
   static associate(db) {
-    db.language.belongsTo(db.user);
+    db.language.belongsTo(db.user, { foreignKey: 'userId', targetKey: 'id' });
   }
 }

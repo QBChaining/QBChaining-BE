@@ -43,7 +43,7 @@ export default class User extends Sequelize.Model {
   }
   static associate(db) {
     db.user.hasOne(db.userInfo, { foreignKey: 'userId', sourceKey: 'id' });
-    db.user.hasMany(db.language);
+    db.user.hasMany(db.language, { foreignKey: 'userId', sourceKey: 'id' });
     db.user.hasMany(db.qna, {
       sourceKey: 'userName',
       foreignKey: 'userName',
