@@ -15,7 +15,6 @@ import QnaLike from '../models/qna.like.js';
 import QnaComment from '../models/qna.comment.js';
 import QnaBookmark from '../models/qna.bookmark.js';
 import Post from '../models/post.js';
-import PostTag from '../models/post.tag.js';
 import PostLike from '../models/post.like.js';
 import PostBookmark from '../models/post.bookmark.js';
 import PostComment from '../models/post.comment.js';
@@ -110,7 +109,6 @@ class SearchService {
       },
       include: [
         { model: User, attributes: ['profileImg'] },
-        { model: PostTag, attributes: ['tag'] },
         { model: PostLike, attributes: ['id', 'userName'] },
         { model: PostBookmark, attributes: ['userName'] },
         { model: PostComment, attributes: ['id'] },
