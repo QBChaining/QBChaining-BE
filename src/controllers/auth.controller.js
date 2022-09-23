@@ -37,7 +37,7 @@ export default class AuthController {
     const userId = req.decoded.userId;
 
     try {
-      await this.authService.userInfoCreate(
+      const userInfo = await this.authService.userInfoCreate(
         language,
         age,
         gender,
@@ -45,6 +45,8 @@ export default class AuthController {
         career,
         userId
       );
+
+      console.log(userInfo);
 
       return res
         .status(200)
@@ -104,6 +106,9 @@ export default class AuthController {
         .status(200)
         .json({ success: 'ok', message: `${userName}의 페이지`, userPageInfo });
     } catch (error) {
+      res
+        .status(500)
+        .json({ message: '조회하려는 사용자가 존재하지 않습니다.' });
       return next(error);
     }
   };

@@ -2,6 +2,7 @@ import User from '../models/user.js';
 import UserInfo from '../models/user.info.js';
 import Language from '../models/language.js';
 import AuthRepository from '../repositories/auth.repository.js';
+import { Op } from 'sequelize';
 
 export default class AuthService {
   authRepository = new AuthRepository();
@@ -17,7 +18,7 @@ export default class AuthService {
     const userInfo = await this.authRepository.findUserInfoByID(userId);
 
     if (userInfo) {
-      return {};
+      return;
     } else {
       await this.authRepository.createUserInfo(
         age,
@@ -29,7 +30,7 @@ export default class AuthService {
     }
 
     if (userLanguage.length > 0) {
-      return {};
+      return;
     } else {
       const lanArr = await Promise.all(
         language.map((e) => {
@@ -40,7 +41,7 @@ export default class AuthService {
       await user.addLanguages(lanArr);
     }
 
-    return {};
+    return;
   };
 
   userInfoUpdate = async (language, age, gender, job, career, userId) => {
@@ -82,7 +83,7 @@ export default class AuthService {
 
   /* 
 
-    오늘을 기준으로 30일 동안의 사용자 활동
+    오늘을 기준으로 27일 동안의 사용자 활동
 
     출력 예시 : 
 
@@ -101,23 +102,90 @@ export default class AuthService {
 
   */
   getUserActivity = async (userName) => {
-    const findUser = await this.authRepository.findUserByName(userName);
-    const posts = await findUser.getPosts();
-    // const qnas = await findUser.getQnas();
+    const date = new Date();
+    const today = new Date(date.setDate(date.getDate() + 1));
+    const twentySevenDaysAgo = new Date(date.setDate(date.getDate() - 26));
 
-    // const postArr = posts.map((e) => {
-    //   let type = 'post';
-    //   let date = e.dataValues.updatedAt;
-    //   return { type, date };
+    const posts = await this.authRepository.findPostBetweenDays(
+      twentySevenDaysAgo,
+      today
+    );
+
+    const postArray = posts.map((e) => {
+      let id = e.dataValues.id;
+      let updatedAt = e.dataValues.updatedAt.slice(0, 10);
+      return { post: id, date: updatedAt };
+    });
+
+    const sortedPostArray = postArray.sort(function (a, b) {
+      return new Date(b.date) - new Date(a.date);
+    });
+
+    const postActivity = [];
+    let thePostArray = [];
+    let thePostDate = sortedPostArray[0].date;
+
+    for (let i = 0; i < sortedPostArray.length; i++) {
+      if (thePostDate == sortedPostArray[i].date) {
+        thePostArray.push(sortedPostArray[i]);
+      } else {
+        thePostDate = sortedPostArray[i].date;
+        postActivity.push(thePostArray);
+        thePostArray = [];
+        thePostArray.push(sortedPostArray[i]);
+      }
+    }
+
+    const postComments = await this.authRepository.findPostCommentBetweenDays(
+      twentySevenDaysAgo,
+      today
+    );
+
+    const postCommentArray = postComments.map((e) => {
+      let id = e.dataValues.id;
+      let updatedAt = e.dataValues.updatedAt.slice(0, 10);
+      return { postComment: id, date: updatedAt };
+    });
+
+    const sortedPostCommentArray = postCommentArray.sort(function (a, b) {
+      return new Date(b.date) - new Date(a.date);
+    });
+
+    const postCommentActivity = [];
+    let thePostCommentArray = [];
+    let thePostCommentDate = sortedPostCommentArray[0].date;
+
+    for (let i = 0; i < sortedPostCommentArray.length; i++) {
+      if (thePostCommentDate == sortedPostCommentArray[i].date) {
+        thePostCommentArray.push(sortedPostCommentArray[i]);
+      } else {
+        thePostCommentDate = sortedPostCommentArray[i].date;
+        postCommentActivity.push(thePostCommentArray);
+        thePostCommentArray = [];
+        thePostCommentArray.push(sortedPostCommentArray[i]);
+      }
+    }
+
+    // console.log(postCommentActivity.concat(postActivity));
+
+    const userData = await this.authRepository.findAllUserActivityBetweenDates(
+      userName,
+      twentySevenDaysAgo,
+      today
+    );
+
+    const userDataPost = userData.dataValues.Posts;
+    const all = userDataPost.concat(userData.dataValues.PostComments);
+
+    console.log(all[0]);
+
+    // const udPost = all.map((e) => {
+    //   let id = e.dataValues.id;
+    //   let updatedAt = e.dataValues.updatedAt.slice(0, 10);
+    //   return { id: id, date: updatedAt };
     // });
 
-    // const qnaArr = qnas.map((e) => {
-    //   let type = 'qna';
-    //   let date = e.dataValues.updatedAt;
-    //   return { type, date };
-    // });
-
-    // const sumArr = postArr.concat(qnaArr);
+    // console.log(udPost);
 
     return {};
   };
