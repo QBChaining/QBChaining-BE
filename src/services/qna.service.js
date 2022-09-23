@@ -94,15 +94,14 @@ class QnaService {
         break;
       }
     }
-    // return list;
     return {
       id: list.id,
       title: list.title,
       content: list.content,
       userName: list.userName,
-      profileImg: list['User.profileImg'],
+      profileImg: list.User.profileImg,
       isResolve: list.isResolve,
-      like: list['QnaLikes.like'],
+      like: list.QnaLikes.length,
       isLike,
       isBookmark,
       createdAt: list.createdAt,
