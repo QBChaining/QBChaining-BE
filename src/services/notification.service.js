@@ -11,7 +11,7 @@ import Notification from '../models/noti.js';
 import Post from '../models/post.js';
 import Qna from '../models/qna.js';
 
-export default class Notification_Service {
+export default class NotificationService {
   // 알람을 눌렀을때 동작하는 포스트요청
   NotiCheck = async (notiId, userName) => {
     const findNoti = await Notification.findOne({
@@ -32,22 +32,23 @@ export default class Notification_Service {
   NotiNoti = async (userName) => {
     const findNoti = await Notification.findAll({
       where: { userName: userName },
-      order: [['created_At', 'DESC']],
+      order: [['createdAt', 'DESC']],
       include: [
         { model: Post, attributes: ['title'] },
         { model: Qna, attributes: ['title'] },
       ],
     });
+
     return findNoti.map((notification) => {
       return {
         id: notification.id,
         type: notification.type,
-        created_at: notification.created_at,
+        createdAt: notification.createdAt,
         check: notification.check,
         postId: notification.postId,
         qnaId: notification.qnaId,
-        qna_title: notification.Qna?.title,
-        post_title: notification.Post?.title,
+        qnaTitle: notification.Qna?.title,
+        postTitle: notification.Post?.title,
         userName: notification.userName,
       };
     });
