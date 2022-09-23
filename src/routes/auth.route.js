@@ -31,7 +31,7 @@ router.get(
       }
     );
 
-    return res.redirect(`http://localhost:3000/login?token=${token}`);
+    return res.redirect(`https://www.qb-chaning.com/login?token=${token}`);
     // return res.json({ token });
   }
 );

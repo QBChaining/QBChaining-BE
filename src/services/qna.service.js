@@ -201,7 +201,6 @@ class QnaService {
   };
 
   GetUserQna = async (userName, compareName) => {
-    const is_mine = userName === compareName;
     const userQnaInfoLists = await this.qnaRepository.GetUserQna(userName);
 
     return {
