@@ -10,14 +10,23 @@ export default class PostServices {
   // 최신순 정렬
   PostShowAll = async (userName) => {
     const post = await this.postRepository.PostShowAll();
+
     return post.map((post) => {
       let isBookmark = false;
+      let isLike = false;
+      for (let i = 0; i < post.PostLikes.length; i++) {
+        if (post.PostLikes[i]?.userName === userName) {
+          isLike = true;
+        }
+      }
 
       for (let i = 0; i < post.PostBookmarks.length; i++) {
         if (post.PostBookmarks[i]?.userName === userName) {
           isBookmark = true;
         }
       }
+      let tags = post.tags.split(',');
+      if (tags.length > 4) tags.length = 3;
 
       return {
         id: post.id,
@@ -27,7 +36,8 @@ export default class PostServices {
         updatedAt: post.updatedAt,
         userName: post.User.userName,
         isBookmark,
-        tags: post.tags.split(','),
+        isLike,
+        tags,
         cntComment: post.PostComments.length,
         like: post.PostLikes.length,
         profileImg: post.User.profileImg,
@@ -41,12 +51,19 @@ export default class PostServices {
     return postcmt
       .map((post) => {
         let isBookmark = false;
-
+        let isLike = false;
+        for (let i = 0; i < post.PostLikes.length; i++) {
+          if (post.PostLikes[i]?.userName === userName) {
+            isLike = true;
+          }
+        }
         for (let i = 0; i < post.PostBookmarks.length; i++) {
           if (post.PostBookmarks[i]?.userName === userName) {
             isBookmark = true;
           }
         }
+        let tags = post.tags.split(',');
+        if (tags.length > 4) tags.length = 3;
 
         return {
           id: post.id,
@@ -56,7 +73,8 @@ export default class PostServices {
           updatedAt: post.updatedAt,
           userName: post.User.userName,
           isBookmark,
-          tags: post.tags.split(','),
+          isLike,
+          tags,
           profileImg: post.User.profileImg,
           cntComment: post.PostComments.length,
           like: post.PostLikes.length,
@@ -74,12 +92,19 @@ export default class PostServices {
     return postshowlike
       .map((post) => {
         let isBookmark = false;
-
+        let isLike = false;
+        for (let i = 0; i < post.PostLikes.length; i++) {
+          if (post.PostLikes[i]?.userName === userName) {
+            isLike = true;
+          }
+        }
         for (let i = 0; i < post.PostBookmarks.length; i++) {
           if (post.PostBookmarks[i]?.userName === userName) {
             isBookmark = true;
           }
         }
+        let tags = post.tags.split(',');
+        if (tags.length > 4) tags.length = 3;
         return {
           id: post.id,
           title: post.title,
@@ -88,7 +113,8 @@ export default class PostServices {
           updatedAt: post.updatedAt,
           userName: post.User.userName,
           isBookmark,
-          tags: post.tags.split(','),
+          isLike,
+          tags,
           profileImg: post.User.profileImg,
           cntComment: post.PostComments.length,
           like: post.PostLikes.length,
@@ -110,12 +136,13 @@ export default class PostServices {
           isLike = true;
         }
       }
-
+      let tags = post.tags.split(',');
+      if (tags.length > 4) tags.length = 3;
       return {
         id: post.id,
         title: post.title,
         content: post.content,
-        tags: post.tags.split(','),
+        tags,
         createdAt: post.createdAt,
         updatedAt: post.updatedAt,
         userName: post.User.userName,
@@ -148,7 +175,6 @@ export default class PostServices {
 
   PostShowOne = async (userName, postId) => {
     const post = await this.postRepository.PostShowOne(postId);
-
     let isBookmark = false;
     for (let i = 0; i < post.PostBookmarks.length; i++) {
       if (post.PostBookmarks[i]?.userName === userName) {
@@ -209,8 +235,6 @@ export default class PostServices {
     }
 
     tags = tags.toString();
-
-    // console.log(tagstr.split(','));
 
     const post = await this.postRepository.PostCreate(
       title,
