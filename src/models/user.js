@@ -10,43 +10,74 @@ export default class User extends Sequelize.Model {
           type: Sequelize.STRING(50),
           allowNull: true,
         },
-        profile_url: {
+        profileUrl: {
           type: Sequelize.STRING(50),
           allowNull: true,
         },
-        user_name: {
+        userName: {
           type: Sequelize.STRING(20),
           unique: true,
           allowNull: false,
         },
-        rank_point: {
+        rankPoint: {
           type: Sequelize.INTEGER,
           allowNull: true,
         },
-        profile_img: {
-          type: Sequelize.STRING(50),
-          allowNull: false,
+        profileImg: {
+          type: Sequelize.STRING(200),
+          allowNull: true,
         },
-        is_new: {
+        isNew: {
           type: Sequelize.STRING(10),
         },
       },
       {
         sequelize,
         timestamps: true,
-        underscored: true,
+        underscored: false,
         tableName: 'user',
         charset: 'utf8',
         collate: 'utf8_general_ci',
       }
     );
   }
-  //외래키로 넘겨주기 때문에 hasMany설정
   static associate(db) {
-    db.user.hasMany(db.post);
-    db.user.hasMany(db.qna);
-    db.user.hasMany(db.post_like);
-    db.user.hasMany(db.qna_like);
-    db.user.hasMany(db.qna_bookmark);
+    db.user.hasOne(db.userInfo, { foreignKey: 'userId', sourceKey: 'id' });
+    db.user.hasMany(db.language, { foreignKey: 'userId', sourceKey: 'id' });
+    db.user.hasMany(db.qna, {
+      sourceKey: 'userName',
+      foreignKey: 'userName',
+    });
+    db.user.hasMany(db.qnaComment, {
+      sourceKey: 'userName',
+      foreignKey: 'userName',
+    });
+    db.user.hasMany(db.qnaLike, {
+      sourceKey: 'userName',
+      foreignKey: 'userName',
+    });
+    db.user.hasMany(db.qnaBookmark, {
+      sourceKey: 'userName',
+      foreignKey: 'userName',
+    });
+    db.user.hasMany(db.post, {
+      sourceKey: 'userName',
+      foreignKey: 'userName',
+      onDelete: 'cascade',
+    });
+    db.user.hasMany(db.postLike, {
+      foreignKey: 'userName',
+      sourceKey: 'userName',
+      onDelete: 'cascade',
+    });
+    db.user.hasMany(db.postComment, {
+      foreignKey: 'userName',
+      sourceKey: 'userName',
+      onDelete: 'cascade',
+    });
+    db.user.hasMany(db.notification, {
+      foreignKey: 'userName',
+      sourceKey: 'userName',
+    });
   }
 }

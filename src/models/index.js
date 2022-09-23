@@ -4,35 +4,39 @@ import sequelize from './sequelize.js';
 
 // 유저, 포스트, 댓글, 좋아요 임포트
 import User from './user.js';
-import PostComment from './post_comment.js';
+import UserInfo from './user.info.js';
+import Language from './language.js';
+import PostComment from './post.comment.js';
 import Post from './post.js';
 import Qna from './qna.js';
-import QnaComment from './qna_comment.js';
-import PostLike from './post_like.js';
-import QnaLike from './qna_like.js';
-import QnaCommentLike from './qna_comment_like.js';
-import QnaTag from './qna_tag.js';
-import QnaBookmark from './qna_bookmark.js';
-import PostBookmark from './post_bookmark.js';
+import QnaComment from './qna.comment.js';
+import PostLike from './post.like.js';
+import QnaLike from './qna.like.js';
+import QnaCommentLike from './qna.comment.like.js';
+import QnaBookmark from './qna.bookmark.js';
+import PostBookmark from './post.bookmark.js';
+import Notification from './noti.js';
 
 const db = {};
 
-// 받아온 클래스들 사용
 db.sequelize = sequelize;
 db.user = User;
+db.userInfo = UserInfo;
+db.language = Language;
 db.post = Post;
-db.post_comment = PostComment;
-db.post_like = PostLike;
-db.post_bookmark = PostBookmark;
+db.postComment = PostComment;
+db.postLike = PostLike;
+db.postBookmark = PostBookmark;
 db.qna = Qna;
-db.qna_comment = QnaComment;
-db.qna_like = QnaLike;
-db.qna_comment_like = QnaCommentLike;
-db.qna_tag = QnaTag;
-db.qna_bookmark = QnaBookmark;
+db.qnaComment = QnaComment;
+db.qnaLike = QnaLike;
+db.qnaCommentLike = QnaCommentLike;
+db.qnaBookmark = QnaBookmark;
+db.notification = Notification;
 
-// init한 부분 설정
 User.init(sequelize);
+UserInfo.init(sequelize);
+Language.init(sequelize);
 Post.init(sequelize);
 PostComment.init(sequelize);
 PostLike.init(sequelize);
@@ -41,11 +45,12 @@ Qna.init(sequelize);
 QnaComment.init(sequelize);
 QnaLike.init(sequelize);
 QnaCommentLike.init(sequelize);
-QnaTag.init(sequelize);
 QnaBookmark.init(sequelize);
+Notification.init(sequelize);
 
-// 외래키 관계부분
 User.associate(db);
+UserInfo.associate(db);
+Language.associate(db);
 Post.associate(db);
 PostComment.associate(db);
 PostLike.associate(db);
@@ -54,7 +59,7 @@ Qna.associate(db);
 QnaComment.associate(db);
 QnaLike.associate(db);
 QnaCommentLike.associate(db);
-QnaTag.associate(db);
 QnaBookmark.associate(db);
+Notification.associate(db);
 
 export { db };

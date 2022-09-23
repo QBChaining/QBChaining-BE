@@ -7,7 +7,8 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production PORT=80 pm2 start ./src/app.js -i 0",
     "dev": "nodemon ./src/app.js",
-    "test": "jest"
+    "test": "jest",
+    "apidoc": "apidoc -i apidoc/ -o apidocs/"
   },
   "author": "kpzzy",
   "license": "MIT",
@@ -22,6 +23,8 @@
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "express-session": "^1.17.3",
+    "fs": "^0.0.1-security",
+    "https": "^1.0.0",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",

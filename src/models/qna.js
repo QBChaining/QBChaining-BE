@@ -16,9 +16,13 @@ export default class Qna extends Sequelize.Model {
           type: Sequelize.STRING(50),
           allowNull: false,
         },
-        is_resolve: {
+        isResolve: {
           type: Sequelize.BOOLEAN,
           defaultValue: false,
+          allowNull: false,
+        },
+        tags: {
+          type: Sequelize.STRING(30),
           allowNull: false,
         },
       },
@@ -26,7 +30,7 @@ export default class Qna extends Sequelize.Model {
         sequelize,
         timestamps: true,
         paranoid: false,
-        underscored: true,
+        underscored: false,
         tableName: 'qna',
         charset: 'utf8',
         collate: 'utf8_general_ci',
@@ -35,13 +39,26 @@ export default class Qna extends Sequelize.Model {
   }
 
   static associate(db) {
-    db.qna.hasMany(db.qna_comment);
     db.qna.belongsTo(db.user, {
-      foreignKey: 'user_id',
-      targetKey: 'id',
+      targetKey: 'userName',
+      foreignKey: 'userName',
     });
-    db.qna.hasMany(db.qna_like);
-    db.qna.hasMany(db.qna_bookmark);
-    db.qna.hasMany(db.qna_tag);
+    db.qna.hasMany(db.qnaComment, {
+      foreignKey: 'qnaId',
+      sourceKey: 'id',
+    });
+    db.qna.hasMany(db.qnaLike, {
+      foreignKey: 'qnaId',
+      sourceKey: 'id',
+    });
+    db.qna.hasMany(db.qnaBookmark, {
+      foreignKey: 'qnaId',
+      sourceKey: 'id',
+    });
+
+    db.qna.hasMany(db.notification, {
+      foreignKey: 'qnaId',
+      sourceKey: 'id',
+    });
   }
 }

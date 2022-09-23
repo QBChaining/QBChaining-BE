@@ -35,7 +35,12 @@ const sessionOption = {
 if (process.env.NODE_ENV === 'production') {
   sessionOption.proxy = true;
 }
-app.use(cors());
+
+let corsOption = {
+  origin: '*',
+};
+
+app.use(cors(corsOption));
 app.use(morgan('dev'));
 app.use(session(sessionOption));
 app.use(passport.initialize());
@@ -46,20 +51,9 @@ import { sequelize } from './models/index.js';
 app.set('port', process.env.PORT || 3000);
 
 sequelize
-  .sync({ force: false })
+  .sync({ alter: false })
   .then(() => console.log('db connect'))
   .catch((err) => console.error(err));
-
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept'
-  );
-  next();
-});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
