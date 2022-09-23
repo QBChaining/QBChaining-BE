@@ -192,7 +192,6 @@ class QnaController {
 
   GetUserQna = async (req, res, next) => {
     const userName = req.params.username;
-    const compareName = req.user?.userName;
 
     try {
       const data = await this.qnaService.GetUserQna(userName, compareName);
