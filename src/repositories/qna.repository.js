@@ -6,7 +6,7 @@ import QnaLike from '../models/qna.like.js';
 import QnaBookmark from '../models/qna.bookmark.js';
 import sequelize, { where } from 'sequelize';
 
-const Op = sequelize.Op;
+const option = sequelize.Op;
 
 export default class QnaRepository {
   CreateQna = async (title, content, category, userName, tags) => {
@@ -50,7 +50,7 @@ export default class QnaRepository {
         {
           model: QnaBookmark,
           attributes: ['userName'],
-          where: { userName: { [Op.eq]: `${userName}` } },
+          where: { userName: { [option.eq]: `${userName}` } },
           required: false,
         },
       ],
@@ -112,7 +112,6 @@ export default class QnaRepository {
       order: [[Qna, 'createdAt', 'DESC']],
     });
   };
-
   FindQnaLike = async (qnaId, userName) => {
     return await QnaLike.findOne({
       where: { qnaId, userName },
@@ -161,7 +160,7 @@ export default class QnaRepository {
         {
           model: QnaBookmark,
           attributes: ['userName'],
-          where: { userName: { [Op.eq]: `${userName}` } },
+          where: { userName: { [option.eq]: `${userName}` } },
           required: false,
         },
       ],
@@ -173,10 +172,24 @@ export default class QnaRepository {
   };
 
   GetUserQna = async (userName) => {
-    return await Qna.findAll({
+    return await User.findAll({
       where: { userName },
-      attributes: ['id', 'title', 'isResolve', 'createdAt'],
-      order: ['createdAt', 'DESC'],
+      attributes: [],
+      include: [
+        { model: Qna, attributes: ['id', 'title', 'createdAt', 'isResolve'] },
+        {
+          model: QnaComment,
+          attributes: ['id'],
+          include: [
+            {
+              model: Qna,
+              where: { userName: { [option.not]: userName } },
+              attributes: ['id', 'title', 'isResolve', 'createdAt', 'userName'],
+            },
+          ],
+        },
+      ],
+      order: [['createdAt', 'DESC']],
     });
   };
 }
