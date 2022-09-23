@@ -42,14 +42,12 @@ class QnaService {
 
   GetAllQna = async (userName, page_count, page, status) => {
     if (!page_count) throw new BadRequestException('page_count is null');
-
     const qnaLists = await this.qnaRepository.GetAllQna(
       userName,
       page_count,
       page,
       status
     );
-
     return qnaLists.map((list) => {
       let isBookmark = '';
       if (!userName) isBookmark = false;
@@ -67,7 +65,7 @@ class QnaService {
         id: list.id,
         title: list.title,
         userName: list.userName,
-        profileImg: list.User.profileImg,
+        profileImg: list.User?.profileImg,
         isResolve: list.isResolve,
         createdAt: list.createdAt,
         like: list.QnaLikes.length,
@@ -99,7 +97,7 @@ class QnaService {
       title: list.title,
       content: list.content,
       userName: list.userName,
-      profileImg: list.User.profileImg,
+      profileImg: list.User?.profileImg,
       isResolve: list.isResolve,
       like: list.QnaLikes.length,
       isLike,
@@ -190,7 +188,7 @@ class QnaService {
         id: list.id,
         title: list.title,
         userName: list.userName,
-        profileImg: list.User.profileImg,
+        profileImg: list.User?.profileImg,
         isResolve: list.isResolve,
         createdAt: list.createdAt,
         like: list.QnaLikes.length,

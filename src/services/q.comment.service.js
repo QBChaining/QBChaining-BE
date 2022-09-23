@@ -78,7 +78,7 @@ class QnaCommentService {
           id: list.id,
           comment: list.comment,
           userName: list.userName,
-          profileImg: list.User.profileImg,
+          profileImg: list.User?.profileImg,
           createdAt: list.createdAt,
           like: list.QnaCommentLikes.length,
           isChoose: list.isChoose,
