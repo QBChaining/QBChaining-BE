@@ -26,7 +26,7 @@ export default class PostServices {
         }
       }
       let tags = post.tags.split(',');
-      if (tags.length > 4) tags.length = 3;
+      if (tags.length >= 4) tags.length = 3;
 
       return {
         id: post.id,
@@ -63,7 +63,7 @@ export default class PostServices {
           }
         }
         let tags = post.tags.split(',');
-        if (tags.length > 4) tags.length = 3;
+        if (tags.length >= 4) tags.length = 3;
 
         return {
           id: post.id,
@@ -104,7 +104,7 @@ export default class PostServices {
           }
         }
         let tags = post.tags.split(',');
-        if (tags.length > 4) tags.length = 3;
+        if (tags.length >= 4) tags.length = 3;
         return {
           id: post.id,
           title: post.title,
@@ -137,7 +137,7 @@ export default class PostServices {
         }
       }
       let tags = post.tags.split(',');
-      if (tags.length > 4) tags.length = 3;
+      if (tags.length >= 4) tags.length = 3;
       return {
         id: post.id,
         title: post.title,
