@@ -26,7 +26,7 @@ import { sequelize } from './models/index.js';
 app.set('port', process.env.PORT || 3000);
 
 sequelize
-  .sync({ alter: false })
+  .sync({ force: false })
   .then(() => console.log('db connect'))
   .catch((err) => console.error(err));
 

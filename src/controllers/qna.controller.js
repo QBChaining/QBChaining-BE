@@ -194,7 +194,7 @@ class QnaController {
     const userName = req.params.username;
 
     try {
-      const data = await this.qnaService.GetUserQna(userName, compareName);
+      const data = await this.qnaService.GetUserQna(userName);
       return res
         .status(200)
         .json({ success: true, message: '유저 게시글 조회 완료', data });
