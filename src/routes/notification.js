@@ -1,11 +1,12 @@
 import express from 'express';
 import verifyToken from '../middlewares/auth.js';
-import Notification_Controller from '../controllers/notification.controller.js';
+import NotificationController from '../controllers/notification.controller.js';
+import sse from '../middlewares/sse.js';
 
 const router = express.Router();
-const notification_Controller = new Notification_Controller();
+const notificationController = new NotificationController();
 
-router.post('/:notiId', verifyToken, notification_Controller.NotiCheck);
-router.get('/', verifyToken, notification_Controller.NotiNoti);
+router.post('/:notiId', verifyToken, notificationController.NotiCheck);
+router.get('/', verifyToken, notificationController.NotiNoti);
 
 export default router;

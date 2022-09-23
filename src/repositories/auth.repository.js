@@ -1,6 +1,11 @@
 import User from '../models/user.js';
 import UserInfo from '../models/user.info.js';
 import Language from '../models/language.js';
+import Post from '../models/post.js';
+import PostComment from '../models/post.comment.js';
+import Qna from '../models/qna.js';
+import QnaComment from '../models/qna.comment.js';
+import { Op } from 'sequelize';
 
 export default class AuthRepository {
   findUserByName = async (userName) => {
@@ -68,5 +73,50 @@ export default class AuthRepository {
     const language = await Language.findAll({ where: { userId } });
 
     return language;
+  };
+
+  findPostBetweenDays = async (twentySevenDaysAgo, today) => {
+    const posts = await Post.findAll({
+      where: {
+        updatedAt: {
+          [Op.between]: [twentySevenDaysAgo, today],
+        },
+      },
+    });
+
+    return posts;
+  };
+
+  findPostCommentBetweenDays = async (twentySevenDaysAgo, today) => {
+    const postComments = await PostComment.findAll({
+      where: {
+        updatedAt: {
+          [Op.between]: [twentySevenDaysAgo, today],
+        },
+      },
+    });
+
+    return postComments;
+  };
+
+  findQnaBetweenDays = async () => {};
+  findQnaCommentBetweenDays = async () => {};
+
+  findAllUserActivityBetweenDates = async (
+    userName,
+    twentySevenDaysAgo,
+    today
+  ) => {
+    const userData = await User.findOne({
+      where: {
+        userName,
+        updatedAt: {
+          [Op.between]: [twentySevenDaysAgo, today],
+        },
+      },
+      include: ['Posts', 'PostComments'],
+    });
+
+    return userData;
   };
 }
