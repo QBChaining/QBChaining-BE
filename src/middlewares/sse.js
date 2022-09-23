@@ -6,14 +6,14 @@ const sseMiddleware = (req, res, next) => {
 
   const sse = (data) => {
     const sseresponse = `data: ${JSON.stringify(data)}\n\n`;
-    res.write(sseresponse);
+    return res.write(sseresponse);
   };
 
   Object.assign(res, {
     sse,
   });
 
-  return next();
+  next();
 };
 
 export default sseMiddleware;

@@ -33,11 +33,11 @@ export default class Notificationcontroller {
 
     try {
       const NotiNoti = await this.notificationService.NotiNoti(userName);
-      let ssenoti = setInterval(function checkdata() {
+      let ssenoti = setInterval(() => {
         const data = {
           value: userName,
         };
-        res.sse(data);
+        return res.sse(data);
       }, 3000);
 
       res.on('close', () => {
