@@ -58,9 +58,8 @@ export default class QnaRepository {
     });
   };
 
-  GetOneQna = async (id) => {
+  GetOneQna = async (id, userName) => {
     return await Qna.findOne({
-      raw: true,
       where: { id },
       attributes: [
         'id',
@@ -76,11 +75,13 @@ export default class QnaRepository {
         { model: User, attributes: ['profileImg'] },
         {
           model: QnaLike,
-          attributes: [[sequelize.fn('COUNT', 'id'), 'like'], 'userName'],
+          attributes: ['userName'],
         },
         {
           model: QnaBookmark,
           attributes: ['userName'],
+          where: { userName: { [option.eq]: userName } },
+          required: false,
         },
       ],
     });
@@ -92,12 +93,12 @@ export default class QnaRepository {
     });
   };
 
-  AddBookMark = (qnaId, userName) => {
-    QnaBookmark.create({ qnaId, userName });
+  AddBookMark = async (qnaId, userName) => {
+    await QnaBookmark.create({ qnaId, userName });
   };
 
-  RemoveBookMark = (qnaId, userName) => {
-    QnaBookmark.destroy({ where: { qnaId, userName } });
+  RemoveBookMark = async (qnaId, userName) => {
+    await QnaBookmark.destroy({ where: { qnaId, userName } });
   };
 
   GetUserBookmark = async (userName, page, page_count) => {
@@ -118,12 +119,12 @@ export default class QnaRepository {
     });
   };
 
-  LikeQna = (qnaId, userName) => {
-    QnaLike.create({ qnaId, userName });
+  LikeQna = async (qnaId, userName) => {
+    await QnaLike.create({ qnaId, userName });
   };
 
-  RemoveLikeQna = (qnaId, userName) => {
-    QnaLike.destroy({ where: { qnaId, userName } });
+  RemoveLikeQna = async (qnaId, userName) => {
+    await QnaLike.destroy({ where: { qnaId, userName } });
   };
 
   GetQnaCategory = async (category, page, page_count, userName, status) => {
