@@ -81,24 +81,27 @@ class QnaService {
   };
 
   GetOneQna = async (id, userName) => {
-    const list = await this.qnaRepository.GetOneQna(id);
+    const list = await this.qnaRepository.GetOneQna(id, userName);
 
     let isBookmark = '';
     if (!userName) isBookmark = false;
-    else isBookmark = list['QnaBookmarks.userName'] === userName;
+    else isBookmark = list.QnaBookmarks[0]?.userName === userName;
 
-    let isLike = '';
-    if (!userName) isLike = false;
-    else isLike = list['QnaLikes.userName'] === userName;
-
+    let isLike = false;
+    for (let i = 0; i < list.QnaLikes.length; i++) {
+      if (list.QnaLikes[i]?.userName === userName) {
+        isLike = true;
+        break;
+      }
+    }
     return {
       id: list.id,
       title: list.title,
       content: list.content,
       userName: list.userName,
-      profileImg: list['User.profileImg'],
+      profileImg: list.User.profileImg,
       isResolve: list.isResolve,
-      like: list['QnaLikes.like'],
+      like: list.QnaLikes.length,
       isLike,
       isBookmark,
       createdAt: list.createdAt,
@@ -115,7 +118,7 @@ class QnaService {
 
     if (existBookMark) throw new ConflictException('반복해서 눌렀습니다.');
 
-    this.qnaRepository.AddBookMark(qnaId, userName);
+    await this.qnaRepository.AddBookMark(qnaId, userName);
   };
 
   RemoveBookMark = async (qnaId, userName) => {
@@ -200,11 +203,10 @@ class QnaService {
     });
   };
 
-  GetUserQna = async (userName, compareName) => {
+  GetUserQna = async (userName) => {
     const userQnaInfoLists = await this.qnaRepository.GetUserQna(userName);
 
     return {
-      is_mine,
       myAnswer: userQnaInfoLists[0].QnaComments,
       myQna: userQnaInfoLists[0].Qnas,
     };

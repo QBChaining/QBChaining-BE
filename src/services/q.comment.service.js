@@ -97,7 +97,7 @@ class QnaCommentService {
     );
     if (existLike) throw new ConflictException('반복해서 눌렀습니다.');
 
-    this.qnaCommentRepository.LikeQna(qnaCommentId, userName);
+    await this.qnaCommentRepository.LikeQna(qnaCommentId, userName);
   };
 
   RemoveLikeComment = async (qnaCommentId, userName) => {
@@ -107,7 +107,7 @@ class QnaCommentService {
     );
     if (!existLike) throw new ConflictException('반복해서 눌렀습니다.');
 
-    this.qnaCommentRepository.RemoveLikeQna(qnaCommentId, userName);
+    await this.qnaCommentRepository.RemoveLikeQna(qnaCommentId, userName);
   };
 
   ChooseComment = async (CommentId, userName) => {
@@ -117,8 +117,8 @@ class QnaCommentService {
     if (qna.userName !== userName)
       throw new ConflictException('채택은 게시글 작성자만 가능합니다.');
 
-    this.qnaCommentRepository.UpdateStatusQna(qna.id);
-    this.qnaCommentRepository.UpdateStatusQna(CommentId);
+    await this.qnaCommentRepository.UpdateStatusQna(qna.id);
+    await this.qnaCommentRepository.UpdateStatusComment(CommentId);
   };
 }
 

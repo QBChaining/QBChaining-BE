@@ -33,23 +33,23 @@ export default class QnaCommentRepository {
     });
   };
 
-  LikeQna = (qnaCommentId, userName) => {
-    QnaCommentLike.create({ qnaCommentId, userName });
+  LikeQna = async (qnaCommentId, userName) => {
+    await QnaCommentLike.create({ qnaCommentId, userName });
   };
 
-  RemoveLikeQna = (qnaCommentId, userName) => {
-    QnaCommentLike.destroy({ where: { qnaCommentId, userName } });
+  RemoveLikeQna = async (qnaCommentId, userName) => {
+    await QnaCommentLike.destroy({ where: { qnaCommentId, userName } });
   };
 
-  FindComment = (qnaCommentId) => {
-    return QnaComment.findByPk(qnaCommentId);
+  FindComment = async (qnaCommentId) => {
+    return await QnaComment.findByPk(qnaCommentId);
   };
 
-  UpdateStatusQna = (id) => {
-    Qna.update({ isResolve: true }, { where: { id } });
+  UpdateStatusQna = async (id) => {
+    await Qna.update({ isResolve: true }, { where: { id } });
   };
 
-  UpdateStatusQna = (id) => {
-    QnaComment.update({ isChoose: true }, { where: { id } });
+  UpdateStatusComment = async (id) => {
+    await QnaComment.update({ isChoose: true }, { where: { id } });
   };
 }
