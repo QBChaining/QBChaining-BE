@@ -100,6 +100,7 @@ export default class AuthRepository {
   };
 
   findQnaBetweenDays = async () => {};
+
   findQnaCommentBetweenDays = async () => {};
 
   findAllUserActivityBetweenDates = async (

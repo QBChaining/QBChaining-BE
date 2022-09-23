@@ -117,25 +117,6 @@ export default class AuthService {
       return { post: id, date: updatedAt };
     });
 
-    const sortedPostArray = postArray.sort(function (a, b) {
-      return new Date(b.date) - new Date(a.date);
-    });
-
-    const postActivity = [];
-    let thePostArray = [];
-    let thePostDate = sortedPostArray[0].date;
-
-    for (let i = 0; i < sortedPostArray.length; i++) {
-      if (thePostDate == sortedPostArray[i].date) {
-        thePostArray.push(sortedPostArray[i]);
-      } else {
-        thePostDate = sortedPostArray[i].date;
-        postActivity.push(thePostArray);
-        thePostArray = [];
-        thePostArray.push(sortedPostArray[i]);
-      }
-    }
-
     const postComments = await this.authRepository.findPostCommentBetweenDays(
       twentySevenDaysAgo,
       today
@@ -147,47 +128,28 @@ export default class AuthService {
       return { postComment: id, date: updatedAt };
     });
 
-    const sortedPostCommentArray = postCommentArray.sort(function (a, b) {
+    const combinedArray = postArray.concat(postCommentArray);
+
+    const sortedArray = combinedArray.sort(function (a, b) {
       return new Date(b.date) - new Date(a.date);
     });
 
-    const postCommentActivity = [];
-    let thePostCommentArray = [];
-    let thePostCommentDate = sortedPostCommentArray[0].date;
+    const activity = [];
+    let theArray = [];
+    let theDate = sortedArray[0].date;
 
-    for (let i = 0; i < sortedPostCommentArray.length; i++) {
-      if (thePostCommentDate == sortedPostCommentArray[i].date) {
-        thePostCommentArray.push(sortedPostCommentArray[i]);
+    for (let i = 0; i < sortedArray.length; i++) {
+      if (theDate == sortedArray[i].date) {
+        theArray.push(sortedArray[i]);
       } else {
-        thePostCommentDate = sortedPostCommentArray[i].date;
-        postCommentActivity.push(thePostCommentArray);
-        thePostCommentArray = [];
-        thePostCommentArray.push(sortedPostCommentArray[i]);
+        theDate = sortedArray[i].date;
+        activity.push(theArray);
+        theArray = [];
+        theArray.push(sortedArray[i]);
       }
     }
 
-    // console.log(postCommentActivity.concat(postActivity));
-
-    const userData = await this.authRepository.findAllUserActivityBetweenDates(
-      userName,
-      twentySevenDaysAgo,
-      today
-    );
-
-    const userDataPost = userData.dataValues.Posts;
-    const all = userDataPost.concat(userData.dataValues.PostComments);
-
-    console.log(all[0]);
-
-    // const udPost = all.map((e) => {
-    //   let id = e.dataValues.id;
-    //   let updatedAt = e.dataValues.updatedAt.slice(0, 10);
-    //   return { id: id, date: updatedAt };
-    // });
-
-    // console.log(udPost);
-
-    return {};
+    return activity;
   };
 
   getUserPage = async (userName) => {
