@@ -7,26 +7,15 @@ import {
   UnauthorizedException,
   UnkownException,
 } from '../exception/customException.js';
-
-import User from '../models/user.js';
-import Qna from '../models/qna.js';
-
-import QnaLike from '../models/qna.like.js';
-import QnaComment from '../models/qna.comment.js';
-import QnaBookmark from '../models/qna.bookmark.js';
-import Post from '../models/post.js';
-import PostLike from '../models/post.like.js';
-import PostBookmark from '../models/post.bookmark.js';
-import PostComment from '../models/post.comment.js';
 import sequelize from 'sequelize';
-
-const Op = sequelize.Op;
+import SearchRepository from '../repositories/search.repository.js';
 
 class SearchService {
+  searchRepository = new SearchRepository();
   QnaSearch = async (keyWords, userName, page_count, page) => {
     if (!keyWords || keyWords.trim() === '')
       throw new BadRequestException('검색 조건이 옳지 않습니다.');
-
+    const Op = sequelize.Op;
     const splitwords = keyWords.split(' ');
     const searchKeywords = [];
 
@@ -37,34 +26,27 @@ class SearchService {
       searchKeywords.push(content);
     }
 
-    const lists = await Qna.findAll({
-      offset: page_count * page,
-      limit: page_count,
-      attributes: {
-        exclude: ['updatedAt', 'content'],
-      },
-      where: {
-        [Op.or]: searchKeywords,
-      },
-      include: [
-        { model: User, attributes: ['profileImg'] },
+    const lists = await this.searchRepository.QnaSearch(
+      searchKeywords,
+      userName,
+      page_count,
+      page,
+      Op
+    );
 
-        { model: QnaLike, attributes: ['id', 'userName'] },
-        { model: QnaBookmark, attributes: ['userName'] },
-        { model: QnaComment, attributes: ['id'] },
-      ],
-    });
     if (!lists.length) return '검색 결과가 없습니다.';
 
     return lists.map((list) => {
-      let isBookmark = false;
-      let isLike = false;
+      let isBookmark = '';
+      if (!userName) isBookmark = false;
+      else isBookmark = list.QnaBookmarks[0]?.userName === userName;
 
-      for (let i = 0; i < list.QnaBookmarks.length; i++) {
-        if (list.QnaBookmarks[i]?.userName === userName) isBookmark = true;
-      }
+      let isLike = false;
       for (let i = 0; i < list.QnaLikes.length; i++) {
-        if (list.QnaLikes[i]?.userName === userName) isLike = true;
+        if (list.QnaLikes[i]?.userName === userName) {
+          isLike = true;
+          break;
+        }
       }
 
       return {
@@ -87,7 +69,7 @@ class SearchService {
   PostSearch = async (keyWords, userName, page_count, page) => {
     if (!keyWords || keyWords.trim() === '')
       throw new BadRequestException('검색 조건이 옳지 않습니다.');
-
+    const Op = sequelize.Op;
     const splitwords = keyWords.split(' ');
     const searchKeywords = [];
 
@@ -98,33 +80,26 @@ class SearchService {
       searchKeywords.push(content);
     }
 
-    const lists = await Post.findAll({
-      offset: page_count * page,
-      limit: page_count,
-      attributes: {
-        exclude: ['updatedAt', 'content'],
-      },
-      where: {
-        [Op.or]: searchKeywords,
-      },
-      include: [
-        { model: User, attributes: ['profileImg'] },
-        { model: PostLike, attributes: ['id', 'userName'] },
-        { model: PostBookmark, attributes: ['userName'] },
-        { model: PostComment, attributes: ['id'] },
-      ],
-    });
+    const lists = await this.searchRepository.PostSearch(
+      searchKeywords,
+      userName,
+      page_count,
+      page,
+      Op
+    );
     if (!lists.length) return '검색 결과가 없습니다.';
 
     return lists.map((list) => {
-      let isBookmark = false;
-      let isLike = false;
+      let isBookmark = '';
+      if (!userName) isBookmark = false;
+      else isBookmark = list.PostBookmarks[0]?.userName === userName;
 
-      for (let i = 0; i < list.PostBookmarks.length; i++) {
-        if (list.PostBookmarks[i]?.userName === userName) isBookmark = true;
-      }
+      let isLike = false;
       for (let i = 0; i < list.PostLikes.length; i++) {
-        if (list.PostLikes[i]?.userName === userName) isLike = true;
+        if (list.PostLikes[i]?.userName === userName) {
+          isLike = true;
+          break;
+        }
       }
 
       return {

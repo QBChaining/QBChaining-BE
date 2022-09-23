@@ -28,6 +28,7 @@
     <img src="https://img.shields.io/badge/Nginx-009639?style=flat&logo=nginx&logoColor=white">
     <img src="https://img.shields.io/badge/Github Action-2088FF?style=flat&logo=GitHub Actions&logoColor=white">
     <img src="https://img.shields.io/badge/Sequelize-52B0E7?style=flat&logo=sequelize&logoColor=white">
+
 </div>
 NODEJS, EXPRESS, SQL, Passport, dotenv, redis, Nginx, Github Action, Sequelize
 

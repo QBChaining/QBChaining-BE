@@ -1,15 +1,15 @@
 import exceptionHandler from '../errorhandler/customException.handler.js';
-import Notification_Service from '../services/notification.service.js';
+import NotificationService from '../services/notification.service.js';
 
-export default class Notification_controller {
-  notification_Service = new Notification_Service();
+export default class Notificationcontroller {
+  notificationService = new NotificationService();
 
   NotiCheck = async (req, res, next) => {
     const notiId = req.params.notiId;
     const userName = req.decoded.userName;
 
     try {
-      const NotiCheck = await this.notification_Service.NotiCheck(
+      const NotiCheck = await this.notificationService.NotiCheck(
         notiId,
         userName
       );
@@ -32,7 +32,18 @@ export default class Notification_controller {
     const userName = req.decoded.userName;
 
     try {
-      const NotiNoti = await this.notification_Service.NotiNoti(userName);
+      const NotiNoti = await this.notificationService.NotiNoti(userName);
+      let ssenoti = setInterval(function checkdata() {
+        const data = {
+          value: userName,
+        };
+        res.sse(data);
+      }, 3000);
+
+      res.on('close', () => {
+        clearInterval(ssenoti);
+        res.end();
+      });
       return res.status(200).json({
         success: true,
         message: '알림 기능 성공',
