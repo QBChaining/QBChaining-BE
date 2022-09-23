@@ -202,8 +202,13 @@ class QnaService {
 
   GetUserQna = async (userName, compareName) => {
     const is_mine = userName === compareName;
-    const qnalists = await this.qnaRepository.GetUserQna(userName);
-    return { is_mine, qnalists };
+    const userQnaInfoLists = await this.qnaRepository.GetUserQna(userName);
+
+    return {
+      is_mine,
+      myAnswer: userQnaInfoLists[0].QnaComments,
+      myQna: userQnaInfoLists[0].Qnas,
+    };
   };
 }
 export default QnaService;

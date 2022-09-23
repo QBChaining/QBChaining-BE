@@ -17,7 +17,7 @@ router.use(checkSignin);
 router.get('/bookmark', verifyToken, qnaController.GetUserBookmark);
 router.get('/search', searchController.QnaSearch);
 router.get('/categories/:category', qnaController.GetCategories);
-router.get('/users/:user_name', qnaController.GetUserQna);
+router.get('/users/:username', qnaController.GetUserQna);
 router.get('/', qnaController.GetAllQna);
 router.get('/:id', qnaController.GetOneQna);
 router.get('/:id/comments', qnaCommentController.GetQnaComment);
