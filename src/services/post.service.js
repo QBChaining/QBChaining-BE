@@ -225,7 +225,7 @@ export default class PostServices {
       title: post.title,
       content: post.content,
       createdAt: post.createdAt,
-      tags,
+      tags: post.tags.split(','),
       userName,
       profileImg,
     };

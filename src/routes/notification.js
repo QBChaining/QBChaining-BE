@@ -7,6 +7,6 @@ const router = express.Router();
 const notificationController = new NotificationController();
 
 router.post('/:notiId', verifyToken, notificationController.NotiCheck);
-router.get('/', verifyToken, notificationController.NotiNoti);
+router.get('/', verifyToken, sse, notificationController.NotiNoti);
 
 export default router;
