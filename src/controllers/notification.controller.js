@@ -33,17 +33,6 @@ export default class Notificationcontroller {
 
     try {
       const NotiNoti = await this.notificationService.NotiNoti(userName);
-      let ssenoti = setInterval(() => {
-        const data = {
-          value: userName,
-        };
-        return res.sse(data);
-      }, 3000);
-
-      res.on('close', () => {
-        clearInterval(ssenoti);
-        res.end();
-      });
       return res.status(200).json({
         success: true,
         message: '알림 기능 성공',
@@ -57,5 +46,35 @@ export default class Notificationcontroller {
         message: exception.message,
       });
     }
+  };
+
+  test = async (req, res) => {
+    // const userName = req.decoded.userName;
+    const userName = req.decoded.userName;
+
+    // let testcl = [];
+
+    res.writeHead(200, {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      // Connection: 'keep-alive',
+    });
+
+    // res.flushHeaders();
+
+    // res.write('event: 1|n|n');
+
+    const data = `data: ${JSON.stringify(userName)}|n|n`;
+    const NotiNoti = await this.notificationService.NotiNoti(userName);
+    res.write(data);
+
+    let onesec = setInterval(() => {
+      res.write(data);
+    }, 1000);
+
+    res.on('close', () => {
+      clearInterval(onesec);
+      res.end(data);
+    });
   };
 }
