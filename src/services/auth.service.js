@@ -145,15 +145,16 @@ export default class AuthService {
     let userActivity = [];
     let todayActivity = [];
 
-    while (index < sortedArray.length) {
+    while (dateIndex < 27) {
       let date = new Date(new Date().setDate(new Date().getDate() - dateIndex))
         .toISOString()
         .slice(0, 10);
 
-      if (date == sortedArray[index].date) {
+      let compareDate = sortedArray[index] ? sortedArray[index].date : false;
+
+      if (date == compareDate) {
         todayActivity.push(sortedArray[index]);
         index++;
-        console.log(todayActivity);
         if (date == lastDate) {
           userActivity.push(todayActivity);
         }
@@ -162,10 +163,6 @@ export default class AuthService {
         todayActivity = [];
         dateIndex++;
       }
-    }
-
-    if (userActivity.length == 0) {
-      userActivity.push(todayActivity);
     }
 
     return userActivity;
