@@ -4,6 +4,7 @@ import Language from '../models/language.js';
 import AuthRepository from '../repositories/auth.repository.js';
 import { Op } from 'sequelize';
 import { text } from 'express';
+import s from 'connect-redis';
 
 export default class AuthService {
   authRepository = new AuthRepository();
@@ -152,6 +153,7 @@ export default class AuthService {
       if (date == sortedArray[index].date) {
         todayActivity.push(sortedArray[index]);
         index++;
+        console.log(todayActivity);
         if (date == lastDate) {
           userActivity.push(todayActivity);
         }
@@ -160,6 +162,10 @@ export default class AuthService {
         todayActivity = [];
         dateIndex++;
       }
+    }
+
+    if (userActivity.length == 0) {
+      userActivity.push(todayActivity);
     }
 
     return userActivity;
