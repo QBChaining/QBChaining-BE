@@ -54,7 +54,7 @@ export default class Notificationcontroller {
 
     // let testcl = [];
 
-    res.writeHead(200, {
+    res.writeHead(400, {
       'Content-Type': 'text/event-stream',
       'Cache-Control': 'no-cache',
       // Connection: 'keep-alive',
@@ -64,7 +64,7 @@ export default class Notificationcontroller {
 
     // res.write('event: 1|n|n');
 
-    const data = `data: ${JSON.stringify(userName)}|n|n`;
+    const data = `data: ${JSON.userName}|n|n`;
     const NotiNoti = await this.notificationService.NotiNoti(userName);
     res.write(data);
 
