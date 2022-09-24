@@ -66,13 +66,13 @@ export default class Notificationcontroller {
 
     const data = `data: ${JSON.stringify(userName)}|n|n`;
     // const NotiNoti = await this.notificationService.NotiNoti(userName);
-    res.write('data: {\n');
-    res.write('data: "foo": "bar",\n');
-    res.write('data: "baz", 555\n');
-    res.write('data: }\n\n');
+
+    res.write('{\n');
+    res.write('age: 29,\n');
+    res.write('}\n\n');
 
     let onesec = setInterval(() => {
-      res.write(data);
+      res.write(Date.now().toString());
     }, 1000);
 
     res.on('close', () => {
