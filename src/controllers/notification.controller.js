@@ -60,8 +60,6 @@ export default class Notificationcontroller {
       Connection: 'keep-alive',
     });
 
-    res.write('data: ' + 'test' + '\n\n');
-
     // const testdata = { title: 'hang' };
     // res.flushHeaders();
 
@@ -78,7 +76,7 @@ export default class Notificationcontroller {
     //   // res.write(Date.now().toString());
     //   res.write('{event:"helloworld"}\n"title":"test"\n\n');
     // }, 1000);
-    // res.write('{event:"helloworld"}\n"title":"test"\n\n');
+    res.write('event: helloworld\ndata: test\n\n');
 
     // res.on('close', () => {
     //   clearInterval(onesec);
