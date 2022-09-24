@@ -50,11 +50,11 @@ export default class Notificationcontroller {
 
   test = async (req, res) => {
     // const userName = req.decoded.userName;
-    const userName = req.decoded.userName;
+    const userName = 'kpzzy';
 
     // let testcl = [];
 
-    res.writeHead(400, {
+    res.writeHead(200, {
       'Content-Type': 'text/event-stream',
       'Cache-Control': 'no-cache',
       // Connection: 'keep-alive',
@@ -64,9 +64,12 @@ export default class Notificationcontroller {
 
     // res.write('event: 1|n|n');
 
-    const data = `data: ${JSON.userName}|n|n`;
+    const data = `data: ${JSON.stringify(userName)}|n|n`;
     const NotiNoti = await this.notificationService.NotiNoti(userName);
-    res.write(data);
+    res.write('data: {\n');
+    res.write('data: "foo": "bar",\n');
+    res.write('data: "baz", 555\n');
+    res.write('data: }\n\n');
 
     let onesec = setInterval(() => {
       res.write(data);
