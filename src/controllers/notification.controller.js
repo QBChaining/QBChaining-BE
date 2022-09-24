@@ -60,23 +60,7 @@ export default class Notificationcontroller {
       Connection: 'keep-alive',
     });
 
-    let i = 0;
-
-    let timer = setInterval(write, 1000);
-    write();
-
-    function write() {
-      i++;
-
-      if (i == 4) {
-        res.write('event: bye\ndata: bye-bye\n\n');
-        clearInterval(timer);
-        res.end();
-        return;
-      }
-
-      res.write('data: ' + i + '\n\n');
-    }
+    res.write('data: ' + 'test' + '\n\n');
 
     // const testdata = { title: 'hang' };
     // res.flushHeaders();
