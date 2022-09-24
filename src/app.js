@@ -14,7 +14,7 @@ dotenv.config();
 passportConfig();
 
 let corsOption = {
-  origin: '*',
+  origin: true,
 };
 
 app.use(cors(corsOption));

@@ -36,6 +36,7 @@
     "pm2": "^5.2.0",
     "redis": "^3.0.2",
     "sequelize": "^6.21.4",
-    "sequelize-cli": "^6.4.1"
+    "sequelize-cli": "^6.4.1",
+    "sse": "^0.0.8"
   }
 }

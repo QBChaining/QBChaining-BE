@@ -57,8 +57,27 @@ export default class Notificationcontroller {
     res.writeHead(200, {
       'Content-Type': 'text/event-stream',
       'Cache-Control': 'no-cache',
-      // Connection: 'keep-alive',
+      Connection: 'keep-alive',
     });
+
+    let i = 0;
+
+    let timer = setInterval(write, 1000);
+    write();
+
+    function write() {
+      i++;
+
+      if (i == 4) {
+        res.write('event: bye\ndata: bye-bye\n\n');
+        clearInterval(timer);
+        res.end();
+        return;
+      }
+
+      res.write('data: ' + i + '\n\n');
+    }
+
     // const testdata = { title: 'hang' };
     // res.flushHeaders();
 
@@ -72,9 +91,10 @@ export default class Notificationcontroller {
     // res.write('}\n\n');
 
     // let onesec = setInterval(() => {
-    //   res.write(Date.now().toString());
+    //   // res.write(Date.now().toString());
+    //   res.write('{event:"helloworld"}\n"title":"test"\n\n');
     // }, 1000);
-    res.write('{event:"helloworld"}\n"title":"test"\n\n');
+    // res.write('{event:"helloworld"}\n"title":"test"\n\n');
 
     // res.on('close', () => {
     //   clearInterval(onesec);
