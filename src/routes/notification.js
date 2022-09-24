@@ -8,5 +8,6 @@ const notificationController = new NotificationController();
 
 router.post('/:notiId', verifyToken, notificationController.NotiCheck);
 router.get('/', verifyToken, sse, notificationController.NotiNoti);
+router.get('/test', notificationController.test);
 
 export default router;
