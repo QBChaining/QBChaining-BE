@@ -65,7 +65,7 @@ export default class Notificationcontroller {
     // res.write('event: 1|n|n');
 
     const data = `data: ${JSON.stringify(userName)}|n|n`;
-    const NotiNoti = await this.notificationService.NotiNoti(userName);
+    // const NotiNoti = await this.notificationService.NotiNoti(userName);
     res.write('data: {\n');
     res.write('data: "foo": "bar",\n');
     res.write('data: "baz", 555\n');

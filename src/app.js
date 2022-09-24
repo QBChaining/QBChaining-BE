@@ -6,7 +6,6 @@ import session from 'express-session';
 import passport from 'passport';
 import passportConfig from './passport/index.js';
 import morgan from 'morgan';
-import sse from 'ssestream';
 
 const app = express();
 
@@ -35,16 +34,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/api', router);
-app.get('/ssetest', (req, res) => {
-  const sse1 = new sse(req);
-  stream.pipe(res);
-
-  setInterval(() => {
-    stream.write({
-      data: Date.now().toString(),
-    });
-  }, 1000);
-});
 
 app.use((req, res, next) => {
   const error = new Error(
