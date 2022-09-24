@@ -59,12 +59,12 @@ export default class Notificationcontroller {
       'Cache-Control': 'no-cache',
       // Connection: 'keep-alive',
     });
-    const testdata = { title: 'hang' };
+    // const testdata = { title: 'hang' };
     // res.flushHeaders();
 
     // res.write('event: 1|n|n');
 
-    const data = `data: ${JSON.stringify(userName)}|n|n`;
+    // const data = `data: ${JSON.stringify(userName)}|n|n`;
     // const NotiNoti = await this.notificationService.NotiNoti(userName);
 
     // res.write('data: {\n');
@@ -74,7 +74,7 @@ export default class Notificationcontroller {
     // let onesec = setInterval(() => {
     //   res.write(Date.now().toString());
     // }, 1000);
-    res.write(`event: hello world\ndata: ${JSON.stringify(testdata)}\n\n`);
+    res.write('{event:"helloworld"}\n"title":"test"\n\n');
 
     // res.on('close', () => {
     //   clearInterval(onesec);
