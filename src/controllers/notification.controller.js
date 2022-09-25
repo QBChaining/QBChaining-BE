@@ -50,7 +50,7 @@ export default class Notificationcontroller {
   };
 
   NotiSSE = async (req, res) => {
-    const userName = 'kpzzy';
+    const userName = req.decoded.userName;
     res.writeHead(200, {
       'Content-Type': 'text/event-stream',
       'Cache-Control': 'no-cache',
@@ -59,7 +59,7 @@ export default class Notificationcontroller {
     console.log(userName);
     const noti = await this.notificationService.NotiNoti(userName);
 
-    res.write(`event: helloworld\ndata: ${JSON.stringify(noti)}\n\n`);
+    res.write(`event: helloworld\ndata: ${JSON.stringify(userName)}\n\n`);
 
     console.log('2');
 
