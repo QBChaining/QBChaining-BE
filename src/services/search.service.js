@@ -20,8 +20,8 @@ class SearchService {
     const searchKeywords = [];
 
     for (let i = 0; i < splitwords.length; i++) {
-      const title = { title: { [Op.startsWith]: splitwords[i] } };
-      const content = { content: { [Op.startsWith]: splitwords[i] } };
+      const title = { title: { [Op.substring]: splitwords[i] } };
+      const content = { content: { [Op.substring]: splitwords[i] } };
       searchKeywords.push(title);
       searchKeywords.push(content);
     }
