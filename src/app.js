@@ -23,10 +23,10 @@ app.use(passport.initialize());
 
 import { sequelize } from './models/index.js';
 
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 3001);
 
 sequelize
-  .sync({ force: false })
+  .sync({ alter: true })
   .then(() => console.log('db connect'))
   .catch((err) => console.error(err));
 

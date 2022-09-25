@@ -48,39 +48,24 @@ export default class Notificationcontroller {
     }
   };
 
-  test = async (req, res) => {
-    // const userName = req.decoded.userName;
-    const userName = 'kpzzy';
-
-    // let testcl = [];
-
+  NotiSSE = async (req, res) => {
     res.writeHead(200, {
       'Content-Type': 'text/event-stream',
       'Cache-Control': 'no-cache',
-      Connection: 'keep-alive',
+      // Connection: 'keep-alive',
     });
 
-    // const testdata = { title: 'hang' };
-    // res.flushHeaders();
+    console.log('1');
+    const test = setInterval(() => {
+      res.write('event: helloworld\ndata: test\n\n');
+    }, 3000);
 
-    // res.write('event: 1|n|n');
+    console.log('2');
 
-    // const data = `data: ${JSON.stringify(userName)}|n|n`;
-    // const NotiNoti = await this.notificationService.NotiNoti(userName);
-
-    // res.write('data: {\n');
-    // res.write('age: 29,\n');
-    // res.write('}\n\n');
-
-    // let onesec = setInterval(() => {
-    //   // res.write(Date.now().toString());
-    //   res.write('{event:"helloworld"}\n"title":"test"\n\n');
-    // }, 1000);
-    res.write('event: helloworld\ndata: test\n\n');
-
-    // res.on('close', () => {
-    //   clearInterval(onesec);
-    //   res.end(data);
-    // });
+    res.on('close', () => {
+      console.log('server end');
+      res.end();
+      console.log('test');
+    });
   };
 }
