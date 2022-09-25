@@ -23,7 +23,7 @@ app.use(passport.initialize());
 
 import { sequelize } from './models/index.js';
 // 3001번을 쓰고있는중 테스트용이므로 끝나면 바꾸기
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 3001);
 
 sequelize
   .sync({ alter: false })
