@@ -19,6 +19,7 @@ export default class PostServices {
           isLike = true;
         }
       }
+      // sql문으로
 
       for (let i = 0; i < post.PostBookmarks.length; i++) {
         if (post.PostBookmarks[i]?.userName === userName) {
