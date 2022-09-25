@@ -49,16 +49,16 @@ export default class Notificationcontroller {
   };
 
   NotiSSE = async (req, res) => {
+    const userName = req.decoded.userName;
     res.writeHead(200, {
       'Content-Type': 'text/event-stream',
       'Cache-Control': 'no-cache',
-      // Connection: 'keep-alive',
+      Connection: 'keep-alive',
     });
 
-    console.log('1');
-    const test = setInterval(() => {
-      res.write('event: helloworld\ndata: test\n\n');
-    }, 3000);
+    const noti = this.notificationService.NotiNoti(userName);
+
+    res.write(`event: helloworld\ndata: ${userName}\n\n`);
 
     console.log('2');
 

@@ -22,11 +22,11 @@ app.use(morgan('dev'));
 app.use(passport.initialize());
 
 import { sequelize } from './models/index.js';
-
-app.set('port', process.env.PORT || 3001);
+// 3001번을 쓰고있는중 테스트용이므로 끝나면 바꾸기
+app.set('port', process.env.PORT || 3000);
 
 sequelize
-  .sync({ alter: true })
+  .sync({ alter: false })
   .then(() => console.log('db connect'))
   .catch((err) => console.error(err));
 
