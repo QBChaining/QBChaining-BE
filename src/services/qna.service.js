@@ -86,7 +86,7 @@ class QnaService {
     else isBookmark = list.QnaBookmarks[0]?.userName === userName;
 
     let isLike = false;
-    for (let i = 0; i < list.QnaLikes.length; i++) {
+    for (let i = 0; i < list.QnaLikes?.length; i++) {
       if (list.QnaLikes[i]?.userName === userName) {
         isLike = true;
         break;

@@ -16,8 +16,8 @@ export default class QnaCommentLike extends Sequelize.Model {
         timestamps: false,
         underscored: false,
         tableName: 'qnaCommentLike',
-        charset: 'utf8',
-        collate: 'utf8_general_ci',
+        charset: 'utf8mb4',
+        collate: 'utf8mb4_unicode_ci',
       }
     );
   }
