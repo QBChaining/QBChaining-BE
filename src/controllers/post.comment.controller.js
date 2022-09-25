@@ -43,7 +43,7 @@ export default class PostCommentController {
           Connection: 'keep-alive',
         });
 
-        res.write(`event: helloworld\ndata: helpme\n\n`);
+        res.write(`event: helloworld\ndata: ${userName}\n\n`);
       }
 
       return res.status(200).json({
