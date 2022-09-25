@@ -75,9 +75,14 @@ export default class AuthRepository {
     return language;
   };
 
-  findPostBetweenDays = async (twentySevenDaysAgo, today) => {
+  findPostBetweenDays = async (userName) => {
+    const today = new Date();
+    const twentySevenDaysAgo = new Date(
+      new Date().setDate(new Date().getDate() - 27)
+    );
     const posts = await Post.findAll({
       where: {
+        userName,
         updatedAt: {
           [Op.between]: [twentySevenDaysAgo, today],
         },
@@ -87,9 +92,14 @@ export default class AuthRepository {
     return posts;
   };
 
-  findPostCommentBetweenDays = async (twentySevenDaysAgo, today) => {
+  findPostCommentBetweenDays = async (userName) => {
+    const today = new Date();
+    const twentySevenDaysAgo = new Date(
+      new Date().setDate(new Date().getDate() - 27)
+    );
     const postComments = await PostComment.findAll({
       where: {
+        userName,
         updatedAt: {
           [Op.between]: [twentySevenDaysAgo, today],
         },
@@ -99,25 +109,37 @@ export default class AuthRepository {
     return postComments;
   };
 
-  findQnaBetweenDays = async () => {};
-
-  findQnaCommentBetweenDays = async () => {};
-
-  findAllUserActivityBetweenDates = async (
-    userName,
-    twentySevenDaysAgo,
-    today
-  ) => {
-    const userData = await User.findOne({
+  findQnaBetweenDays = async (userName) => {
+    const today = new Date();
+    const twentySevenDaysAgo = new Date(
+      new Date().setDate(new Date().getDate() - 27)
+    );
+    const qna = await Qna.findAll({
       where: {
         userName,
         updatedAt: {
           [Op.between]: [twentySevenDaysAgo, today],
         },
       },
-      include: ['Posts', 'PostComments'],
     });
 
-    return userData;
+    return qna;
+  };
+
+  findQnaCommentBetweenDays = async (userName) => {
+    const today = new Date();
+    const twentySevenDaysAgo = new Date(
+      new Date().setDate(new Date().getDate() - 27)
+    );
+    const qnaComments = await QnaComment.findAll({
+      where: {
+        userName,
+        updatedAt: {
+          [Op.between]: [twentySevenDaysAgo, today],
+        },
+      },
+    });
+
+    return qnaComments;
   };
 }

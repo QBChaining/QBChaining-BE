@@ -3,6 +3,8 @@ import UserInfo from '../models/user.info.js';
 import Language from '../models/language.js';
 import AuthRepository from '../repositories/auth.repository.js';
 import { Op } from 'sequelize';
+import { text } from 'express';
+import s from 'connect-redis';
 
 export default class AuthService {
   authRepository = new AuthRepository();
@@ -81,35 +83,18 @@ export default class AuthService {
     return {};
   };
 
-  /* 
-
-    오늘을 기준으로 27일 동안의 사용자 활동
-
-    출력 예시 : 
-
-    [
-      [
-        {type : post, date : 2022-09-30}, 
-        {type : post, date : 2022-09-30}, 
-        {type : post, date : 2022-09-30},
-      ],
-      [
-        {type : post, date : 2022-09-29}, 
-        {type : post, date : 2022-09-29}, 
-        {type : post, date : 2022-09-29},
-      ]
-    ]
-
-  */
   getUserActivity = async (userName) => {
-    const date = new Date();
-    const today = new Date(date.setDate(date.getDate() + 1));
-    const twentySevenDaysAgo = new Date(date.setDate(date.getDate() - 26));
-
-    const posts = await this.authRepository.findPostBetweenDays(
-      twentySevenDaysAgo,
-      today
+    const twentySevenDaysAgo = new Date(
+      new Date().setDate(new Date().getDate() - 27)
     );
+
+    const lastDate = new Date(
+      twentySevenDaysAgo.setDate(twentySevenDaysAgo.getDate() + 1)
+    )
+      .toISOString()
+      .slice(0, 10);
+
+    const posts = await this.authRepository.findPostBetweenDays(userName);
 
     const postArray = posts.map((e) => {
       let id = e.dataValues.id;
@@ -118,8 +103,7 @@ export default class AuthService {
     });
 
     const postComments = await this.authRepository.findPostCommentBetweenDays(
-      twentySevenDaysAgo,
-      today
+      userName
     );
 
     const postCommentArray = postComments.map((e) => {
@@ -128,28 +112,60 @@ export default class AuthService {
       return { postComment: id, date: updatedAt };
     });
 
-    const combinedArray = postArray.concat(postCommentArray);
+    const qnas = await this.authRepository.findQnaBetweenDays(userName);
+
+    const qnaArray = qnas.map((e) => {
+      let id = e.dataValues.id;
+      let updatedAt = e.dataValues.updatedAt.slice(0, 10);
+      return { qna: id, date: updatedAt };
+    });
+
+    const qnaComments = await this.authRepository.findQnaCommentBetweenDays(
+      userName
+    );
+
+    const qnaCommentArray = qnaComments.map((e) => {
+      let id = e.dataValues.id;
+      let updatedAt = e.dataValues.updatedAt.slice(0, 10);
+      return { qnaComment: id, date: updatedAt };
+    });
+
+    const combinedArray = postArray.concat(
+      postCommentArray,
+      qnaArray,
+      qnaCommentArray
+    );
 
     const sortedArray = combinedArray.sort(function (a, b) {
       return new Date(b.date) - new Date(a.date);
     });
 
-    const activity = [];
-    let theArray = [];
-    let theDate = sortedArray[0].date;
+    let index = 0;
+    let dateIndex = 0;
+    let userActivity = [];
+    let todayActivity = [];
 
-    for (let i = 0; i < sortedArray.length; i++) {
-      if (theDate == sortedArray[i].date) {
-        theArray.push(sortedArray[i]);
+    while (dateIndex < 27) {
+      let date = new Date(new Date().setDate(new Date().getDate() - dateIndex))
+        .toISOString()
+        .slice(0, 10);
+
+      let compareDate = sortedArray[index] ? sortedArray[index].date : false;
+
+      if (date == compareDate) {
+        todayActivity.push(sortedArray[index]);
+        index++;
+        if (date == lastDate) {
+          userActivity.push(todayActivity);
+        }
       } else {
-        theDate = sortedArray[i].date;
-        activity.push(theArray);
-        theArray = [];
-        theArray.push(sortedArray[i]);
+        userActivity.push(todayActivity);
+        todayActivity = [];
+        dateIndex++;
       }
     }
 
-    return activity;
+    return userActivity;
   };
 
   getUserPage = async (userName) => {

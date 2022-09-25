@@ -127,19 +127,19 @@ class QnaService {
 
     if (!existBookMark) throw new ConflictException('반복해서 눌렀습니다.');
 
-    this.qnaRepository.RemoveBookMark(qnaId, userName);
+    await this.qnaRepository.RemoveBookMark(qnaId, userName);
   };
 
   LikeQna = async (qnaId, userName) => {
     const existLike = await this.qnaRepository.FindQnaLike(qnaId, userName);
     if (existLike) throw new ConflictException('반복해서 눌렀습니다.');
-    this.qnaRepository.LikeQna(qnaId, userName);
+    await this.qnaRepository.LikeQna(qnaId, userName);
   };
 
   RemoveLikeQna = async (qnaId, userName) => {
     const existLike = await this.qnaRepository.FindQnaLike(qnaId, userName);
     if (!existLike) throw new ConflictException('반복해서 눌렀습니다.');
-    this.qnaRepository.RemoveLikeQna(qnaId, userName);
+    await this.qnaRepository.RemoveLikeQna(qnaId, userName);
   };
 
   GetUserBookmark = async (userName, page, page_count) => {
