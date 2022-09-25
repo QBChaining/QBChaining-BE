@@ -51,6 +51,7 @@ export default class Notificationcontroller {
 
   NotiSSE = async (req, res) => {
     const userName = req.decoded.userName;
+    console.log(req);
     res.writeHead(200, {
       'Content-Type': 'text/event-stream',
       'Cache-Control': 'no-cache',
