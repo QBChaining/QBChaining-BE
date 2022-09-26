@@ -209,5 +209,10 @@ class QnaService {
       myQna: userQnaInfoLists[0].Qnas,
     };
   };
+
+  GetHotQna = async () => {
+    const hotLists = await this.qnaRepository.GetHotQna();
+    return hotLists;
+  };
 }
 export default QnaService;

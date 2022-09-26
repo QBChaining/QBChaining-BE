@@ -207,6 +207,22 @@ class QnaController {
         .json({ success: exception.success, message: exception.message });
     }
   };
+
+  GetHotQna = async (req, res, next) => {
+    try {
+      const data = await this.qnaService.GetHotQna();
+      return res
+        .status(200)
+        .json({ success: true, message: '핫 게시글 조회 완료', data });
+    } catch (err) {
+      console.log(err);
+      const exception = exceptionHandler(err);
+
+      return res
+        .status(exception.statusCode)
+        .json({ success: exception.success, message: exception.message });
+    }
+  };
 }
 
 export default QnaController;

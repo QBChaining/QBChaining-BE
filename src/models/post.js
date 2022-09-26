@@ -18,6 +18,11 @@ export default class Post extends Sequelize.Model {
           type: Sequelize.STRING(100),
           allowNull: false,
         },
+        like: {
+          type: Sequelize.INTEGER,
+          default: 0,
+          allowNull: false,
+        },
       },
       {
         sequelize,
