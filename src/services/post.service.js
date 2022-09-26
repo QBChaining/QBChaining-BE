@@ -39,7 +39,7 @@ export default class PostServices {
         isLike,
         tags,
         cntComment: post.PostComments.length,
-        like: post.PostLikes.length,
+        like: post.like,
         profileImg: post.User.profileImg,
       };
     });
@@ -78,7 +78,7 @@ export default class PostServices {
           tags,
           profileImg: post.User.profileImg,
           cntComment: post.PostComments.length,
-          like: post.PostLikes.length,
+          like: post.like,
         };
       })
       .sort(function (a, b) {
@@ -119,7 +119,7 @@ export default class PostServices {
           tags,
           profileImg: post.User.profileImg,
           cntComment: post.PostComments.length,
-          like: post.PostLikes.length,
+          like: post.like,
         };
       })
       .sort((a, b) => {
@@ -151,7 +151,7 @@ export default class PostServices {
         isLike,
         profileImg: post.User.profileImg,
         cmtNum: post.PostComments.length,
-        like: post.PostLikes.length,
+        like: post.like,
       };
     });
 
@@ -202,7 +202,7 @@ export default class PostServices {
       profileImg: post.User.profileImg,
       userName: post.User.userName,
       cntComment: post.PostComments.length,
-      like: post.PostLikes.length,
+      like: post.like,
     };
   };
 
