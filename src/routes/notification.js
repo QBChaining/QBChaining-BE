@@ -5,7 +5,17 @@ import NotificationController from '../controllers/notification.controller.js';
 const router = express.Router();
 const notificationController = new NotificationController();
 
-router.post('/:notiId', verifyToken, notificationController.NotiCheck);
 router.get('/', verifyToken, notificationController.NotiNoti);
+router.post('/:notiId', verifyToken, notificationController.NotiCheck);
+router.delete(
+  '/deleteall',
+  verifyToken,
+  notificationController.NotificationDeleteAll
+);
+router.delete(
+  '/:notiId',
+  verifyToken,
+  notificationController.NotificationDelete
+);
 
 export default router;
