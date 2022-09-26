@@ -45,8 +45,10 @@ export default class PostRepository {
     return post;
   };
 
-  PostShowOne = async (postId) => {
+  PostShowOne = async (postId, page, page_count) => {
     const post = await Post.findOne({
+      offset: page_count * page,
+      limit: page_count,
       where: { id: postId },
       include: [
         { model: User, attributes: ['userName', 'profileImg'] },
@@ -59,8 +61,11 @@ export default class PostRepository {
     return post;
   };
 
-  PostShowUser = async (userName) => {
+  PostShowUser = async (userName, page, page_count) => {
+    console.log('rep', page, page_count);
     const post = await Post.findAll({
+      offset: page * page_count,
+      limit: page_count,
       where: { userName: userName },
       include: [
         { model: PostLike, attributes: ['userName'] },
@@ -153,7 +158,7 @@ export default class PostRepository {
     return bookmark;
   };
 
-  PostTags = async (tag) => {
+  PostTags = async (tag, page, page_count) => {
     const tags = await Post.findOne({
       where: { tags: tag },
       include: [{ model: PostBookmark, attributes: ['userName'] }],

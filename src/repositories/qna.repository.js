@@ -58,6 +58,33 @@ export default class QnaRepository {
     });
   };
 
+  GetHotQna = async () => {
+    return await Qna.findAll({
+      limit: 5,
+      where: {
+        createdAt: {
+          [option.lt]: new Date(),
+          [option.gt]: new Date(new Date() - 24 * 60 * 60 * 1000),
+        },
+      },
+      attributes: [
+        'id',
+        'title',
+        'category',
+        'isResolve',
+        'createdAt',
+        'userName',
+        'tags',
+      ],
+      include: [
+        {
+          model: QnaLike,
+          attributes: ['userName'],
+        },
+      ],
+    });
+  };
+
   GetOneQna = async (id, userName) => {
     return await Qna.findOne({
       where: { id },
@@ -190,7 +217,7 @@ export default class QnaRepository {
           ],
         },
       ],
-      order: [['createdAt', 'DESC']],
+      // order: [['createdAt', 'DESC']],
     });
   };
 }

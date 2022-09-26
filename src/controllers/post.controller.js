@@ -31,9 +31,14 @@ export default class PostController {
   };
 
   PostShowComment = async (req, res, next) => {
+    const { page, page_count } = req.query;
     const userName = req.user?.userName;
     try {
-      const postShowComment = await this.postService.PostShowComment(userName);
+      const postShowComment = await this.postService.PostShowComment(
+        userName,
+        page * 1,
+        page_count * 1
+      );
       return res.status(200).json({
         success: true,
         message: '조회 성공1',
@@ -50,9 +55,14 @@ export default class PostController {
   };
 
   PostShowLike = async (req, res, next) => {
+    const { page, page_count } = req.query;
     const userName = req.user?.userName;
     try {
-      const postShowAll = await this.postService.PostShowLike(userName);
+      const postShowAll = await this.postService.PostShowLike(
+        userName,
+        page * 1,
+        page_count * 1
+      );
       return res.status(200).json({
         success: true,
         message: '조회 성공',
@@ -69,9 +79,14 @@ export default class PostController {
   };
 
   PostShowhit = async (req, res, next) => {
+    const { page, page_count } = req.query;
     const userName = req.user?.userName;
     try {
-      const postShowhit = await this.postService.PostShowhit(userName);
+      const postShowhit = await this.postService.PostShowhit(
+        userName,
+        page * 1,
+        page_count * 1
+      );
       return res.status(200).json({
         success: true,
         message: '히트상품조회성공',
@@ -110,15 +125,16 @@ export default class PostController {
   };
 
   PostShowUser = async (req, res, next) => {
+    const { page, page_count } = req.query;
     const userName = req.params.userName;
     const userName1 = req.user?.userName;
-    const profileImg = req.user?.profileImg;
 
     try {
       const PostShowMy = await this.postService.PostShowUser(
         userName,
         userName1,
-        profileImg
+        page * 1,
+        page_count * 1
       );
 
       return res.status(200).json({
