@@ -92,7 +92,7 @@ export default class PostRepository {
             {
               model: Post,
               where: { userName: { [op.ne]: userName } },
-              attributes: ['title', 'id', 'createdAt'],
+              attributes: ['title', 'id', 'createdAt', 'like'],
             },
           ],
         },
