@@ -4,7 +4,7 @@ import QnaComment from '../models/qna.comment.js';
 import User from '../models/user.js';
 import QnaLike from '../models/qna.like.js';
 import QnaBookmark from '../models/qna.bookmark.js';
-import sequelize, { where } from 'sequelize';
+import sequelize from 'sequelize';
 
 const option = sequelize.Op;
 
@@ -148,10 +148,12 @@ export default class QnaRepository {
 
   LikeQna = async (qnaId, userName) => {
     await QnaLike.create({ qnaId, userName });
+    await Qna.increment({ like: 1 }, { where: { id: qnaId } });
   };
 
   RemoveLikeQna = async (qnaId, userName) => {
     await QnaLike.destroy({ where: { qnaId, userName } });
+    await Qna.increment({ like: -1 }, { where: { id: qnaId } });
   };
 
   GetQnaCategory = async (category, page, page_count, userName, status) => {
@@ -217,7 +219,7 @@ export default class QnaRepository {
           ],
         },
       ],
-      // order: [['createdAt', 'DESC']],
+      order: [['createdAt', 'DESC']],
     });
   };
 }
