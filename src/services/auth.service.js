@@ -1,10 +1,5 @@
-import User from '../models/user.js';
-import UserInfo from '../models/user.info.js';
 import Language from '../models/language.js';
 import AuthRepository from '../repositories/auth.repository.js';
-import { Op } from 'sequelize';
-import { text } from 'express';
-import s from 'connect-redis';
 
 export default class AuthService {
   authRepository = new AuthRepository();
@@ -84,9 +79,6 @@ export default class AuthService {
   };
 
   getUserActivity = async (userName) => {
-    // const twentySevenDaysAgo = new Date(
-    //   new Date().setDate(new Date().getDate() - 27)
-    // );
     const twentySevenDaysAgo = new Date(
       new Date().setDate(new Date().getDate() - 30)
     );
@@ -148,7 +140,6 @@ export default class AuthService {
     let userActivity = [];
     let todayActivity = [];
 
-    // while (dateIndex < 27) {
     while (dateIndex < 30) {
       let date = new Date(new Date().setDate(new Date().getDate() - dateIndex))
         .toISOString()
@@ -168,8 +159,6 @@ export default class AuthService {
         dateIndex++;
       }
     }
-
-    console.log(userActivity.length);
 
     return userActivity.reverse();
   };
