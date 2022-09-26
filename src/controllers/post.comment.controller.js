@@ -6,8 +6,13 @@ export default class PostCommentController {
 
   CommentShowAll = async (req, res, next) => {
     const postId = req.params.postId;
+    const { page, page_count } = req.query;
     try {
-      const postcomment = await this.postCommentServices.CommentShowAll(postId);
+      const postcomment = await this.postCommentServices.CommentShowAll(
+        postId,
+        page * 1,
+        page_count * 1
+      );
 
       return res.status(200).json({
         success: true,
@@ -15,6 +20,7 @@ export default class PostCommentController {
         data: postcomment,
       });
     } catch (error) {
+      console.log(error);
       const exception = exceptionHandler(error);
 
       res.status(exception.statusCode).json({
@@ -97,4 +103,17 @@ export default class PostCommentController {
       });
     }
   };
+
+  // PostNotification = async (req, res) => {
+  //   userName = req.decoded.userName;
+
+  //   res.writeHead(200, {
+  //     'Content-Type': 'text/event-stream',
+  //     'Cache-Control': 'no-cache',
+  //     Connection: 'keep-alive',
+  //   });
+
+  //   const cmt = await this.postCommentServices.CommentCreate();
+  //   res.write('event: helloworld\ndata: test\n\n');
+  // };
 }

@@ -7,19 +7,19 @@ import {
   UnauthorizedException,
   UnkownException,
 } from '../exception/customException.js';
-import Notification from '../models/noti.js';
-import Post from '../models/post.js';
-import Qna from '../models/qna.js';
+import NotificationRepository from '../repositories/notification.repository.js';
 
 export default class NotificationService {
+  notificationRepository = new NotificationRepository();
   // 알람을 눌렀을때 동작하는 포스트요청
   NotiCheck = async (notiId, userName) => {
-    const findNoti = await Notification.findOne({
-      where: { id: notiId, userName: userName },
-    });
+    const findNoti = await this.notificationRepository.NotificationOne(
+      notiId,
+      userName
+    );
 
     if (findNoti.check === false) {
-      await Notification.update({ check: true }, { where: { id: notiId } });
+      await this.notificationRepository.UpdateNotification(notiId);
       return true;
     }
     if (findNoti.check === true) {
@@ -30,14 +30,9 @@ export default class NotificationService {
   };
   // 알람을 확인하는 겟 요청
   NotiNoti = async (userName) => {
-    const findNoti = await Notification.findAll({
-      where: { userName: userName },
-      order: [['createdAt', 'DESC']],
-      include: [
-        { model: Post, attributes: ['title'] },
-        { model: Qna, attributes: ['title'] },
-      ],
-    });
+    const findNoti = await this.notificationRepository.NotificationAll(
+      userName
+    );
 
     return findNoti.map((notification) => {
       return {

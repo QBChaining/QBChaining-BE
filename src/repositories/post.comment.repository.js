@@ -41,8 +41,10 @@ export default class PostCommentRepository {
     return notification;
   };
 
-  CommentShowAll = async (postId) => {
+  CommentShowAll = async (postId, page, page_count) => {
     const postcomment = await PostComment.findAll({
+      offset: page * page_count,
+      limit: page_count,
       where: { postId: postId },
       attributes: ['id', 'comment', 'createdAt', 'updatedAt'],
       include: [{ model: User, attributes: ['userName', 'profileImg'] }],

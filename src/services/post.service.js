@@ -8,8 +8,8 @@ import {
 export default class PostServices {
   postRepository = new PostRepository();
   // 최신순 정렬
-  PostShowAll = async (userName) => {
-    const post = await this.postRepository.PostShowAll();
+  PostShowAll = async (userName, page, page_count) => {
+    const post = await this.postRepository.PostShowAll(page, page_count);
 
     return post.map((post) => {
       let isBookmark = false;
@@ -19,7 +19,6 @@ export default class PostServices {
           isLike = true;
         }
       }
-      // sql문으로
 
       for (let i = 0; i < post.PostBookmarks.length; i++) {
         if (post.PostBookmarks[i]?.userName === userName) {
@@ -47,8 +46,8 @@ export default class PostServices {
   };
 
   // 댓글순 정렬
-  PostShowComment = async (userName) => {
-    const postcmt = await this.postRepository.PostShowAll();
+  PostShowComment = async (userName, page, page_count) => {
+    const postcmt = await this.postRepository.PostShowAll(page, page_count);
     return postcmt
       .map((post) => {
         let isBookmark = false;
@@ -88,8 +87,11 @@ export default class PostServices {
   };
 
   // 추천순 정렬
-  PostShowLike = async (userName) => {
-    const postshowlike = await this.postRepository.PostShowAll();
+  PostShowLike = async (userName, page, page_count) => {
+    const postshowlike = await this.postRepository.PostShowAll(
+      page,
+      page_count
+    );
 
     return postshowlike
       .map((post) => {
@@ -128,8 +130,9 @@ export default class PostServices {
       });
   };
 
-  PostShowhit = async (userName) => {
-    const posthit = await this.postRepository.PostShowAll();
+  PostShowhit = async (userName, page, page_count) => {
+    console.log(userName, page, page_count);
+    const posthit = await this.postRepository.PostShowAll(page, page_count);
 
     const posthitmap = posthit.map((post) => {
       let isLike = false;
@@ -208,8 +211,12 @@ export default class PostServices {
     };
   };
 
-  PostShowUser = async (userName, userName1) => {
-    const post = await this.postRepository.PostShowUser(userName);
+  PostShowUser = async (userName, userName1, page, page_count) => {
+    const post = await this.postRepository.PostShowUser(
+      userName,
+      page,
+      page_count
+    );
 
     return post.map((post) => {
       let isLike = false;
