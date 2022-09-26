@@ -215,7 +215,16 @@ export default class PostServices {
     };
   };
 
-  PostCreate = async (title, content, tags, userName, profileImg) => {
+  PostCreate = async (
+    title,
+    content,
+    tags,
+    userName,
+    profileImg,
+    like,
+    cntComment,
+    isLike
+  ) => {
     if (content.length === 0 || title.length === 0) {
       throw new BadRequestException('내용을 입력해주세요');
     }
@@ -227,7 +236,8 @@ export default class PostServices {
       content,
       tags,
       userName,
-      profileImg
+      profileImg,
+      like
     );
 
     return {
@@ -238,6 +248,9 @@ export default class PostServices {
       tags: post.tags.split(','),
       userName,
       profileImg,
+      like: 0,
+      cntComment,
+      isLike,
     };
   };
 

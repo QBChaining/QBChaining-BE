@@ -11,7 +11,11 @@ export default class QnaCommentRepository {
   CreateComment = async (qnaId, userName, comment) => {
     return await QnaComment.create({ qnaId, userName, comment });
   };
-
+  Getchoose = async (qnaId) => {
+    return await QnaComment.findOne({
+      where: { qnaId, isChoose: true },
+    });
+  };
   GetQnaComment = async (qnaId, page_count, page) => {
     return await QnaComment.findAll({
       where: { qnaId },
