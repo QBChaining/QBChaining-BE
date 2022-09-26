@@ -208,10 +208,12 @@ export default class PostServices {
 
   PostShowUser = async (userName) => {
     const post = await this.postRepository.PostShowUser(userName);
-    console.log(post.Posts[0].id);
-    console.log(post.PostLikes[0].postId);
-    // for (let i = 0; i < post.Post)
-    return post;
+
+    return {
+      cmt: post.PostComments[0],
+      post: post.Posts,
+      like: post.PostLikes,
+    };
   };
 
   PostCreate = async (title, content, tags, userName, profileImg) => {
