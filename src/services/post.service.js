@@ -8,8 +8,8 @@ import {
 export default class PostServices {
   postRepository = new PostRepository();
   // 최신순 정렬
-  PostShowAll = async (userName) => {
-    const post = await this.postRepository.PostShowAll();
+  PostShowAll = async (userName, page, page_count) => {
+    const post = await this.postRepository.PostShowAll(page, page_count);
 
     return post.map((post) => {
       let isBookmark = false;
@@ -19,7 +19,6 @@ export default class PostServices {
           isLike = true;
         }
       }
-      // sql문으로
 
       for (let i = 0; i < post.PostBookmarks.length; i++) {
         if (post.PostBookmarks[i]?.userName === userName) {
