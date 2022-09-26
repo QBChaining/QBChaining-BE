@@ -95,13 +95,13 @@ export default class QnaRepository {
         {
           model: QnaLike,
           attributes: ['userName'],
-          where: { userName },
+          where: { userName: { [option.eq]: `${userName}` } },
           required: false,
         },
         {
           model: QnaBookmark,
           attributes: ['userName'],
-          where: { userName },
+          where: { userName: { [option.eq]: `${userName}` } },
           required: false,
         },
       ],
