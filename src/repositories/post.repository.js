@@ -83,7 +83,7 @@ export default class PostRepository {
       where: { userName: userName },
       attributes: [],
       include: [
-        { model: PostLike, attributes: ['postId'] },
+        // { model: PostLike, attributes: ['postId'], include: [{model: Post, where:{}}] },
         { model: Post, attributes: ['title', 'id', 'createdAt', 'like'] },
         {
           model: PostComment,
@@ -92,7 +92,7 @@ export default class PostRepository {
             {
               model: Post,
               where: { userName: { [op.ne]: userName } },
-              attributes: ['title', 'id', 'createdAt'],
+              attributes: ['title', 'id', 'createdAt', 'like'],
             },
           ],
         },

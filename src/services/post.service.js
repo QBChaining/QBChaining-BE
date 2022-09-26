@@ -210,9 +210,8 @@ export default class PostServices {
     const post = await this.postRepository.PostShowUser(userName);
 
     return {
-      cmt: post.PostComments[0],
+      comment: post.PostComments,
       post: post.Posts,
-      like: post.PostLikes,
     };
   };
 
