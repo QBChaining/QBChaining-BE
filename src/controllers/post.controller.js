@@ -6,9 +6,14 @@ export default class PostController {
 
   PostShowAll = async (req, res, next) => {
     // 유저네임 저거 바꾸기
+    const { page, page_count } = req.query;
     const userName = req.user?.userName;
     try {
-      const postShowAll = await this.postService.PostShowAll(userName);
+      const postShowAll = await this.postService.PostShowAll(
+        userName,
+        page * 1,
+        page_count * 1
+      );
       return res.status(200).json({
         success: true,
         message: '조회 성공',

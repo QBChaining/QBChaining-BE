@@ -32,17 +32,17 @@ export default class PostCommentServices {
     if (comment.length === 0) {
       throw new BadRequestException('내용을 입력해주세요');
     }
+    const findpost = await this.postCommentRepository.PostFindOne(postId);
+
+    if (!findpost) {
+      throw new NotFoundException('게시물이 없습니다');
+    }
     const postcomment = await this.postCommentRepository.CommentCreate(
       comment,
       userName,
       postId
     );
 
-    const findpost = await this.postCommentRepository.PostFindOne(postId);
-
-    if (!findpost) {
-      throw new NotFoundException('게시물이 없습니다');
-    }
     // 여기쯤부터 하면댈듯
     const findBookMark = await this.postCommentRepository.PostBookmark(postId);
     if (findBookMark.length === 0) {
