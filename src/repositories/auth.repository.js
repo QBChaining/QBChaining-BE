@@ -78,7 +78,7 @@ export default class AuthRepository {
   findPostBetweenDays = async (userName) => {
     const today = new Date();
     const twentySevenDaysAgo = new Date(
-      new Date().setDate(new Date().getDate() - 27)
+      new Date().setDate(new Date().getDate() - 30)
     );
     const posts = await Post.findAll({
       where: {
@@ -95,7 +95,7 @@ export default class AuthRepository {
   findPostCommentBetweenDays = async (userName) => {
     const today = new Date();
     const twentySevenDaysAgo = new Date(
-      new Date().setDate(new Date().getDate() - 27)
+      new Date().setDate(new Date().getDate() - 30)
     );
     const postComments = await PostComment.findAll({
       where: {
@@ -112,7 +112,7 @@ export default class AuthRepository {
   findQnaBetweenDays = async (userName) => {
     const today = new Date();
     const twentySevenDaysAgo = new Date(
-      new Date().setDate(new Date().getDate() - 27)
+      new Date().setDate(new Date().getDate() - 30)
     );
     const qna = await Qna.findAll({
       where: {
@@ -129,7 +129,7 @@ export default class AuthRepository {
   findQnaCommentBetweenDays = async (userName) => {
     const today = new Date();
     const twentySevenDaysAgo = new Date(
-      new Date().setDate(new Date().getDate() - 27)
+      new Date().setDate(new Date().getDate() - 30)
     );
     const qnaComments = await QnaComment.findAll({
       where: {
