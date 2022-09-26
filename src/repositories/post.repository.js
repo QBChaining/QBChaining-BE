@@ -3,7 +3,7 @@ import User from '../models/user.js';
 import PostComment from '../models/post.comment.js';
 import PostLike from '../models/post.like.js';
 import PostBookmark from '../models/post.bookmark.js';
-import Sequelize from 'sequelize';
+import Sequelize, { where } from 'sequelize';
 
 const op = Sequelize.Op;
 
@@ -133,6 +133,7 @@ export default class PostRepository {
 
   PostLike = async (postId, userName) => {
     const like = await PostLike.create({ postId, userName });
+    await Post.increment({ like: 1 }, { where: { id: postId } });
 
     return like;
   };
@@ -141,6 +142,7 @@ export default class PostRepository {
     const likeDelete = await PostLike.destroy({
       where: { postId: postId, userName: userName },
     });
+    await Post.decrement({ like: 1 }, { where: { id: postId } });
 
     return likeDelete;
   };
