@@ -12,12 +12,8 @@ import PostCommentRepository from '../repositories/post.comment.repository.js';
 export default class PostCommentServices {
   postCommentRepository = new PostCommentRepository();
 
-  CommentShowAll = async (postId, page, page_count) => {
-    const postcomment = await this.postCommentRepository.CommentShowAll(
-      postId,
-      page,
-      page_count
-    );
+  CommentShowAll = async (postId) => {
+    const postcomment = await this.postCommentRepository.CommentShowAll(postId);
     if (!postcomment) throw new BadRequestException('게시물이 없습니다');
     if (postcomment)
       return postcomment.map((comment) => {

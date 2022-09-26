@@ -6,13 +6,8 @@ export default class PostCommentController {
 
   CommentShowAll = async (req, res, next) => {
     const postId = req.params.postId;
-    const { page, page_count } = req.query;
     try {
-      const postcomment = await this.postCommentServices.CommentShowAll(
-        postId,
-        page * 1,
-        page_count * 1
-      );
+      const postcomment = await this.postCommentServices.CommentShowAll(postId);
 
       return res.status(200).json({
         success: true,

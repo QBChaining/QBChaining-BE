@@ -84,7 +84,7 @@ export default class PostRepository {
       attributes: [],
       include: [
         { model: PostLike, attributes: ['postId'] },
-        { model: Post, attributes: ['title', 'id', 'createdAt'] },
+        { model: Post, attributes: ['title', 'id', 'createdAt', 'like'] },
         {
           model: PostComment,
           attributes: ['comment'],
