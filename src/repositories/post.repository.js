@@ -3,6 +3,9 @@ import User from '../models/user.js';
 import PostComment from '../models/post.comment.js';
 import PostLike from '../models/post.like.js';
 import PostBookmark from '../models/post.bookmark.js';
+import Sequelize from 'sequelize';
+
+const op = Sequelize.Op;
 
 export default class PostRepository {
   PostFindOne = async (postId) => {
@@ -45,10 +48,24 @@ export default class PostRepository {
     return post;
   };
 
-  PostShowOne = async (postId, page, page_count) => {
+  PostShowHit = async () => {
+    const post = await Post.findAll({
+      limit: 4,
+      where: {},
+      include: [
+        { model: User, attributes: ['userName', 'profileImg'] },
+        { model: PostComment, attributes: ['userName', 'comment'] },
+        { model: PostLike, attributes: ['userName'] },
+        { model: PostBookmark, attributes: ['userName'] },
+      ],
+      order: [['createdAt', 'DESC']],
+    });
+
+    return post;
+  };
+
+  PostShowOne = async (postId) => {
     const post = await Post.findOne({
-      offset: page_count * page,
-      limit: page_count,
       where: { id: postId },
       include: [
         { model: User, attributes: ['userName', 'profileImg'] },
@@ -61,24 +78,24 @@ export default class PostRepository {
     return post;
   };
 
-  PostShowUser = async (userName, page, page_count) => {
-    console.log('rep', page, page_count);
-    const post = await Post.findAll({
-      offset: page * page_count,
-      limit: page_count,
+  PostShowUser = async (userName) => {
+    const post = await User.findOne({
       where: { userName: userName },
+      attributes: [],
       include: [
-        { model: PostLike, attributes: ['userName'] },
-        { model: User, attributes: ['userName', 'profileImg'] },
-      ],
-      attributes: [
-        'id',
-        'title',
-        'content',
-        'createdAt',
-        'updatedAt',
-        'userName',
-        'tags',
+        { model: PostLike, attributes: ['postId'] },
+        { model: Post, attributes: ['title', 'id', 'createdAt'] },
+        {
+          model: PostComment,
+          attributes: ['comment'],
+          include: [
+            {
+              model: Post,
+              where: { userName: { [op.ne]: userName } },
+              attributes: ['title', 'id', 'createdAt'],
+            },
+          ],
+        },
       ],
       order: [['createdAt', 'DESC']],
     });
