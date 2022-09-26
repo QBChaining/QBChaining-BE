@@ -22,7 +22,7 @@ app.use(morgan('dev'));
 app.use(passport.initialize());
 
 import { sequelize } from './models/index.js';
-app.set('port', process.env.PORT || 3001);
+app.set('port', process.env.PORT || 3000);
 
 sequelize
   .sync({ alter: false })
