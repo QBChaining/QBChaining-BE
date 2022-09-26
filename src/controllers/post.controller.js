@@ -149,7 +149,7 @@ export default class PostController {
     const { title, content, tags } = req.body;
     const { userName, profileImg } = req.decoded;
     const like = 0;
-    const cntComment = false;
+    const cntComment = 0;
     const isLike = false;
 
     try {
