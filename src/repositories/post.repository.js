@@ -28,8 +28,10 @@ export default class PostRepository {
     return bookmark;
   };
 
-  PostShowAll = async () => {
+  PostShowAll = async (page, page_count) => {
     const post = await Post.findAll({
+      offset: page_count * page,
+      limit: page_count,
       where: {},
       include: [
         { model: User, attributes: ['userName', 'profileImg'] },

@@ -33,7 +33,6 @@ export default class Notificationcontroller {
 
     try {
       const NotiNoti = await this.notificationService.NotiNoti(userName);
-      console.log(NotiNoti);
       return res.status(200).json({
         success: true,
         message: '알림 기능 성공',
@@ -49,25 +48,25 @@ export default class Notificationcontroller {
     }
   };
 
-  NotiSSE = async (req, res) => {
-    const userName = 'kpzzy';
-    console.log(req);
-    res.writeHead(200, {
-      'Content-Type': 'text/event-stream',
-      'Cache-Control': 'no-cache',
-      Connection: 'keep-alive',
-    });
-    console.log(userName);
-    const noti = await this.notificationService.NotiNoti(userName);
+  // NotiSSE = async (req, res) => {
+  //   const userName = 'kpzzy';
+  //   console.log(req);
+  //   res.writeHead(200, {
+  //     'Content-Type': 'text/event-stream',
+  //     'Cache-Control': 'no-cache',
+  //     Connection: 'keep-alive',
+  //   });
+  //   console.log(userName);
+  //   const noti = await this.notificationService.NotiNoti(userName);
 
-    res.write(`event: helloworld\ndata: ${JSON.stringify(userName)}\n\n`);
+  //   res.write(`event: helloworld\ndata: ${JSON.stringify(userName)}\n\n`);
 
-    console.log('2');
+  //   console.log('2');
 
-    res.on('close', () => {
-      console.log('server end');
-      res.end();
-      console.log('test');
-    });
-  };
+  //   res.on('close', () => {
+  //     console.log('server end');
+  //     res.end();
+  //     console.log('test');
+  //   });
+  // };
 }

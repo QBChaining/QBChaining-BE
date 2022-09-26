@@ -11,6 +11,6 @@ router.get('/:postId', checkSignin, postCommentController.CommentShowAll);
 router.post('/:postId', verifyToken, postCommentController.CommentCreate);
 router.put('/:commentId', verifyToken, postCommentController.CommentUpdate);
 router.delete('/:commentId', verifyToken, postCommentController.CommentDelete);
-router.get('/test', verifyToken, postCommentController.PostNotification);
+// router.get('/test', verifyToken, postCommentController.PostNotification);
 
 export default router;
