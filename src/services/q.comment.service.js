@@ -59,13 +59,13 @@ class QnaCommentService {
 
   GetQnaComment = async (qnaId, userName, page_count, page) => {
     if (!page_count) throw new BadRequestException('page_count is null');
-    const commentLists = await this.qnaCommentRepository.GetQnaComment(
+    let commentLists = await this.qnaCommentRepository.GetQnaComment(
       qnaId,
       page_count,
       page
     );
-
-    return commentLists
+    const chooseComment = await this.qnaCommentRepository.Getchoose(qnaId);
+    commentLists = commentLists
       .map((list) => {
         let isLike = false;
         for (let i = 0; i < list.QnaCommentLikes.length; i++) {
@@ -88,6 +88,7 @@ class QnaCommentService {
       .sort((a, b) => {
         b.like - a.like;
       });
+    return { commentLists, chooseComment };
   };
 
   LikeComment = async (qnaCommentId, userName) => {
