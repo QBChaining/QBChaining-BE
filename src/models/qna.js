@@ -25,6 +25,11 @@ export default class Qna extends Sequelize.Model {
           type: Sequelize.STRING(115),
           allowNull: false,
         },
+        like: {
+          type: Sequelize.INTEGER,
+          default: 0,
+          allowNull: false,
+        },
       },
       {
         sequelize,
