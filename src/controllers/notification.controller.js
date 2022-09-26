@@ -15,7 +15,7 @@ export default class Notificationcontroller {
       );
       return res.status(200).json({
         success: true,
-        message: '읽었던것을 다시누르면 false 안읽은것을 눌렀다면 true',
+        message: '읽기 성공',
         data: NotiCheck,
       });
     } catch (error) {
@@ -48,33 +48,25 @@ export default class Notificationcontroller {
     }
   };
 
-  test = async (req, res) => {
-    // const userName = req.decoded.userName;
-    const userName = req.decoded.userName;
+  // NotiSSE = async (req, res) => {
+  //   const userName = 'kpzzy';
+  //   console.log(req);
+  //   res.writeHead(200, {
+  //     'Content-Type': 'text/event-stream',
+  //     'Cache-Control': 'no-cache',
+  //     Connection: 'keep-alive',
+  //   });
+  //   console.log(userName);
+  //   const noti = await this.notificationService.NotiNoti(userName);
 
-    // let testcl = [];
+  //   res.write(`event: helloworld\ndata: ${JSON.stringify(userName)}\n\n`);
 
-    res.writeHead(200, {
-      'Content-Type': 'text/event-stream',
-      'Cache-Control': 'no-cache',
-      // Connection: 'keep-alive',
-    });
+  //   console.log('2');
 
-    // res.flushHeaders();
-
-    // res.write('event: 1|n|n');
-
-    const data = `data: ${JSON.stringify(userName)}|n|n`;
-    const NotiNoti = await this.notificationService.NotiNoti(userName);
-    res.write(data);
-
-    let onesec = setInterval(() => {
-      res.write(data);
-    }, 1000);
-
-    res.on('close', () => {
-      clearInterval(onesec);
-      res.end(data);
-    });
-  };
+  //   res.on('close', () => {
+  //     console.log('server end');
+  //     res.end();
+  //     console.log('test');
+  //   });
+  // };
 }

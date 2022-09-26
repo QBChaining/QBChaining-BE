@@ -8,8 +8,8 @@ import {
 export default class PostServices {
   postRepository = new PostRepository();
   // 최신순 정렬
-  PostShowAll = async (userName) => {
-    const post = await this.postRepository.PostShowAll();
+  PostShowAll = async (userName, page, page_count) => {
+    const post = await this.postRepository.PostShowAll(page, page_count);
 
     return post.map((post) => {
       let isBookmark = false;
@@ -19,7 +19,6 @@ export default class PostServices {
           isLike = true;
         }
       }
-      // sql문으로
 
       for (let i = 0; i < post.PostBookmarks.length; i++) {
         if (post.PostBookmarks[i]?.userName === userName) {
@@ -47,8 +46,8 @@ export default class PostServices {
   };
 
   // 댓글순 정렬
-  PostShowComment = async (userName) => {
-    const postcmt = await this.postRepository.PostShowAll();
+  PostShowComment = async (userName, page, page_count) => {
+    const postcmt = await this.postRepository.PostShowAll(page, page_count);
     return postcmt
       .map((post) => {
         let isBookmark = false;
@@ -89,7 +88,7 @@ export default class PostServices {
 
   // 추천순 정렬
   PostShowLike = async (userName) => {
-    const postshowlike = await this.postRepository.PostShowAll();
+    const postshowlike = await this.postRepository.PostShowHit();
 
     return postshowlike
       .map((post) => {
@@ -129,8 +128,7 @@ export default class PostServices {
   };
 
   PostShowhit = async (userName) => {
-    const posthit = await this.postRepository.PostShowAll();
-
+    const posthit = await this.postRepository.PostShowHit();
     const posthitmap = posthit.map((post) => {
       let isLike = false;
 
@@ -208,29 +206,12 @@ export default class PostServices {
     };
   };
 
-  PostShowUser = async (userName, userName1) => {
+  PostShowUser = async (userName) => {
     const post = await this.postRepository.PostShowUser(userName);
-
-    return post.map((post) => {
-      let isLike = false;
-
-      for (let i = 0; i < post.PostLikes.length; i++) {
-        if (post.PostLikes[i]?.userName === userName1) {
-          isLike = true;
-        }
-      }
-      return {
-        id: post.id,
-        title: post.title,
-        content: post.content,
-        createdAt: post.createdAt,
-        updatedAt: post.updatedAt,
-        userName: post.userName,
-        tags: post.tags.split(','),
-        isLike,
-        profileImg: post.User.profileImg,
-      };
-    });
+    console.log(post.Posts[0].id);
+    console.log(post.PostLikes[0].postId);
+    // for (let i = 0; i < post.Post)
+    return post;
   };
 
   PostCreate = async (title, content, tags, userName, profileImg) => {

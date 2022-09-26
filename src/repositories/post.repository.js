@@ -3,6 +3,9 @@ import User from '../models/user.js';
 import PostComment from '../models/post.comment.js';
 import PostLike from '../models/post.like.js';
 import PostBookmark from '../models/post.bookmark.js';
+import Sequelize from 'sequelize';
+
+const op = Sequelize.Op;
 
 export default class PostRepository {
   PostFindOne = async (postId) => {
@@ -28,8 +31,26 @@ export default class PostRepository {
     return bookmark;
   };
 
-  PostShowAll = async () => {
+  PostShowAll = async (page, page_count) => {
     const post = await Post.findAll({
+      offset: page_count * page,
+      limit: page_count,
+      where: {},
+      include: [
+        { model: User, attributes: ['userName', 'profileImg'] },
+        { model: PostComment, attributes: ['userName', 'comment'] },
+        { model: PostLike, attributes: ['userName'] },
+        { model: PostBookmark, attributes: ['userName'] },
+      ],
+      order: [['createdAt', 'DESC']],
+    });
+
+    return post;
+  };
+
+  PostShowHit = async () => {
+    const post = await Post.findAll({
+      limit: 4,
       where: {},
       include: [
         { model: User, attributes: ['userName', 'profileImg'] },
@@ -58,20 +79,23 @@ export default class PostRepository {
   };
 
   PostShowUser = async (userName) => {
-    const post = await Post.findAll({
+    const post = await User.findOne({
       where: { userName: userName },
+      attributes: [],
       include: [
-        { model: PostLike, attributes: ['userName'] },
-        { model: User, attributes: ['userName', 'profileImg'] },
-      ],
-      attributes: [
-        'id',
-        'title',
-        'content',
-        'createdAt',
-        'updatedAt',
-        'userName',
-        'tags',
+        { model: PostLike, attributes: ['postId'] },
+        { model: Post, attributes: ['title', 'id', 'createdAt'] },
+        {
+          model: PostComment,
+          attributes: ['comment'],
+          include: [
+            {
+              model: Post,
+              where: { userName: { [op.ne]: userName } },
+              attributes: ['title', 'id', 'createdAt'],
+            },
+          ],
+        },
       ],
       order: [['createdAt', 'DESC']],
     });
@@ -151,7 +175,7 @@ export default class PostRepository {
     return bookmark;
   };
 
-  PostTags = async (tag) => {
+  PostTags = async (tag, page, page_count) => {
     const tags = await Post.findOne({
       where: { tags: tag },
       include: [{ model: PostBookmark, attributes: ['userName'] }],
