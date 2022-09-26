@@ -84,8 +84,11 @@ export default class AuthService {
   };
 
   getUserActivity = async (userName) => {
+    // const twentySevenDaysAgo = new Date(
+    //   new Date().setDate(new Date().getDate() - 27)
+    // );
     const twentySevenDaysAgo = new Date(
-      new Date().setDate(new Date().getDate() - 27)
+      new Date().setDate(new Date().getDate() - 30)
     );
 
     const lastDate = new Date(
@@ -145,7 +148,8 @@ export default class AuthService {
     let userActivity = [];
     let todayActivity = [];
 
-    while (dateIndex < 27) {
+    // while (dateIndex < 27) {
+    while (dateIndex < 30) {
       let date = new Date(new Date().setDate(new Date().getDate() - dateIndex))
         .toISOString()
         .slice(0, 10);
@@ -165,7 +169,9 @@ export default class AuthService {
       }
     }
 
-    return userActivity;
+    console.log(userActivity.length);
+
+    return userActivity.reverse();
   };
 
   getUserPage = async (userName) => {
