@@ -48,18 +48,15 @@ class QnaService {
       page,
       status
     );
+
     return qnaLists.map((list) => {
-      let isBookmark = '';
+      let isBookmark = false;
+      isBookmark = list.QnaBookmarks[0]?.userName === userName;
       if (!userName) isBookmark = false;
-      else isBookmark = list.QnaBookmarks[0]?.userName === userName;
 
       let isLike = false;
-      for (let i = 0; i < list.QnaLikes.length; i++) {
-        if (list.QnaLikes[i]?.userName === userName) {
-          isLike = true;
-          break;
-        }
-      }
+      isLike = list.QnaLikes[0]?.userName === userName;
+      if (!userName) isLike = false;
 
       return {
         id: list.id,
@@ -81,27 +78,16 @@ class QnaService {
   GetOneQna = async (id, userName) => {
     const list = await this.qnaRepository.GetOneQna(id, userName);
 
-    let isBookmark = '';
-    if (!userName) isBookmark = false;
-    else isBookmark = list.QnaBookmarks[0]?.userName === userName;
-
-    let isLike = false;
-    for (let i = 0; i < list.QnaLikes?.length; i++) {
-      if (list.QnaLikes[i]?.userName === userName) {
-        isLike = true;
-        break;
-      }
-    }
     return {
       id: list.id,
       title: list.title,
       content: list.content,
       userName: list.userName,
-      profileImg: list.User?.profileImg,
+      profileImg: list['User.profileImg'],
       isResolve: list.isResolve,
-      like: list.QnaLikes.length,
-      isLike,
-      isBookmark,
+      like: list.like,
+      isLike: list['QnaLikes.userName'] === userName ? true : false,
+      isBookmark: list['QnaBookmarks.userName'] === userName ? true : false,
       createdAt: list.createdAt,
       category: list.category,
       tags: list.tags?.split(','),

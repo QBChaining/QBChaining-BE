@@ -29,6 +29,7 @@ export default class QnaRepository {
         'category',
         'userName',
         'tags',
+        'like',
       ],
 
       include: [
@@ -45,6 +46,8 @@ export default class QnaRepository {
         {
           model: QnaLike,
           attributes: ['userName'],
+          where: { userName: { [option.eq]: `${userName}` } },
+          required: false,
         },
 
         {
@@ -87,6 +90,7 @@ export default class QnaRepository {
 
   GetOneQna = async (id, userName) => {
     return await Qna.findOne({
+      raw: true,
       where: { id },
       attributes: [
         'id',
@@ -97,17 +101,20 @@ export default class QnaRepository {
         'createdAt',
         'userName',
         'tags',
+        'like',
       ],
       include: [
         { model: User, attributes: ['profileImg'] },
         {
           model: QnaLike,
           attributes: ['userName'],
+          where: { userName },
+          required: false,
         },
         {
           model: QnaBookmark,
           attributes: ['userName'],
-          where: { userName: { [option.eq]: userName } },
+          where: { userName },
           required: false,
         },
       ],
@@ -172,6 +179,7 @@ export default class QnaRepository {
         'category',
         'userName',
         'tags',
+        'like',
       ],
 
       include: [
@@ -185,6 +193,8 @@ export default class QnaRepository {
         {
           model: QnaLike,
           attributes: ['userName'],
+          where: { userName: { [option.eq]: `${userName}` } },
+          required: false,
         },
 
         {
@@ -194,10 +204,7 @@ export default class QnaRepository {
           required: false,
         },
       ],
-      order: [
-        ['createdAt', 'DESC'],
-        [QnaLike, 'userName', 'DESC'],
-      ],
+      order: [['createdAt', 'DESC']],
     });
   };
 
