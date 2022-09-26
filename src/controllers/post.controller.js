@@ -148,14 +148,20 @@ export default class PostController {
   PostCreate = async (req, res, next) => {
     const { title, content, tags } = req.body;
     const { userName, profileImg } = req.decoded;
-    // console.log(req.decoded);
+    const like = 0;
+    const cntComment = false;
+    const isLike = false;
+
     try {
       const postCreate = await this.postService.PostCreate(
         title,
         content,
         tags,
         userName,
-        profileImg
+        profileImg,
+        like,
+        cntComment,
+        isLike
       );
       return res.status(200).json({
         success: true,
