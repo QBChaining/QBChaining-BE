@@ -15,7 +15,7 @@ export default class Notificationcontroller {
       );
       return res.status(200).json({
         success: true,
-        message: '읽었던것을 다시누르면 false 안읽은것을 눌렀다면 true',
+        message: '읽기 성공',
         data: NotiCheck,
       });
     } catch (error) {

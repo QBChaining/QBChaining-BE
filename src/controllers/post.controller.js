@@ -79,14 +79,9 @@ export default class PostController {
   };
 
   PostShowhit = async (req, res, next) => {
-    const { page, page_count } = req.query;
     const userName = req.user?.userName;
     try {
-      const postShowhit = await this.postService.PostShowhit(
-        userName,
-        page * 1,
-        page_count * 1
-      );
+      const postShowhit = await this.postService.PostShowhit(userName);
       return res.status(200).json({
         success: true,
         message: '히트상품조회성공',
@@ -125,16 +120,13 @@ export default class PostController {
   };
 
   PostShowUser = async (req, res, next) => {
-    const { page, page_count } = req.query;
     const userName = req.params.userName;
     const userName1 = req.user?.userName;
 
     try {
       const PostShowMy = await this.postService.PostShowUser(
         userName,
-        userName1,
-        page * 1,
-        page_count * 1
+        userName1
       );
 
       return res.status(200).json({
