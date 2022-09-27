@@ -5,6 +5,9 @@ import User from '../models/user.js';
 // 6번 7번줄 윤상돈이 임포트시킴
 import QnaBookmark from '../models/qna.bookmark.js';
 import Notification from '../models/noti.js';
+import sequelize from 'sequelize';
+
+const option = sequelize.Op;
 
 export default class QnaCommentRepository {
   FindQna = async (qnaId) => {
@@ -14,23 +17,40 @@ export default class QnaCommentRepository {
   CreateComment = async (qnaId, userName, comment) => {
     return await QnaComment.create({ qnaId, userName, comment });
   };
-  Getchoose = async (qnaId) => {
+  Getchoose = async (qnaId, userName) => {
     return await QnaComment.findOne({
       where: { qnaId, isChoose: true },
+      attributes: { exclude: ['qnaId', 'updatedAt'] },
+      include: [
+        { model: User, attributes: ['profileImg'] },
+        {
+          model: QnaCommentLike,
+          attributes: ['userName'],
+          where: { userName: { [option.eq]: `${userName}` } },
+          required: false,
+        },
+      ],
     });
   };
-  GetQnaComment = async (qnaId, page_count, page) => {
+  GetQnaComment = async (qnaId, page_count, page, userName) => {
     return await QnaComment.findAll({
       where: { qnaId },
+
       offset: page_count * page,
       limit: page_count,
       attributes: {
-        include: ['id', 'comment', 'isChoose', 'createdAt', 'userName'],
+        exclude: ['updatedAt', 'qnaId'],
       },
       include: [
-        { model: QnaCommentLike, attributes: ['userName'] },
+        {
+          model: QnaCommentLike,
+          attributes: ['userName'],
+          where: { userName: { [option.eq]: `${userName}` } },
+          required: false,
+        },
         { model: User, attributes: ['profileImg'] },
       ],
+      order: [['like', 'DESC']],
     });
   };
   FindQnaLike = async (qnaCommentId, userName) => {
