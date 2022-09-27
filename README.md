@@ -4,6 +4,25 @@
 
 개발자를 위한 질의응답과 블로그를 한사이트에서
 
+## 일지
+
+[notion](https://thunder-hovercraft-e46.notion.site/685453da9c304cadacd0b2bfedb4e563)
+
+## Stacks
+
+<div float: left; >
+    <img src="https://img.shields.io/badge/NODE.JS-339933?style=flat&logo=node.js&logoColor=white">
+    <img src="https://img.shields.io/badge/-EXPRESS-007ACC?style=flat&logo=EXPRESS&logoColor=white"/>
+    <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=MySQL&logoColor=white">
+    <img src="https://img.shields.io/badge/Passport-34E27A?style=flat&logo=Passport&logoColor=white">
+    <img src="https://img.shields.io/badge/.ENV-ECD53F?style=flat&logo=dotenv&logoColor=white">
+    <img src="https://img.shields.io/badge/redis-DC382D?style=flat&logo=redis&logoColor=white">
+    <img src="https://img.shields.io/badge/Nginx-009639?style=flat&logo=nginx&logoColor=white">
+    <img src="https://img.shields.io/badge/Github Action-2088FF?style=flat&logo=GitHub Actions&logoColor=white">
+    <img src="https://img.shields.io/badge/Sequelize-52B0E7?style=flat&logo=sequelize&logoColor=white">
+
+</div>
+
 ## 백엔드 팀원 소개
 
 | 팀원   | 역할분담                                                                                   |
@@ -34,26 +53,6 @@
 ## 서비스 아키텍쳐
 
 ![image](https://user-images.githubusercontent.com/107670953/192524998-35de8648-f82c-431d-b142-1bc0f4c2734d.png)
-
-## 일지
-
-[notion](https://thunder-hovercraft-e46.notion.site/685453da9c304cadacd0b2bfedb4e563)
-
-## Stacks
-
-<div float: left; >
-    <img src="https://img.shields.io/badge/NODE.JS-339933?style=flat&logo=node.js&logoColor=white">
-    <img src="https://img.shields.io/badge/-EXPRESS-007ACC?style=flat&logo=EXPRESS&logoColor=white"/>
-    <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=MySQL&logoColor=white">
-    <img src="https://img.shields.io/badge/Passport-34E27A?style=flat&logo=Passport&logoColor=white">
-    <img src="https://img.shields.io/badge/.ENV-ECD53F?style=flat&logo=dotenv&logoColor=white">
-    <img src="https://img.shields.io/badge/redis-DC382D?style=flat&logo=redis&logoColor=white">
-    <img src="https://img.shields.io/badge/Nginx-009639?style=flat&logo=nginx&logoColor=white">
-    <img src="https://img.shields.io/badge/Github Action-2088FF?style=flat&logo=GitHub Actions&logoColor=white">
-    <img src="https://img.shields.io/badge/Sequelize-52B0E7?style=flat&logo=sequelize&logoColor=white">
-
-</div>
-NODEJS, EXPRESS, SQL, Passport, dotenv, redis, Nginx, Github Action, Sequelize
 
 ## 기술선정이유
 
