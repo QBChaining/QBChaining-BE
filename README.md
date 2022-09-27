@@ -22,7 +22,6 @@
     <img src="https://img.shields.io/badge/Sequelize-52B0E7?style=flat&logo=sequelize&logoColor=white">
 
 </div>
-NODEJS, EXPRESS, SQL, Passport, dotenv, redis, Nginx, Github Action, Sequelize
 
 ## 백엔드 팀원 소개
 
