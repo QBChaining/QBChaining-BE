@@ -33,6 +33,12 @@ export default class Notificationcontroller {
 
     try {
       const NotiNoti = await this.notificationService.NotiNoti(userName);
+      if (NotiNoti.length === 0) {
+        return res.status(200).json({
+          success: false,
+          message: '알림이 없습니다',
+        });
+      }
       return res.status(200).json({
         success: true,
         message: '알림 기능 성공',

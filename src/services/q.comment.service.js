@@ -26,29 +26,17 @@ class QnaCommentService {
       comment
     );
 
-    // const findQna = await QnaBookmark.findAll({
-    //   where: { qnaId },
-    // });
+    if (existQna.userName !== userName) {
+      await this.qnaCommentRepository.Notification(existQna);
 
-    // if (findQna.length === 0) {
-    //   await Notification.create({
-    //     type: 'qna',
-    //     check: false,
-    //     qnaId: existQna.id,
-    //     userName: existQna.userName,
-    //   });
-    // }
+      const commentbookmark =
+        await this.qnaCommentRepository.QnaCommentBookmark(qnaId);
 
-    // if (findQna) {
-    //   for (let i = 0; i < findQna.length; i++) {
-    //     await Notification.create({
-    //       type: 'qna',
-    //       check: false,
-    //       qnaId,
-    //       userName: findQna[i].userName,
-    //     });
-    //   }
-    // }
+      commentbookmark.map(async (noti) => {
+        await this.qnaCommentRepository.CreateNoti(noti.qnaId, noti.userName);
+      });
+    }
+
     return {
       id: commentdata.id,
       comment: commentdata.comment,
