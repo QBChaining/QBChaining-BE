@@ -30,6 +30,10 @@ export default class QnaRepository {
         'userName',
         'tags',
         'like',
+        [
+          sequelize.fn('substring', sequelize.col('content'), 1, 200),
+          'content',
+        ],
       ],
 
       include: [
