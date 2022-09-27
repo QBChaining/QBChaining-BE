@@ -3,15 +3,6 @@ import Notification from '../models/noti.js';
 import PostComment from '../models/post.comment.js';
 import User from '../models/user.js';
 import Post from '../models/post.js';
-import {
-  CustomException,
-  ForbiddenException,
-  ConflictException,
-  NotFoundException,
-  BadRequestException,
-  UnauthorizedException,
-  UnkownException,
-} from '../exception/customException.js';
 
 export default class PostCommentRepository {
   PostFindOne = async (postId) => {
