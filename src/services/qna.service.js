@@ -50,14 +50,6 @@ class QnaService {
     );
 
     return qnaLists.map((list) => {
-      let isBookmark = false;
-      isBookmark = list.QnaBookmarks[0]?.userName === userName;
-      if (!userName) isBookmark = false;
-
-      let isLike = false;
-      isLike = list.QnaLikes[0]?.userName === userName;
-      if (!userName) isLike = false;
-
       return {
         id: list.id,
         title: list.title,
@@ -66,8 +58,10 @@ class QnaService {
         isResolve: list.isResolve,
         createdAt: list.createdAt,
         like: list.QnaLikes.length,
-        isLike,
-        isBookmark,
+        isLike: !userName ? false : list.QnaLikes[0]?.userName === userName,
+        isBookmark: !userName
+          ? false
+          : list.QnaBookmarks[0]?.userName === userName,
         cntcomment: list.QnaComments.length,
         category: list.category,
         tags: list.tags.split(','),
@@ -159,27 +153,18 @@ class QnaService {
     );
 
     return filterlists.map((list) => {
-      let isBookmark = '';
-      if (!userName) isBookmark = false;
-      else isBookmark = list.QnaBookmarks[0]?.userName === userName;
-
-      let isLike = false;
-      for (let i = 0; i < list.QnaLikes.length; i++) {
-        if (list.QnaLikes[i]?.userName === userName) {
-          isLike = true;
-          break;
-        }
-      }
       return {
         id: list.id,
         title: list.title,
         userName: list.userName,
-        profileImg: list.User?.profileImg,
+        profileImg: list.User.profileImg,
         isResolve: list.isResolve,
         createdAt: list.createdAt,
         like: list.QnaLikes.length,
-        isLike,
-        isBookmark,
+        isLike: !userName ? false : list.QnaLikes[0]?.userName === userName,
+        isBookmark: !userName
+          ? false
+          : list.QnaBookmarks[0]?.userName === userName,
         cntcomment: list.QnaComments.length,
         category: list.category,
         tags: list.tags.split(','),

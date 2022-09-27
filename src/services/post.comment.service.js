@@ -32,38 +32,73 @@ export default class PostCommentServices {
     if (comment.length === 0) {
       throw new BadRequestException('내용을 입력해주세요');
     }
+
     const findpost = await this.postCommentRepository.PostFindOne(postId);
 
     if (!findpost) {
       throw new NotFoundException('게시물이 없습니다');
     }
+
     const postcomment = await this.postCommentRepository.CommentCreate(
       comment,
       userName,
       postId
     );
-    const findBookMark = await this.postCommentRepository.PostBookmark(postId);
-    if (findBookMark.length === 0) {
-      const notification = await this.postCommentRepository.Notification(
-        findpost
-      );
-    }
-    if (findBookMark) {
-      for (let i = 0; i < findBookMark.length; i++) {
-        const num = findBookMark[i].userName;
 
-        const commentbookmark =
-          await this.postCommentRepository.CommentBookmark(postId, num);
-      }
-      return {
-        id: postcomment.id,
-        comment: postcomment.comment,
-        createdAt: postcomment.createdAt,
-        updatedAt: postcomment.updatedAt,
-        profileImg,
-        userName,
-      };
+    if (findpost.userName !== userName) {
+      await this.postCommentRepository.Notification(findpost);
+
+      const findBookMark = await this.postCommentRepository.PostBookmark(
+        postId,
+        userName
+      );
+
+      findBookMark.map(async (noti) => {
+        await this.postCommentRepository.CreateNoti(noti.postId, noti.userName);
+      });
     }
+
+    return {
+      id: postcomment.id,
+      comment: postcomment.comment,
+      createdAt: postcomment.createdAt,
+      userName,
+      profileImg,
+    };
+
+    // const test = await this.postCommentRepository.Notification2();
+
+    // if (findpost.userName !== userName) {
+    //   const findBookMark = await this.postCommentRepository.PostBookmark(
+    //     postId
+    //   );
+    //   // console.log(findBookMark);
+    //   // console.log(
+    //   //   findBookMark.filter((name) => name !== findBookMark.userName)
+    //   // );
+    //   if (findBookMark.length === 0) {
+    //     const notification = await this.postCommentRepository.Notification(
+    //       findpost
+    //     );
+    //   }
+    //   if (findBookMark) {
+    //     for (let i = 0; i < findBookMark.length; i++) {
+    //       const num = findBookMark[i].userName;
+
+    //       const commentbookmark =
+    //         await this.postCommentRepository.CommentBookmark(postId, num);
+    //     }
+
+    //     return {
+    //       id: postcomment.id,
+    //       comment: postcomment.comment,
+    //       createdAt: postcomment.createdAt,
+    //       updatedAt: postcomment.updatedAt,
+    //       profileImg,
+    //       userName,
+    //     };
+    //   }
+    // }
   };
 
   CommentUpdate = async (comment, commentId, userName, profileImg) => {

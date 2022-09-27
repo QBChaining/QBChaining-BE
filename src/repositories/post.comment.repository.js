@@ -3,15 +3,6 @@ import Notification from '../models/noti.js';
 import PostComment from '../models/post.comment.js';
 import User from '../models/user.js';
 import Post from '../models/post.js';
-import {
-  CustomException,
-  ForbiddenException,
-  ConflictException,
-  NotFoundException,
-  BadRequestException,
-  UnauthorizedException,
-  UnkownException,
-} from '../exception/customException.js';
 
 export default class PostCommentRepository {
   PostFindOne = async (postId) => {
@@ -32,13 +23,22 @@ export default class PostCommentRepository {
 
   Notification = async (findpost) => {
     const notification = await Notification.create({
-      type: 'posts',
+      type: 'blog',
       check: false,
       postId: findpost.id,
       userName: findpost.userName,
     });
 
     return notification;
+  };
+
+  CreateNoti = async (notipost, notiname) => {
+    const notification = await Notification.create({
+      type: 'blog',
+      check: false,
+      postId: notipost,
+      userName: notiname,
+    });
   };
 
   CommentShowAll = async (postId) => {

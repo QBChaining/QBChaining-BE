@@ -32,4 +32,20 @@ export default class NotificationRepository {
 
     return updatenoti;
   };
+
+  NotificationDelete = async (notiId, userName) => {
+    const findNoti = await Notification.destroy({
+      where: { id: notiId, userName: userName },
+    });
+
+    return findNoti;
+  };
+
+  NotificationDeleteAll = async (userName) => {
+    const findNoti = await Notification.destroy({
+      where: { userName: userName },
+    });
+
+    return findNoti;
+  };
 }

@@ -26,29 +26,17 @@ class QnaCommentService {
       comment
     );
 
-    // const findQna = await QnaBookmark.findAll({
-    //   where: { qnaId },
-    // });
+    if (existQna.userName !== userName) {
+      await this.qnaCommentRepository.Notification(existQna);
 
-    // if (findQna.length === 0) {
-    //   await Notification.create({
-    //     type: 'qna',
-    //     check: false,
-    //     qnaId: existQna.id,
-    //     userName: existQna.userName,
-    //   });
-    // }
+      const commentbookmark =
+        await this.qnaCommentRepository.QnaCommentBookmark(qnaId);
 
-    // if (findQna) {
-    //   for (let i = 0; i < findQna.length; i++) {
-    //     await Notification.create({
-    //       type: 'qna',
-    //       check: false,
-    //       qnaId,
-    //       userName: findQna[i].userName,
-    //     });
-    //   }
-    // }
+      commentbookmark.map(async (noti) => {
+        await this.qnaCommentRepository.CreateNoti(noti.qnaId, noti.userName);
+      });
+    }
+
     return {
       id: commentdata.id,
       comment: commentdata.comment,
@@ -59,36 +47,48 @@ class QnaCommentService {
 
   GetQnaComment = async (qnaId, userName, page_count, page) => {
     if (!page_count) throw new BadRequestException('page_count is null');
+
     let commentLists = await this.qnaCommentRepository.GetQnaComment(
       qnaId,
       page_count,
-      page
+      page,
+      userName
     );
-    const chooseComment = await this.qnaCommentRepository.Getchoose(qnaId);
-    commentLists = commentLists
-      .map((list) => {
-        let isLike = false;
-        for (let i = 0; i < list.QnaCommentLikes.length; i++) {
-          if (list.QnaCommentLikes[i]?.userName === userName) {
-            isLike = true;
-            break;
-          }
-        }
-        return {
-          id: list.id,
-          comment: list.comment,
-          userName: list.userName,
-          profileImg: list.User?.profileImg,
-          createdAt: list.createdAt,
-          like: list.QnaCommentLikes.length,
-          isChoose: list.isChoose,
-          isLike,
-        };
-      })
-      .sort((a, b) => {
-        b.like - a.like;
-      });
-    return { commentLists, chooseComment };
+
+    const chooseComment = await this.qnaCommentRepository.Getchoose(
+      qnaId,
+      userName
+    );
+
+    commentLists = commentLists.map((list) => {
+      return {
+        id: list.id,
+        comment: list.comment,
+        userName: list.userName,
+        profileImg: list.User?.profileImg,
+        createdAt: list.createdAt,
+        like: list.like,
+        isChoose: list.isChoose,
+        isLike: !userName
+          ? false
+          : list.QnaCommentLikes[0]?.userName === userName,
+      };
+    });
+    return {
+      commentLists,
+      chooseComment: {
+        id: chooseComment.id,
+        comment: chooseComment.comment,
+        isChoose: chooseComment.isChoose,
+        userName: chooseComment.userName,
+        like: chooseComment.like,
+        createdAt: chooseComment.createdAt,
+        profileImg: chooseComment.User.profileImg,
+        isLike: !userName
+          ? false
+          : chooseComment.QnaCommentLikes[0].userName === userName,
+      },
+    };
   };
 
   LikeComment = async (qnaCommentId, userName) => {

@@ -48,4 +48,22 @@ export default class NotificationService {
       };
     });
   };
+
+  NotificationDelete = async (notiId, userName) => {
+    const findNoti = await this.notificationRepository.NotificationDelete(
+      notiId,
+      userName
+    );
+    if (!findNoti) throw new BadRequestException('삭제할 알림이 없습니다');
+    return findNoti;
+  };
+
+  NotificationDeleteAll = async (userName) => {
+    const findNoti = await this.notificationRepository.NotificationDeleteAll(
+      userName
+    );
+    if (!findNoti) throw new BadRequestException('삭제할 알림이 없습니다');
+
+    return findNoti;
+  };
 }
