@@ -89,18 +89,16 @@ class QnaCommentService {
     chooseComment = !chooseComment
       ? []
       : {
-          chooseComment: {
-            id: chooseComment.id,
-            comment: chooseComment.comment,
-            isChoose: chooseComment.isChoose,
-            userName: chooseComment.userName,
-            like: chooseComment.like,
-            createdAt: chooseComment.createdAt,
-            profileImg: chooseComment.User.profileImg,
-            isLike: !userName
-              ? false
-              : chooseComment?.QnaCommentLikes[0]?.userName === userName,
-          },
+          id: chooseComment.id,
+          comment: chooseComment.comment,
+          isChoose: chooseComment.isChoose,
+          userName: chooseComment.userName,
+          like: chooseComment.like,
+          createdAt: chooseComment.createdAt,
+          profileImg: chooseComment.User.profileImg,
+          isLike: !userName
+            ? false
+            : chooseComment?.QnaCommentLikes[0]?.userName === userName,
         };
     return { commentLists, chooseComment };
   };
