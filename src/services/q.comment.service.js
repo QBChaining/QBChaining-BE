@@ -75,7 +75,7 @@ class QnaCommentService {
       };
     });
     chooseComment = !chooseComment
-      ? []
+      ? null
       : {
           id: chooseComment.id,
           comment: chooseComment.comment,
