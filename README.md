@@ -1,14 +1,28 @@
-[![CI](https://github.com/QBChaining/QBChaining-BE/actions/workflows/deploy.yml/badge.svg)](https://github.com/QBChaining/QBChaining-BE/actions/workflows/deploy.yml)
+# QBChaining(큐브체이닝)
+
+![image](https://user-images.githubusercontent.com/107670953/192535804-96eddfd1-0fda-4a4f-8aaf-e68210e2fde1.png)
+
+사이트 주소 <https://www.qb-chaning.com/>
 
 ## 기획의도
 
-개발자를 위한 질의응답과 블로그를 한사이트에서
+개발프로그램 특성상 영어로된 질문과 답변들이 많은데, 영어라는 언어의 장벽과, 프로그래밍 언어라는 두개의 장벽을 한번에 깨보고자 개발자 커뮤니티를 만들고자 했습니다.
+
+## 팀소개
+
+- REACT, NODE.JS
+- 개발인원 6명
+  > FRONT_END: 윤창순 | 김영건
+  > BACK_END : 윤태식 | 윤상돈 | 이지훈
+  > DESIGNER : 최정빈
 
 ## 일지
 
-[notion](https://thunder-hovercraft-e46.notion.site/685453da9c304cadacd0b2bfedb4e563)
+개발일지 노션 <https://thunder-hovercraft-e46.notion.site/685453da9c304cadacd0b2bfedb4e563>
 
 ## Stacks
+
+[![CI](https://github.com/QBChaining/QBChaining-BE/actions/workflows/deploy.yml/badge.svg)](https://github.com/QBChaining/QBChaining-BE/actions/workflows/deploy.yml)
 
 <div float: left; >
     <img src="https://img.shields.io/badge/NODE.JS-339933?style=flat&logo=node.js&logoColor=white">
@@ -74,10 +88,6 @@
 
 - GitHub Actions
 
-#### Why gihhub actions?
+#### Why github actions?
 
 - 저희 프로젝트는 규모가 크지않아 GitHub Actions가 적합하다고 판단하였습니다.
-
-<!-- [![codeing999's GitHub stats](https://github-readme-stats.vercel.app/api?username=kpzzy&show_icons=true&theme=cobalt)](https://github.com/Codeing999/github-readme-stats)
-
-[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=kpzzy)](https://github.com/codeing999/github-readme-stats) -->
