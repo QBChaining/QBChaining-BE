@@ -12,8 +12,11 @@
 
 - REACT, NODE.JS
 - 개발인원 6명
+
   > FRONT_END: 윤창순 | 김영건
+
   > BACK_END : 윤태식 | 윤상돈 | 이지훈
+
   > DESIGNER : 최정빈
 
 ## 일지
