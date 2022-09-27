@@ -67,7 +67,7 @@ class QnaCommentService {
       userName
     );
 
-    const chooseComment = await this.qnaCommentRepository.Getchoose(
+    let chooseComment = await this.qnaCommentRepository.Getchoose(
       qnaId,
       userName
     );
@@ -86,21 +86,23 @@ class QnaCommentService {
           : list.QnaCommentLikes[0]?.userName === userName,
       };
     });
-    return {
-      commentLists,
-      chooseComment: {
-        id: chooseComment.id,
-        comment: chooseComment.comment,
-        isChoose: chooseComment.isChoose,
-        userName: chooseComment.userName,
-        like: chooseComment.like,
-        createdAt: chooseComment.createdAt,
-        profileImg: chooseComment.User.profileImg,
-        isLike: !userName
-          ? false
-          : chooseComment.QnaCommentLikes[0].userName === userName,
-      },
-    };
+    chooseComment = !chooseComment
+      ? '데이터가 없습니다.'
+      : {
+          chooseComment: {
+            id: chooseComment?.id,
+            comment: chooseComment?.comment,
+            isChoose: chooseComment?.isChoose,
+            userName: chooseComment?.userName,
+            like: chooseComment?.like,
+            createdAt: chooseComment?.createdAt,
+            profileImg: chooseComment?.User.profileImg,
+            isLike: !userName
+              ? false
+              : chooseComment?.QnaCommentLikes[0].userName === userName,
+          },
+        };
+    return { commentLists, chooseComment };
   };
 
   LikeComment = async (qnaCommentId, userName) => {
