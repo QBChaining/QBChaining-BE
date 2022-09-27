@@ -2,6 +2,9 @@ import Qna from '../models/qna.js';
 import QnaComment from '../models/qna.comment.js';
 import QnaCommentLike from '../models/qna.comment.like.js';
 import User from '../models/user.js';
+// 6번 7번줄 윤상돈이 임포트시킴
+import QnaBookmark from '../models/qna.bookmark.js';
+import Notification from '../models/noti.js';
 import sequelize from 'sequelize';
 
 const option = sequelize.Op;
@@ -76,5 +79,32 @@ export default class QnaCommentRepository {
 
   UpdateStatusComment = async (id) => {
     await QnaComment.update({ isChoose: true }, { where: { id } });
+  };
+
+  // 여기부터 윤상돈이 알림설정하면서 건듬(리팩토링 예정 ㅠㅠ)
+  QnaCommentBookmark = async (qnaid) => {
+    return await QnaBookmark.findAll({
+      where: { qnaid: qnaid },
+    });
+  };
+
+  Notification = async (qna) => {
+    const notification = await Notification.create({
+      type: 'qna',
+      check: false,
+      qnaId: qna.id,
+      userName: qna.userName,
+    });
+
+    return notification;
+  };
+
+  CreateNoti = async (notiqna, notiname) => {
+    const notification = await Notification.create({
+      type: 'qna',
+      check: false,
+      qnaId: notiqna,
+      userName: notiname,
+    });
   };
 }

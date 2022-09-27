@@ -23,13 +23,22 @@ export default class PostCommentRepository {
 
   Notification = async (findpost) => {
     const notification = await Notification.create({
-      type: 'posts',
+      type: 'blog',
       check: false,
       postId: findpost.id,
       userName: findpost.userName,
     });
 
     return notification;
+  };
+
+  CreateNoti = async (notipost, notiname) => {
+    const notification = await Notification.create({
+      type: 'blog',
+      check: false,
+      postId: notipost,
+      userName: notiname,
+    });
   };
 
   CommentShowAll = async (postId) => {
