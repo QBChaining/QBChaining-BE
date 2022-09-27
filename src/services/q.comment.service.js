@@ -99,7 +99,7 @@ class QnaCommentService {
             profileImg: chooseComment.User.profileImg,
             isLike: !userName
               ? false
-              : chooseComment?.QnaCommentLikes[0].userName === userName,
+              : chooseComment?.QnaCommentLikes[0]?.userName === userName,
           },
         };
     return { commentLists, chooseComment };
