@@ -7,7 +7,7 @@ export default class QnaComment extends Sequelize.Model {
     return super.init(
       {
         comment: {
-          type: Sequelize.TEXT,
+          type: Sequelize.STRING(10000),
           allowNull: false,
         },
         isChoose: {
