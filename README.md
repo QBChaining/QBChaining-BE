@@ -44,6 +44,22 @@ NODEJS, EXPRESS, SQL, Passport, dotenv, redis, Nginx, Github Action, Sequelize
 
 - 실제 직접 구현도 가능하지만 프론트엔드가 github에 요청 후 정보를 가져오는 과정 중 github oauth client ID 와 client secret 노출이 있어 백엔드 서버에서 모든 과정을 진행하는 것이 보안에 더 좋다고 생각
 
+### CI / CD 구현 이유
+
+#### 코드의 잦은 수정과 배포 후 뒤늦은 에러 발견은 협업에서의 아주 부정적인 요소로 느낌
+
+위와 같은 이유를 개선하기 위하여 CI / CD 구현을 진행하였습니다.
+
+#### 선택지
+
+- Jenkins
+
+- GitHub Actions
+
+#### Why gihhub actions?
+
+- 저희 프로젝트는 규모가 크지않아 GitHub Actions가 적합하다고 판단하였습니다.
+
 ## 라이브 러리 | Library
 
 | 기술 스택        | Appliance                | Version |
