@@ -35,17 +35,23 @@ export default class NotificationService {
     );
 
     return findNoti.map((notification) => {
-      return {
-        id: notification.id,
-        type: notification.type,
-        createdAt: notification.createdAt,
-        check: notification.check,
-        postId: notification.postId,
-        qnaId: notification.qnaId,
-        qnaTitle: notification.Qna?.title,
-        postTitle: notification.Post?.title,
-        userName: notification.userName,
-      };
+      if (notification.Post !== null) {
+        return {
+          notiId: notification.id,
+          type: notification.type,
+          check: notification.check,
+          id: notification.postId,
+          title: notification.Post?.title,
+        };
+      } else {
+        return {
+          notiId: notification.id,
+          type: notification.type,
+          check: notification.check,
+          id: notification.qnaId,
+          title: notification.Qna?.title,
+        };
+      }
     });
   };
 
