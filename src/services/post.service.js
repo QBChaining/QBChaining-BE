@@ -177,6 +177,7 @@ export default class PostServices {
 
   PostShowOne = async (userName, postId) => {
     const post = await this.postRepository.PostShowOne(postId);
+    if (!post) throw new BadRequestException('존재하지 않는 게시물입니다');
     let isBookmark = false;
     for (let i = 0; i < post.PostBookmarks.length; i++) {
       if (post.PostBookmarks[i]?.userName === userName) {
@@ -208,6 +209,7 @@ export default class PostServices {
 
   PostShowUser = async (userName) => {
     const post = await this.postRepository.PostShowUser(userName);
+    if (!post) throw new BadRequestException('존재하지 않는 유저 입니다');
 
     return {
       comment: post.PostComments,

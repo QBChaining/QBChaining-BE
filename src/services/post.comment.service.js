@@ -65,40 +65,6 @@ export default class PostCommentServices {
       userName,
       profileImg,
     };
-
-    // const test = await this.postCommentRepository.Notification2();
-
-    // if (findpost.userName !== userName) {
-    //   const findBookMark = await this.postCommentRepository.PostBookmark(
-    //     postId
-    //   );
-    //   // console.log(findBookMark);
-    //   // console.log(
-    //   //   findBookMark.filter((name) => name !== findBookMark.userName)
-    //   // );
-    //   if (findBookMark.length === 0) {
-    //     const notification = await this.postCommentRepository.Notification(
-    //       findpost
-    //     );
-    //   }
-    //   if (findBookMark) {
-    //     for (let i = 0; i < findBookMark.length; i++) {
-    //       const num = findBookMark[i].userName;
-
-    //       const commentbookmark =
-    //         await this.postCommentRepository.CommentBookmark(postId, num);
-    //     }
-
-    //     return {
-    //       id: postcomment.id,
-    //       comment: postcomment.comment,
-    //       createdAt: postcomment.createdAt,
-    //       updatedAt: postcomment.updatedAt,
-    //       profileImg,
-    //       userName,
-    //     };
-    //   }
-    // }
   };
 
   CommentUpdate = async (comment, commentId, userName, profileImg) => {

@@ -13,7 +13,8 @@ dotenv.config();
 passportConfig();
 
 let corsOption = {
-  origin: true,
+  origin: 'https://www.qb-chaning.com',
+  // origin : true,
 };
 
 app.use(cors(corsOption));

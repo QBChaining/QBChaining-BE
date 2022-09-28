@@ -109,7 +109,6 @@ export default class PostRepository {
       where: { userName: userName },
       attributes: [],
       include: [
-        // { model: PostLike, attributes: ['postId'], include: [{model: Post, where:{}}] },
         { model: Post, attributes: ['title', 'id', 'createdAt', 'like'] },
         {
           model: PostComment,

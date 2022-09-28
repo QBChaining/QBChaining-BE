@@ -5,7 +5,6 @@ export default class PostController {
   postService = new PostService();
 
   PostShowAll = async (req, res, next) => {
-    // 유저네임 저거 바꾸기
     const { page, page_count } = req.query;
     const userName = req.user?.userName;
     try {
