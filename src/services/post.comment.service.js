@@ -49,12 +49,20 @@ export default class PostCommentServices {
       await this.postCommentRepository.Notification(findpost);
 
       const findBookMark = await this.postCommentRepository.PostBookmark(
-        postId,
-        userName
+        postId
       );
-
       findBookMark.map(async (noti) => {
-        await this.postCommentRepository.CreateNoti(noti.postId, noti.userName);
+        console.log(
+          noti.userName,
+          userName,
+          noti.userName !== findpost.userName
+        );
+        if (noti.userName !== findpost.userName) {
+          await this.postCommentRepository.CreateNoti(
+            noti.postId,
+            noti.userName
+          );
+        }
       });
     }
 
