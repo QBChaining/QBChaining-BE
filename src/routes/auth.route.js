@@ -26,9 +26,7 @@ router.get(
         profileImg: req.user.profileImg,
       },
       process.env.JWT_SECRET,
-      {
-        issuer: 'jihun',
-      }
+      { expiresIn: '12h' }
     );
 
     return res.redirect(`https://www.qb-chaning.com/login?token=${token}`);
