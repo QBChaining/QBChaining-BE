@@ -34,9 +34,5 @@ export default class UserInfo extends Sequelize.Model {
   }
   static associate(db) {
     db.userInfo.belongsTo(db.user, { foreignKey: 'userId', targetKey: 'id' });
-    // db.user_info.hasMany(db.language, {
-    //   foreignKey: 'info',
-    // });
-    // db.user_info.hasMany(db.job);
   }
 }
