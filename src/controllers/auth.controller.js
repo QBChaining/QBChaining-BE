@@ -104,10 +104,9 @@ export default class AuthController {
         .status(200)
         .json({ success: 'ok', message: `${userName}의 페이지`, userPageInfo });
     } catch (error) {
-      res
+      return res
         .status(500)
         .json({ message: '조회하려는 사용자가 존재하지 않습니다.' });
-      return next(error);
     }
   };
 
