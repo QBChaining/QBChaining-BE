@@ -4,6 +4,7 @@ import PostComment from '../models/post.comment.js';
 import PostLike from '../models/post.like.js';
 import PostBookmark from '../models/post.bookmark.js';
 import Sequelize, { where } from 'sequelize';
+import sequelize from '../models/sequelize.js';
 
 const op = Sequelize.Op;
 
@@ -35,6 +36,19 @@ export default class PostRepository {
     const post = await Post.findAll({
       offset: page_count * page,
       limit: page_count,
+      attributes: [
+        [
+          sequelize.fn('substring', sequelize.col('content'), 1, 100),
+          'content',
+        ],
+        'id',
+        'title',
+        'createdAt',
+        'updatedAt',
+        'like',
+        'tags',
+      ],
+
       where: {},
       include: [
         { model: User, attributes: ['userName', 'profileImg'] },
@@ -57,6 +71,18 @@ export default class PostRepository {
         { model: PostComment, attributes: ['userName', 'comment'] },
         { model: PostLike, attributes: ['userName'] },
         { model: PostBookmark, attributes: ['userName'] },
+      ],
+      attributes: [
+        [
+          sequelize.fn('substring', sequelize.col('content'), 1, 100),
+          'content',
+        ],
+        'id',
+        'title',
+        'createdAt',
+        'updatedAt',
+        'like',
+        'tags',
       ],
       order: [['createdAt', 'DESC']],
     });
@@ -157,7 +183,7 @@ export default class PostRepository {
       attributes: [],
     });
 
-    return findBookMark;
+    return findBookMark.reverse();
   };
 
   PostBookmark = async (postId, userName) => {
@@ -182,8 +208,6 @@ export default class PostRepository {
       where: { tags: tag },
       include: [{ model: PostBookmark, attributes: ['userName'] }],
     });
-
-    console.log(tags);
 
     return tags;
   };
