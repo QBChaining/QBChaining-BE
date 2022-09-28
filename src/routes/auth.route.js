@@ -20,13 +20,13 @@ router.get(
   (req, res) => {
     const token = jwt.sign(
       {
-        exp: new Date(new Date() - 24 * 60 * 60 * 1000),
         userId: req.user.id,
         userName: req.user.userName,
         isNew: req.user.isNew,
         profileImg: req.user.profileImg,
       },
-      process.env.JWT_SECRET
+      process.env.JWT_SECRET,
+      { expiresIn: '12h' }
     );
 
     return res.redirect(`https://www.qb-chaning.com/login?token=${token}`);
