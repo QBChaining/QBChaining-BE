@@ -84,10 +84,10 @@ export default class PostRepository {
         'like',
         'tags',
       ],
-      order: [['createdAt', 'DESC']],
+      order: [['like', 'DESC']],
     });
 
-    return post;
+    return post.reverse();
   };
 
   PostShowOne = async (postId) => {
