@@ -3,8 +3,6 @@ import dotenv from 'dotenv';
 
 dotenv.config({ path: '../.env' });
 
-// const GitHubStrategy = require('passport-github').Strategy;
-
 import GitHubStrategy from 'passport-github2';
 
 import User from '../models/user.js';

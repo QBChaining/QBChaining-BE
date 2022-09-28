@@ -1,8 +1,6 @@
-// 시퀄라이즈 생성하기위한 인덱스.js
 export * from './sequelize.js';
 import sequelize from './sequelize.js';
 
-// 유저, 포스트, 댓글, 좋아요 임포트
 import User from './user.js';
 import UserInfo from './user.info.js';
 import Language from './language.js';

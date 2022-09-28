@@ -15,7 +15,6 @@ export default class PostCommentController {
         data: postcomment,
       });
     } catch (error) {
-      console.log(error);
       const exception = exceptionHandler(error);
 
       res.status(exception.statusCode).json({
@@ -43,7 +42,6 @@ export default class PostCommentController {
       });
     } catch (error) {
       const exception = exceptionHandler(error);
-      console.log(error);
 
       res.status(exception.statusCode).json({
         success: exception.success,
