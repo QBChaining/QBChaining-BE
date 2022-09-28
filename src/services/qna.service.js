@@ -71,7 +71,7 @@ class QnaService {
 
   GetOneQna = async (id, userName) => {
     const list = await this.qnaRepository.GetOneQna(id, userName);
-
+    if (!list) throw new NotFoundException('게시글이 존재하지 않습니다.');
     return {
       id: list.id,
       title: list.title,

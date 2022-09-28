@@ -47,7 +47,7 @@ export default class QnaCommentRepository {
         },
         { model: User, attributes: ['profileImg'] },
       ],
-      order: [['like', 'DESC']],
+      order: [['createdAt', 'DESC']],
     });
   };
   FindQnaLike = async (qnaCommentId, userName) => {
