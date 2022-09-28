@@ -170,8 +170,8 @@ export default class AuthService {
     const profileImg = user.profileImg;
     const age = userInfo.age;
     const gender = userInfo.gender;
-    const job = userInfo.job;
-    const career = userInfo.career;
+    const job = userInfo.career;
+    const career = userInfo.job;
     const language = await user.getLanguages();
     const languages = language.map((e) => {
       return e.dataValues.language;
