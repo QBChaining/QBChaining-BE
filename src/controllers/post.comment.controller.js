@@ -130,8 +130,6 @@ export default class PostCommentController {
     const commentId = req.params.commentId;
     const userName = req.decoded.userName;
 
-    console.log(commentId, userName, 'con');
-
     try {
       const commentlikedelete =
         await this.postCommentServices.CommentLikeDelete(commentId, userName);
