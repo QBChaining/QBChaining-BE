@@ -180,6 +180,6 @@ export default class AuthService {
       return e.dataValues.language;
     });
 
-    return { name, profileImg, age, gender, job, career, languages };
+    return { userName, profileImg, age, gender, job, career, languages };
   };
 }
