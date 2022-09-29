@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import AuthService from '../services/auth.service.js';
+import exceptionHandler from '../errorhandler/customException.handler.js';
 
 export default class AuthController {
   authService = new AuthService();
@@ -20,9 +21,14 @@ export default class AuthController {
         { expiresIn: '12h' }
       );
 
-      return res.status(200).json({ token });
+      return res.status(200).json({ success: true, token });
     } catch (error) {
-      return next(error);
+      console.log(err);
+      const exception = exceptionHandler(err);
+
+      res
+        .status(exception.statusCode)
+        .json({ success: exception.success, message: exception.message });
     }
   };
 
@@ -46,9 +52,14 @@ export default class AuthController {
 
       return res
         .status(200)
-        .json({ success: 'ok', message: '유저 정보 등록 성공' });
+        .json({ success: true, message: '유저 정보 등록 성공' });
     } catch (error) {
-      return next(error);
+      console.log(err);
+      const exception = exceptionHandler(err);
+
+      res
+        .status(exception.statusCode)
+        .json({ success: exception.success, message: exception.message });
     }
   };
 
@@ -72,9 +83,14 @@ export default class AuthController {
 
       return res
         .status(200)
-        .json({ success: 'ok', message: '유저 정보 수정 성공' });
+        .json({ success: true, message: '유저 정보 수정 성공' });
     } catch (error) {
-      return next(error);
+      console.log(err);
+      const exception = exceptionHandler(err);
+
+      res
+        .status(exception.statusCode)
+        .json({ success: exception.success, message: exception.message });
     }
   };
 
@@ -84,11 +100,14 @@ export default class AuthController {
     try {
       const userActivity = await this.authService.getUserActivity(userName);
 
-      return res.status(200).json({
-        userActivity,
-      });
+      return res.status(200).json({ success: true, userActivity });
     } catch (error) {
-      return next(error);
+      console.log(err);
+      const exception = exceptionHandler(err);
+
+      res
+        .status(exception.statusCode)
+        .json({ success: exception.success, message: exception.message });
     }
   };
 
@@ -100,11 +119,14 @@ export default class AuthController {
 
       return res
         .status(200)
-        .json({ success: 'ok', message: `${userName}의 페이지`, userPageInfo });
+        .json({ success: true, message: `${userName}의 페이지`, userPageInfo });
     } catch (error) {
-      return res
-        .status(500)
-        .json({ message: '조회하려는 사용자가 존재하지 않습니다.' });
+      console.log(err);
+      const exception = exceptionHandler(err);
+
+      res
+        .status(exception.statusCode)
+        .json({ success: exception.success, message: exception.message });
     }
   };
 
