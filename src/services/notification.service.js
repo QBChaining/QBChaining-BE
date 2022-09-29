@@ -17,6 +17,7 @@ export default class NotificationService {
       notiId,
       userName
     );
+    if (!findNoti) throw new NotFoundException('삭제된 게시물 입니다');
 
     if (findNoti.check === false) {
       await this.notificationRepository.UpdateNotification(notiId);
