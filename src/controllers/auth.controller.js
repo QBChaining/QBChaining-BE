@@ -11,15 +11,13 @@ export default class AuthController {
 
       const token = jwt.sign(
         {
-          userId: user.id,
-          userName: user.userName,
-          isNew: user.isNew,
-          profileImg: user.profileImg,
+          userId: req.user.id,
+          userName: req.user.userName,
+          isNew: req.user.isNew,
+          profileImg: req.user.profileImg,
         },
         process.env.JWT_SECRET,
-        {
-          issuer: 'jihun',
-        }
+        { expiresIn: '12h' }
       );
 
       return res.status(200).json({ token });
