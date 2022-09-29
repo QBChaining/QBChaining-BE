@@ -120,4 +120,13 @@ export default class PostCommentServices {
       );
     }
   };
+
+  CommentLike = async (commentId, userName) => {
+    const like = await this.postCommentRepository.CommentLike(
+      commentId,
+      userName
+    );
+
+    if (!like) throw new ConflictException('존재하지 않는 댓글입니다');
+  };
 }

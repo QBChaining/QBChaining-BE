@@ -3,7 +3,8 @@ import Notification from '../models/noti.js';
 import PostComment from '../models/post.comment.js';
 import User from '../models/user.js';
 import Post from '../models/post.js';
-import sequelize from 'sequelize';
+import sequelize, { where } from 'sequelize';
+import PostCommentLike from '../models/post.comment.like.js';
 
 const option = sequelize.Op;
 
@@ -99,5 +100,24 @@ export default class PostCommentRepository {
     });
 
     return commentbookmark;
+  };
+
+  CommentLike = async (commentId, userName) => {
+    const commentlike = await PostCommentLike.create({
+      commentId: commentId,
+      userName: userName,
+    });
+    await PostComment.increment({ like: 1 }, { where: commentId });
+
+    return commentlike;
+  };
+
+  CommentLikeDelete = async (commentId, userName) => {
+    const commentlikedelete = await PostCommentLike.destroy({
+      where: { commentId: commentId, userName: userName },
+    });
+    await PostComment.decrement({ like: 1 }, { where: commentId });
+
+    return commentlikedelete;
   };
 }

@@ -14,6 +14,7 @@ import QnaCommentLike from './qna.comment.like.js';
 import QnaBookmark from './qna.bookmark.js';
 import PostBookmark from './post.bookmark.js';
 import Notification from './noti.js';
+import PostCommentLike from './post.comment.like.js';
 
 const db = {};
 
@@ -31,6 +32,7 @@ db.qnaLike = QnaLike;
 db.qnaCommentLike = QnaCommentLike;
 db.qnaBookmark = QnaBookmark;
 db.notification = Notification;
+db.postCommentLike = PostCommentLike;
 
 User.init(sequelize);
 UserInfo.init(sequelize);
@@ -45,6 +47,7 @@ QnaLike.init(sequelize);
 QnaCommentLike.init(sequelize);
 QnaBookmark.init(sequelize);
 Notification.init(sequelize);
+PostCommentLike.init(sequelize);
 
 User.associate(db);
 UserInfo.associate(db);
@@ -59,5 +62,6 @@ QnaLike.associate(db);
 QnaCommentLike.associate(db);
 QnaBookmark.associate(db);
 Notification.associate(db);
+PostCommentLike.associate(db);
 
 export { db };
