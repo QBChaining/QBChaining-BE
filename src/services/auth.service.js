@@ -1,6 +1,6 @@
 import Language from '../models/language.js';
 import AuthRepository from '../repositories/auth.repository.js';
-
+import { ForbiddenException } from '../exception/customException.js';
 export default class AuthService {
   authRepository = new AuthRepository();
 
@@ -165,8 +165,9 @@ export default class AuthService {
 
   getUserPage = async (userName) => {
     const user = await this.authRepository.findUserByName(userName);
-    if (user.isNew === true) return { userName: user.userName, profileImg: user.profileImg };
-     
+    if (user.isNew === true)
+      return { userName: user.userName, profileImg: user.profileImg };
+
     const userInfo = await this.authRepository.findUserInfoByID(user.id);
     const name = user.userName;
     const profileImg = user.profileImg;
