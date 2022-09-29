@@ -33,6 +33,9 @@ export default class PostCommentServices {
       throw new BadRequestException('내용을 입력해주세요');
     }
 
+    if (comment.length > 500)
+      throw new BadRequestException('500자 이하를 입력해주세요');
+
     const findpost = await this.postCommentRepository.PostFindOne(postId);
 
     if (!findpost) {
@@ -76,6 +79,9 @@ export default class PostCommentServices {
   };
 
   CommentUpdate = async (comment, commentId, userName, profileImg) => {
+    if (comment.length > 500)
+      throw new BadRequestException('500자 이하를 입력해주세요');
+
     const find = await this.postCommentRepository.CommentFindOneName(
       commentId,
       userName

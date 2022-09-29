@@ -231,6 +231,9 @@ export default class PostServices {
       throw new BadRequestException('내용을 입력해주세요');
     }
 
+    if (title.length > 50)
+      throw new BadRequestException('제목은 50글자 이하로 적어주세요');
+
     tags = tags.toString();
 
     const post = await this.postRepository.PostCreate(
