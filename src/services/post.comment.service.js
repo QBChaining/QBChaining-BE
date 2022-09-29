@@ -14,7 +14,7 @@ export default class PostCommentServices {
 
   CommentShowAll = async (postId) => {
     const postcomment = await this.postCommentRepository.CommentShowAll(postId);
-    if (!postcomment) throw new BadRequestException('게시물이 없습니다');
+    if (!postcomment) throw new NotFoundException('게시물이 없습니다');
     if (postcomment)
       return postcomment.map((comment) => {
         return {
@@ -87,7 +87,7 @@ export default class PostCommentServices {
       userName
     );
     if (find === null) {
-      throw new NotFoundException('수정할 수 없습니다');
+      throw new BadRequestException('수정할 수 없습니다');
     }
     if (comment.length !== 0) {
       const postcomment = await this.postCommentRepository.CommentUpdate(
@@ -110,7 +110,7 @@ export default class PostCommentServices {
     );
 
     if (find === null) {
-      throw new NotFoundException('삭제할 수 없습니다');
+      throw new ConflictException('삭제할 수 없습니다');
     } else {
       const postcomment = await this.postCommentRepository.CommentDestroy(
         commentId,
