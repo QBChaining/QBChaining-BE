@@ -33,7 +33,7 @@ export default class AuthRepository {
     return user;
   };
 
-  createUserInfo = async (age, gender, career, job, userId) => {
+  createUserInfo = async (age, gender, job, career, userId) => {
     const userInfo = await UserInfo.create({
       age,
       gender,
@@ -65,7 +65,6 @@ export default class AuthRepository {
       },
       { where: { userId } }
     );
-    console.log('ok');
     return;
   };
 
