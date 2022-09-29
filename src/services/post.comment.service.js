@@ -12,11 +12,22 @@ import PostCommentRepository from '../repositories/post.comment.repository.js';
 export default class PostCommentServices {
   postCommentRepository = new PostCommentRepository();
 
-  CommentShowAll = async (postId) => {
-    const postcomment = await this.postCommentRepository.CommentShowAll(postId);
+  CommentShowAll = async (postId, userName) => {
+    const postcomment = await this.postCommentRepository.CommentShowAll(
+      postId,
+      userName
+    );
     if (!postcomment) throw new NotFoundException('게시물이 없습니다');
+
     if (postcomment)
       return postcomment.map((comment) => {
+        let isLike = false;
+        if (
+          comment.PostCommentLikes[0]?.userName === userName &&
+          userName !== undefined
+        ) {
+          isLike = true;
+        }
         return {
           id: comment.id,
           comment: comment.comment,
@@ -24,6 +35,8 @@ export default class PostCommentServices {
           updatedAt: comment.updatedAt,
           userName: comment.User.userName,
           profileImg: comment.User.profileImg,
+          like: comment.like,
+          isLike: isLike,
         };
       });
   };
@@ -122,11 +135,46 @@ export default class PostCommentServices {
   };
 
   CommentLike = async (commentId, userName) => {
-    const like = await this.postCommentRepository.CommentLike(
+    const findcomment = await this.postCommentRepository.CommentFindOne(
+      commentId
+    );
+
+    if (!findcomment) throw new NotFoundException('존재하지 않는 댓글입니다');
+
+    const findlike = await this.postCommentRepository.CommentLikeFind(
       commentId,
       userName
     );
 
-    if (!like) throw new ConflictException('존재하지 않는 댓글입니다');
+    if (findlike) throw new ConflictException('좋아요를 두번 누르셨습니다');
+
+    const like = await this.postCommentRepository.PostCommentLike(
+      commentId,
+      userName
+    );
+
+    return like;
+  };
+
+  CommentLikeDelete = async (commentId, userName) => {
+    const findcomment = await this.postCommentRepository.CommentFindOne(
+      commentId
+    );
+    if (!findcomment) throw new NotFoundException('존재하지 않는 댓글입니다');
+
+    const findlike = await this.postCommentRepository.CommentLikeFind(
+      commentId,
+      userName
+    );
+
+    if (!findlike)
+      throw new ConflictException('좋아요 삭제를 두번 누르셨습니다');
+
+    const likedelete = await this.postCommentRepository.PostCommentLikeDelete(
+      commentId,
+      userName
+    );
+
+    return likedelete;
   };
 }

@@ -48,8 +48,11 @@ export default class PostCommentRepository {
   CommentShowAll = async (postId) => {
     const postcomment = await PostComment.findAll({
       where: { postId: postId },
-      attributes: ['id', 'comment', 'createdAt', 'updatedAt'],
-      include: [{ model: User, attributes: ['userName', 'profileImg'] }],
+      attributes: ['id', 'comment', 'createdAt', 'updatedAt', 'like'],
+      include: [
+        { model: User, attributes: ['userName', 'profileImg'] },
+        { model: PostCommentLike, attributes: ['userName'] },
+      ],
     });
     return postcomment;
   };
@@ -83,6 +86,14 @@ export default class PostCommentRepository {
     return postcomment;
   };
 
+  CommentFindOne = async (commentId) => {
+    const postcomment = await PostComment.findOne({
+      where: { id: commentId },
+    });
+
+    return postcomment;
+  };
+
   CommentDestroy = async (commentId, userName) => {
     const postdestroy = await PostComment.destroy({
       where: { id: commentId, userName: userName },
@@ -101,23 +112,30 @@ export default class PostCommentRepository {
 
     return commentbookmark;
   };
-
-  CommentLike = async (commentId, userName) => {
-    const commentlike = await PostCommentLike.create({
-      commentId: commentId,
-      userName: userName,
+  CommentLikeFind = async (commentId, userName) => {
+    const commentlike = await PostCommentLike.findOne({
+      where: { postCommentId: commentId, userName: userName },
     });
-    await PostComment.increment({ like: 1 }, { where: commentId });
 
     return commentlike;
   };
 
-  CommentLikeDelete = async (commentId, userName) => {
-    const commentlikedelete = await PostCommentLike.destroy({
-      where: { commentId: commentId, userName: userName },
+  PostCommentLike = async (commentId, userName) => {
+    const like = await PostCommentLike.create({
+      postCommentId: commentId,
+      userName,
     });
-    await PostComment.decrement({ like: 1 }, { where: commentId });
+    await PostComment.increment({ like: 1 }, { where: { id: commentId } });
 
-    return commentlikedelete;
+    return like;
+  };
+
+  PostCommentLikeDelete = async (commentId, userName) => {
+    const likeDelete = await PostCommentLike.destroy({
+      where: { postCommentId: commentId, userName: userName },
+    });
+    await PostComment.decrement({ like: 1 }, { where: { id: commentId } });
+
+    return likeDelete;
   };
 }

@@ -165,6 +165,8 @@ export default class AuthService {
 
   getUserPage = async (userName) => {
     const user = await this.authRepository.findUserByName(userName);
+    console.log(user);
+
     if (user.isNew === true)
       return { userName: user.userName, profileImg: user.profileImg };
 
