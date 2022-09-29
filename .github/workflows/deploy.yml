@@ -1,59 +1,59 @@
-# name: CI
+name: CI
 
-# on:
-#   push:
-#     branches: ['feature/sse']
+on:
+  push:
+    branches: ['feature/fix']
 
-#   workflow_dispatch:
+  workflow_dispatch:
 
-# jobs:
-#   build:
-#     runs-on: ubuntu-18.04
+jobs:
+  build:
+    runs-on: ubuntu-18.04
 
-#     strategy:
-#       matrix:
-#         node-version: [16.x]
+    strategy:
+      matrix:
+        node-version: [16.x]
 
-#     steps:
-#       - uses: actions/checkout@v3
+    steps:
+      - uses: actions/checkout@v3
 
-#       - name: Use Node.js ${{ matrix.node-version }}
-#         uses: actions/setup-node@v2
-#         with:
-#           node-version: ${{ matrix.node-version }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
 
-#       - name: create env
-#         run: |
-#           pwd
-#           touch .env
-#           echo DB_ID=${{ secrets.DB_ID }} >> .env
-#           echo DB_PW=${{ secrets.DB_PW }} >> .env
-#           echo DB_HOST=${{ secrets.DB_HOST }} >> .env
-#           echo DB=${{ secrets.DB }} >> .env
-#           echo GIT_ID=${{ secrets.GIT_ID }} >> .env
-#           echo GIT_SECRET=${{ secrets.GIT_SECRET }} >> .env
-#           echo GIT_URL=${{ secrets.GIT_URL }} >> .env
-#           echo REDIS_HOST=${{ secrets.REDIS_HOST }} >> .env
-#           echo REDIS_PORT=${{ secrets.REDIS_PORT }} >> .env
-#           echo REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }} >> .env
-#           echo COOKIE_SECRET=${{ secrets.COOKIE_SECRET }} >> .env
-#           echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> .env
+      - name: create env
+        run: |
+          pwd
+          touch .env
+          echo DB_ID=${{ secrets.DB_ID }} >> .env
+          echo DB_PW=${{ secrets.DB_PW }} >> .env
+          echo DB_HOST=${{ secrets.DB_HOST }} >> .env
+          echo DB=${{ secrets.DB }} >> .env
+          echo GIT_ID=${{ secrets.GIT_ID }} >> .env
+          echo GIT_SECRET=${{ secrets.GIT_SECRET }} >> .env
+          echo GIT_URL=${{ secrets.GIT_URL }} >> .env
+          echo REDIS_HOST=${{ secrets.REDIS_HOST }} >> .env
+          echo REDIS_PORT=${{ secrets.REDIS_PORT }} >> .env
+          echo REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }} >> .env
+          echo COOKIE_SECRET=${{ secrets.COOKIE_SECRET }} >> .env
+          echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> .env
 
-#       - name: zip file
-#         run: zip -r QBChaining.zip .github/workflows ./package.json ./package-lock.json ./src ./appspec.yml ./scripts .env
-#       - name: AWS configure credentials
-#         uses: aws-actions/configure-aws-credentials@v1
-#         with:
-#           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#           aws-region: ap-northeast-2
+      - name: zip file
+        run: zip -r QBChaining.zip .github/workflows ./package.json ./package-lock.json ./src ./appspec.yml ./scripts .env
+      - name: AWS configure credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
 
-#       - name: upload to S3
-#         run: aws s3 cp --region ap-northeast-2 ./QBChaining.zip s3://kpzzy-build/action-test/
+      - name: upload to S3
+        run: aws s3 cp --region ap-northeast-2 ./QBChaining.zip s3://kpzzy-build/action-test/
 
-#       - name: deploy with AWS codeDeploy
-#         run: aws deploy create-deployment
-#           --application-name sd-cd
-#           --deployment-config-name CodeDeployDefault.AllAtOnce
-#           --deployment-group-name baepo
-#           --s3-location bucket=kpzzy-build,bundleType=zip,key=action-test/QBChaining.zip
+      - name: deploy with AWS codeDeploy
+        run: aws deploy create-deployment
+          --application-name sd-cd
+          --deployment-config-name CodeDeployDefault.AllAtOnce
+          --deployment-group-name baepo
+          --s3-location bucket=kpzzy-build,bundleType=zip,key=action-test/QBChaining.zip
