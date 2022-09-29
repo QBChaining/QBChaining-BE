@@ -3,6 +3,9 @@ import Notification from '../models/noti.js';
 import PostComment from '../models/post.comment.js';
 import User from '../models/user.js';
 import Post from '../models/post.js';
+import sequelize from 'sequelize';
+
+const option = sequelize.Op;
 
 export default class PostCommentRepository {
   PostFindOne = async (postId) => {
@@ -13,9 +16,9 @@ export default class PostCommentRepository {
     return findpost;
   };
 
-  PostBookmark = async (postId) => {
+  PostBookmark = async (postId, userName) => {
     const bookmark = await PostBookmark.findAll({
-      where: { postId: postId },
+      where: { postId: postId, userName: { [option.ne]: userName } },
     });
 
     return bookmark;

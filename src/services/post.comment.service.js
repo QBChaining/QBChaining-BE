@@ -47,25 +47,27 @@ export default class PostCommentServices {
       userName,
       postId
     );
+    if (findpost.userName === userName) {
+      const findBookMark = await this.postCommentRepository.PostBookmark(
+        postId,
+        userName
+      );
+
+      findBookMark.map(async (noti) => {
+        await this.postCommentRepository.CreateNoti(noti.postId, noti.userName);
+      });
+    }
 
     if (findpost.userName !== userName) {
-      await this.postCommentRepository.Notification(findpost);
-
       const findBookMark = await this.postCommentRepository.PostBookmark(
-        postId
+        postId,
+        userName
       );
+      if (findBookMark.length === 0) {
+        await this.postCommentRepository.Notification(findpost);
+      }
       findBookMark.map(async (noti) => {
-        console.log(
-          noti.userName,
-          userName,
-          noti.userName !== findpost.userName
-        );
-        if (noti.userName !== findpost.userName) {
-          await this.postCommentRepository.CreateNoti(
-            noti.postId,
-            noti.userName
-          );
-        }
+        await this.postCommentRepository.CreateNoti(noti.postId, noti.userName);
       });
     }
 

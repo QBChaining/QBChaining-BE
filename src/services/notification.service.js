@@ -61,7 +61,7 @@ export default class NotificationService {
       notiId,
       userName
     );
-    if (!findNoti) throw new BadRequestException('삭제할 알림이 없습니다');
+    if (!findNoti) throw new ConflictException('삭제할 알림이 없습니다');
     return findNoti;
   };
 
@@ -69,7 +69,7 @@ export default class NotificationService {
     const findNoti = await this.notificationRepository.NotificationDeleteAll(
       userName
     );
-    if (!findNoti) throw new BadRequestException('삭제할 알림이 없습니다');
+    if (!findNoti) throw new ConflictException('삭제할 알림이 없습니다');
 
     return findNoti;
   };
