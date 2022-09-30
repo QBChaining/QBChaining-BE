@@ -165,13 +165,13 @@ export default class AuthService {
 
   getUserPage = async (userName) => {
     const user = await this.authRepository.findUserByName(userName);
-    console.log(user);
 
-    if (user.isNew === true)
+    if (user.isNew === 'true')
+
       return { userName: user.userName, profileImg: user.profileImg };
 
     const userInfo = await this.authRepository.findUserInfoByID(user.id);
-    const name = user.userName;
+
     const profileImg = user.profileImg;
     const age = userInfo.age;
     const gender = userInfo.gender;
@@ -182,6 +182,14 @@ export default class AuthService {
       return e.dataValues.language;
     });
 
-    return { name, profileImg, age, gender, job, career, languages };
+    return {
+      userName: user.userName,
+      profileImg,
+      age,
+      gender,
+      job,
+      career,
+      languages,
+    };
   };
 }
