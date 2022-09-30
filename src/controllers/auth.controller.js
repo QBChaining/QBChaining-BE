@@ -116,7 +116,7 @@ export default class AuthController {
 
     try {
       const userPageInfo = await this.authService.getUserPage(userName);
-
+      console.log(userPageInfo);
       return res
         .status(200)
         .json({ success: true, message: `${userName}의 페이지`, userPageInfo });

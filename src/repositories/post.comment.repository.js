@@ -3,6 +3,10 @@ import Notification from '../models/noti.js';
 import PostComment from '../models/post.comment.js';
 import User from '../models/user.js';
 import Post from '../models/post.js';
+import sequelize, { where } from 'sequelize';
+import PostCommentLike from '../models/post.comment.like.js';
+
+const option = sequelize.Op;
 
 export default class PostCommentRepository {
   PostFindOne = async (postId) => {
@@ -13,9 +17,9 @@ export default class PostCommentRepository {
     return findpost;
   };
 
-  PostBookmark = async (postId) => {
+  PostBookmark = async (postId, userName) => {
     const bookmark = await PostBookmark.findAll({
-      where: { postId: postId },
+      where: { postId: postId, userName: { [option.ne]: userName } },
     });
 
     return bookmark;
@@ -44,8 +48,11 @@ export default class PostCommentRepository {
   CommentShowAll = async (postId) => {
     const postcomment = await PostComment.findAll({
       where: { postId: postId },
-      attributes: ['id', 'comment', 'createdAt', 'updatedAt'],
-      include: [{ model: User, attributes: ['userName', 'profileImg'] }],
+      attributes: ['id', 'comment', 'createdAt', 'updatedAt', 'like'],
+      include: [
+        { model: User, attributes: ['userName', 'profileImg'] },
+        { model: PostCommentLike, attributes: ['userName'] },
+      ],
     });
     return postcomment;
   };
@@ -79,6 +86,14 @@ export default class PostCommentRepository {
     return postcomment;
   };
 
+  CommentFindOne = async (commentId) => {
+    const postcomment = await PostComment.findOne({
+      where: { id: commentId },
+    });
+
+    return postcomment;
+  };
+
   CommentDestroy = async (commentId, userName) => {
     const postdestroy = await PostComment.destroy({
       where: { id: commentId, userName: userName },
@@ -96,5 +111,31 @@ export default class PostCommentRepository {
     });
 
     return commentbookmark;
+  };
+  CommentLikeFind = async (commentId, userName) => {
+    const commentlike = await PostCommentLike.findOne({
+      where: { postCommentId: commentId, userName: userName },
+    });
+
+    return commentlike;
+  };
+
+  PostCommentLike = async (commentId, userName) => {
+    const like = await PostCommentLike.create({
+      postCommentId: commentId,
+      userName,
+    });
+    await PostComment.increment({ like: 1 }, { where: { id: commentId } });
+
+    return like;
+  };
+
+  PostCommentLikeDelete = async (commentId, userName) => {
+    const likeDelete = await PostCommentLike.destroy({
+      where: { postCommentId: commentId, userName: userName },
+    });
+    await PostComment.decrement({ like: 1 }, { where: { id: commentId } });
+
+    return likeDelete;
   };
 }
