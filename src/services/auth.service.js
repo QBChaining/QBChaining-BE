@@ -169,7 +169,7 @@ export default class AuthService {
       return { userName: user.userName, profileImg: user.profileImg };
 
     const userInfo = await this.authRepository.findUserInfoByID(user.id);
-    const name = user.userName;
+    const userName = user.userName;
     const profileImg = user.profileImg;
     const age = userInfo.age;
     const gender = userInfo.gender;
@@ -180,6 +180,6 @@ export default class AuthService {
       return e.dataValues.language;
     });
 
-    return { name, profileImg, age, gender, job, career, languages };
+    return { userName, profileImg, age, gender, job, career, languages };
   };
 }
