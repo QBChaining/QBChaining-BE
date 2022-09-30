@@ -66,12 +66,7 @@ export default class PostRepository {
     const post = await Post.findAll({
       limit: 4,
       where: {},
-      include: [
-        { model: User, attributes: ['userName', 'profileImg'] },
-        { model: PostComment, attributes: ['userName', 'comment'] },
-        { model: PostLike, attributes: ['userName'] },
-        { model: PostBookmark, attributes: ['userName'] },
-      ],
+      include: [{ model: PostLike, attributes: ['userName'] }],
       attributes: [
         [
           sequelize.fn('substring', sequelize.col('content'), 1, 100),

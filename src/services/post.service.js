@@ -11,20 +11,24 @@ export default class PostServices {
   PostShowAll = async (userName, page, page_count) => {
     const post = await this.postRepository.PostShowAll(page, page_count);
 
+    if (post.length === 0)
+      throw new BadRequestException('조회할 데이터가 없습니다');
+
     return post.map((post) => {
       let isBookmark = false;
       let isLike = false;
-      for (let i = 0; i < post.PostLikes.length; i++) {
-        if (post.PostLikes[i]?.userName === userName) {
-          isLike = true;
-        }
+
+      if (post.PostLikes[0]?.userName === userName && userName !== undefined) {
+        isLike = true;
       }
 
-      for (let i = 0; i < post.PostBookmarks.length; i++) {
-        if (post.PostBookmarks[i]?.userName === userName) {
-          isBookmark = true;
-        }
+      if (
+        post.PostBookmarks[0]?.userName === userName &&
+        userName !== undefined
+      ) {
+        isBookmark = true;
       }
+
       let tags = post.tags.split(',');
       if (tags.length >= 4) tags.length = 3;
 
@@ -48,6 +52,8 @@ export default class PostServices {
   // 댓글순 정렬
   PostShowComment = async (userName, page, page_count) => {
     const postcmt = await this.postRepository.PostShowAll(page, page_count);
+    // if (postcmt.length === 0)
+    //   throw new BadRequestException('조회할 데이터가 없습니다');
     return postcmt
       .map((post) => {
         let isBookmark = false;
@@ -82,13 +88,15 @@ export default class PostServices {
         };
       })
       .sort(function (a, b) {
-        return b.cmtNum - a.cmtNum;
+        return b.cntComment - a.cntComment;
       });
   };
 
   // 추천순 정렬
   PostShowLike = async (userName) => {
     const postshowlike = await this.postRepository.PostShowHit();
+    if (postshowlike.length === 0)
+      throw new BadRequestException('조회할 데이터가 없습니다');
 
     return postshowlike
       .map((post) => {
@@ -137,20 +145,13 @@ export default class PostServices {
           isLike = true;
         }
       }
-      let tags = post.tags.split(',');
 
-      if (tags.length >= 4) tags.length = 3;
       return {
         id: post.id,
         title: post.title,
-        content: post.content,
-        tags,
         createdAt: post.createdAt,
         updatedAt: post.updatedAt,
-        userName: post.User.userName,
         isLike,
-        profileImg: post.User.profileImg,
-        cmtNum: post.PostComments.length,
         like: post.like,
       };
     });
