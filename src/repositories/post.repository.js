@@ -32,7 +32,7 @@ export default class PostRepository {
     return bookmark;
   };
 
-  PostShowAll = async (page, page_count) => {
+  PostShowAll = async (page, page_count, userName) => {
     const post = await Post.findAll({
       offset: page_count * page,
       limit: page_count,
@@ -48,13 +48,22 @@ export default class PostRepository {
         'like',
         'tags',
       ],
-
       where: {},
       include: [
         { model: User, attributes: ['userName', 'profileImg'] },
         { model: PostComment, attributes: ['userName', 'comment'] },
-        { model: PostLike, attributes: ['userName'] },
-        { model: PostBookmark, attributes: ['userName'] },
+        {
+          model: PostLike,
+          attributes: ['userName'],
+          where: { userName: [userName, undefined] },
+          required: false,
+        },
+        {
+          model: PostBookmark,
+          attributes: ['userName'],
+          where: { userName: [userName, undefined] },
+          required: false,
+        },
       ],
       order: [['createdAt', 'DESC']],
     });
@@ -62,11 +71,18 @@ export default class PostRepository {
     return post;
   };
 
-  PostShowHit = async () => {
+  PostShowHit = async (userName) => {
     const post = await Post.findAll({
       limit: 4,
       where: {},
-      include: [{ model: PostLike, attributes: ['userName'] }],
+      include: [
+        {
+          model: PostLike,
+          attributes: ['userName'],
+          where: { userName: [userName, undefined] },
+          required: false,
+        },
+      ],
       attributes: [
         [
           sequelize.fn('substring', sequelize.col('content'), 1, 100),
@@ -85,14 +101,24 @@ export default class PostRepository {
     return post.reverse();
   };
 
-  PostShowOne = async (postId) => {
+  PostShowOne = async (postId, userName) => {
     const post = await Post.findOne({
       where: { id: postId },
       include: [
         { model: User, attributes: ['userName', 'profileImg'] },
         { model: PostComment, attributes: ['userName'] },
-        { model: PostBookmark, attributes: ['userName'] },
-        { model: PostLike, attributes: ['userName'] },
+        {
+          model: PostBookmark,
+          attributes: ['userName'],
+          where: { userName: [userName, undefined] },
+          required: false,
+        },
+        {
+          model: PostLike,
+          attributes: ['userName'],
+          where: { userName: [userName, undefined] },
+          required: false,
+        },
       ],
     });
 

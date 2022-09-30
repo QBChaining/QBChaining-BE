@@ -18,7 +18,7 @@ export default class PostCommentServices {
       userName
     );
     if (!postcomment) throw new NotFoundException('게시물이 없습니다');
-
+    console.log(postcomment);
     if (postcomment)
       return postcomment.map((comment) => {
         let isLike = false;

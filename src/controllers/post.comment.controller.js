@@ -21,6 +21,7 @@ export default class PostCommentController {
       });
     } catch (error) {
       const exception = exceptionHandler(error);
+      console.log(error);
 
       res.status(exception.statusCode).json({
         success: exception.success,

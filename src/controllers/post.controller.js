@@ -29,56 +29,6 @@ export default class PostController {
     }
   };
 
-  PostShowComment = async (req, res, next) => {
-    const { page, page_count } = req.query;
-    const userName = req.user?.userName;
-    try {
-      const postShowComment = await this.postService.PostShowComment(
-        userName,
-        page * 1,
-        page_count * 1
-      );
-      return res.status(200).json({
-        success: true,
-        message: '조회 성공1',
-        data: postShowComment,
-      });
-    } catch (error) {
-      const exception = exceptionHandler(error);
-      console.log(error);
-
-      res.status(exception.statusCode).json({
-        success: exception.success,
-        message: exception.message,
-      });
-    }
-  };
-
-  PostShowLike = async (req, res, next) => {
-    const { page, page_count } = req.query;
-    const userName = req.user?.userName;
-    try {
-      const postShowAll = await this.postService.PostShowLike(
-        userName,
-        page * 1,
-        page_count * 1
-      );
-      return res.status(200).json({
-        success: true,
-        message: '조회 성공',
-        data: postShowAll,
-      });
-    } catch (error) {
-      const exception = exceptionHandler(error);
-      console.log(error);
-
-      res.status(exception.statusCode).json({
-        success: exception.success,
-        message: exception.message,
-      });
-    }
-  };
-
   PostShowhit = async (req, res, next) => {
     const userName = req.user?.userName;
     try {
