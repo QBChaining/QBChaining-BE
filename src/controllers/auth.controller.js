@@ -22,7 +22,7 @@ export default class AuthController {
       );
 
       return res.status(200).json({ success: true, token });
-    } catch (error) {
+    } catch (err) {
       console.log(err);
       const exception = exceptionHandler(err);
 
@@ -53,7 +53,7 @@ export default class AuthController {
       return res
         .status(200)
         .json({ success: true, message: '유저 정보 등록 성공' });
-    } catch (error) {
+    } catch (err) {
       console.log(err);
       const exception = exceptionHandler(err);
 
@@ -84,7 +84,7 @@ export default class AuthController {
       return res
         .status(200)
         .json({ success: true, message: '유저 정보 수정 성공' });
-    } catch (error) {
+    } catch (err) {
       console.log(err);
       const exception = exceptionHandler(err);
 
@@ -101,7 +101,7 @@ export default class AuthController {
       const userActivity = await this.authService.getUserActivity(userName);
 
       return res.status(200).json({ success: true, userActivity });
-    } catch (error) {
+    } catch (err) {
       console.log(err);
       const exception = exceptionHandler(err);
 
@@ -120,7 +120,7 @@ export default class AuthController {
       return res
         .status(200)
         .json({ success: true, message: `${userName}의 페이지`, userPageInfo });
-    } catch (error) {
+    } catch (err) {
       console.log(err);
       const exception = exceptionHandler(err);
 
