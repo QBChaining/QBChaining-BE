@@ -9,7 +9,11 @@ export default class PostServices {
   postRepository = new PostRepository();
   // 최신순 정렬
   PostShowAll = async (userName, page, page_count) => {
-    const post = await this.postRepository.PostShowAll(page, page_count);
+    const post = await this.postRepository.PostShowAll(
+      page,
+      page_count,
+      userName
+    );
 
     if (post.length === 0)
       throw new BadRequestException('조회할 데이터가 없습니다');
@@ -17,7 +21,6 @@ export default class PostServices {
     return post.map((post) => {
       let isBookmark = false;
       let isLike = false;
-
       if (post.PostLikes[0]?.userName === userName && userName !== undefined) {
         isLike = true;
       }
@@ -43,154 +46,45 @@ export default class PostServices {
         isLike,
         tags,
         cntComment: post.PostComments.length,
-        like: post.like,
+        like: post.likes,
         profileImg: post.User.profileImg,
       };
     });
   };
 
-  // 댓글순 정렬
-  PostShowComment = async (userName, page, page_count) => {
-    const postcmt = await this.postRepository.PostShowAll(page, page_count);
-    // if (postcmt.length === 0)
-    //   throw new BadRequestException('조회할 데이터가 없습니다');
-    return postcmt
-      .map((post) => {
-        let isBookmark = false;
-        let isLike = false;
-        for (let i = 0; i < post.PostLikes.length; i++) {
-          if (post.PostLikes[i]?.userName === userName) {
-            isLike = true;
-          }
-        }
-        for (let i = 0; i < post.PostBookmarks.length; i++) {
-          if (post.PostBookmarks[i]?.userName === userName) {
-            isBookmark = true;
-          }
-        }
-        let tags = post.tags.split(',');
-
-        if (tags.length >= 4) tags.length = 3;
-
-        return {
-          id: post.id,
-          title: post.title,
-          content: post.content,
-          createdAt: post.createdAt,
-          updatedAt: post.updatedAt,
-          userName: post.User.userName,
-          isBookmark,
-          isLike,
-          tags,
-          profileImg: post.User.profileImg,
-          cntComment: post.PostComments.length,
-          like: post.like,
-        };
-      })
-      .sort(function (a, b) {
-        return b.cntComment - a.cntComment;
-      });
-  };
-
-  // 추천순 정렬
-  PostShowLike = async (userName) => {
-    const postshowlike = await this.postRepository.PostShowHit();
-    if (postshowlike.length === 0)
-      throw new BadRequestException('조회할 데이터가 없습니다');
-
-    return postshowlike
-      .map((post) => {
-        let isBookmark = false;
-        let isLike = false;
-        for (let i = 0; i < post.PostLikes.length; i++) {
-          if (post.PostLikes[i]?.userName === userName) {
-            isLike = true;
-          }
-        }
-        for (let i = 0; i < post.PostBookmarks.length; i++) {
-          if (post.PostBookmarks[i]?.userName === userName) {
-            isBookmark = true;
-          }
-        }
-        let tags = post.tags.split(',');
-
-        if (tags.length >= 4) tags.length = 3;
-        return {
-          id: post.id,
-          title: post.title,
-          content: post.content,
-          createdAt: post.createdAt,
-          updatedAt: post.updatedAt,
-          userName: post.User.userName,
-          isBookmark,
-          isLike,
-          tags,
-          profileImg: post.User.profileImg,
-          cntComment: post.PostComments.length,
-          like: post.like,
-        };
-      })
-      .sort((a, b) => {
-        return b.like - a.like;
-      });
-  };
-
   PostShowhit = async (userName) => {
-    const posthit = await this.postRepository.PostShowHit();
-    const posthitmap = posthit.map((post) => {
+    const posthit = await this.postRepository.PostShowHit(userName);
+    return posthit.map((post) => {
       let isLike = false;
 
-      for (let i = 0; i < post.PostLikes.length; i++) {
-        if (post.PostLikes[i]?.userName === userName) {
-          isLike = true;
-        }
+      if (post.PostLikes[0]?.userName === userName && userName !== undefined) {
+        isLike = true;
       }
 
       return {
         id: post.id,
         title: post.title,
         createdAt: post.createdAt,
-        updatedAt: post.updatedAt,
         isLike,
-        like: post.like,
+        like: post.likes,
       };
-    });
-
-    let posthits = [];
-    let answer = [];
-    let now = new Date();
-    for (let i = 0; i < posthitmap.length; i++) {
-      const datecompare =
-        now.getTime() - new Date(posthitmap[i].createdAt).getTime();
-      const inttime = datecompare / 1000 / 60 / 60;
-      if (parseInt(inttime) < 24) {
-        posthits.push(i);
-      }
-    }
-    for (let i = 0; i < posthits.length; i++) {
-      answer.push(posthitmap[i]);
-    }
-
-    return answer.sort((a, b) => {
-      return b.like - a.like;
     });
   };
 
   PostShowOne = async (userName, postId) => {
-    const post = await this.postRepository.PostShowOne(postId);
+    const post = await this.postRepository.PostShowOne(postId, userName);
     if (!post) throw new NotFoundException('존재하지 않는 게시물입니다');
     let isBookmark = false;
-    for (let i = 0; i < post.PostBookmarks.length; i++) {
-      if (post.PostBookmarks[i]?.userName === userName) {
-        isBookmark = true;
-      }
+    let isLike = false;
+    if (post.PostLikes[0]?.userName === userName && userName !== undefined) {
+      isLike = true;
     }
 
-    let isLike = false;
-    for (let i = 0; i < post.PostLikes.length; i++) {
-      if (post.PostLikes[i]?.userName === userName) {
-        isLike = true;
-      }
+    if (
+      post.PostBookmarks[0]?.userName === userName &&
+      userName !== undefined
+    ) {
+      isBookmark = true;
     }
 
     return {
@@ -204,7 +98,7 @@ export default class PostServices {
       profileImg: post.User.profileImg,
       userName: post.User.userName,
       cntComment: post.PostComments.length,
-      like: post.like,
+      like: post.likes,
     };
   };
 
@@ -263,6 +157,8 @@ export default class PostServices {
   PostUpdate = async (title, content, userName, postId, profileImg) => {
     if (content.length === 0 || title.length === 0)
       throw new BadRequestException('내용이나 제목을 입력해주세요');
+    if (title.length > 50)
+      throw new BadRequestException('제목은 50글자 이하로 적어주세요');
     const post1 = await this.postRepository.PostFindOne(postId);
 
     if (userName !== post1.userName) {

@@ -19,7 +19,6 @@ class SearchCotroller {
         .status(200)
         .json({ success: true, message: 'Qna 검색 조회 성공', data });
     } catch (err) {
-      console.log(err);
       const exception = exceptionHandler(err);
 
       return res
@@ -43,7 +42,6 @@ class SearchCotroller {
         .status(200)
         .json({ success: true, message: 'Post 검색 조회 성공', data });
     } catch (err) {
-      console.log(err);
       const exception = exceptionHandler(err);
 
       return res
