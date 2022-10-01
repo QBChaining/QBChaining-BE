@@ -11,20 +11,24 @@ export default class PostServices {
   PostShowAll = async (userName, page, page_count) => {
     const post = await this.postRepository.PostShowAll(page, page_count);
 
+    if (post.length === 0)
+      throw new BadRequestException('조회할 데이터가 없습니다');
+
     return post.map((post) => {
       let isBookmark = false;
       let isLike = false;
-      for (let i = 0; i < post.PostLikes.length; i++) {
-        if (post.PostLikes[i]?.userName === userName) {
-          isLike = true;
-        }
+
+      if (post.PostLikes[0]?.userName === userName && userName !== undefined) {
+        isLike = true;
       }
 
-      for (let i = 0; i < post.PostBookmarks.length; i++) {
-        if (post.PostBookmarks[i]?.userName === userName) {
-          isBookmark = true;
-        }
+      if (
+        post.PostBookmarks[0]?.userName === userName &&
+        userName !== undefined
+      ) {
+        isBookmark = true;
       }
+
       let tags = post.tags.split(',');
       if (tags.length >= 4) tags.length = 3;
 
@@ -48,6 +52,8 @@ export default class PostServices {
   // 댓글순 정렬
   PostShowComment = async (userName, page, page_count) => {
     const postcmt = await this.postRepository.PostShowAll(page, page_count);
+    // if (postcmt.length === 0)
+    //   throw new BadRequestException('조회할 데이터가 없습니다');
     return postcmt
       .map((post) => {
         let isBookmark = false;
@@ -82,13 +88,15 @@ export default class PostServices {
         };
       })
       .sort(function (a, b) {
-        return b.cmtNum - a.cmtNum;
+        return b.cntComment - a.cntComment;
       });
   };
 
   // 추천순 정렬
   PostShowLike = async (userName) => {
     const postshowlike = await this.postRepository.PostShowHit();
+    if (postshowlike.length === 0)
+      throw new BadRequestException('조회할 데이터가 없습니다');
 
     return postshowlike
       .map((post) => {
@@ -137,20 +145,13 @@ export default class PostServices {
           isLike = true;
         }
       }
-      let tags = post.tags.split(',');
 
-      if (tags.length >= 4) tags.length = 3;
       return {
         id: post.id,
         title: post.title,
-        content: post.content,
-        tags,
         createdAt: post.createdAt,
         updatedAt: post.updatedAt,
-        userName: post.User.userName,
         isLike,
-        profileImg: post.User.profileImg,
-        cmtNum: post.PostComments.length,
         like: post.like,
       };
     });
@@ -177,7 +178,7 @@ export default class PostServices {
 
   PostShowOne = async (userName, postId) => {
     const post = await this.postRepository.PostShowOne(postId);
-    if (!post) throw new BadRequestException('존재하지 않는 게시물입니다');
+    if (!post) throw new NotFoundException('존재하지 않는 게시물입니다');
     let isBookmark = false;
     for (let i = 0; i < post.PostBookmarks.length; i++) {
       if (post.PostBookmarks[i]?.userName === userName) {
@@ -209,7 +210,7 @@ export default class PostServices {
 
   PostShowUser = async (userName) => {
     const post = await this.postRepository.PostShowUser(userName);
-    if (!post) throw new BadRequestException('존재하지 않는 유저 입니다');
+    if (!post) throw new NotFoundException('존재하지 않는 유저 입니다');
 
     return {
       comment: post.PostComments,
@@ -230,6 +231,9 @@ export default class PostServices {
     if (content.length === 0 || title.length === 0) {
       throw new BadRequestException('내용을 입력해주세요');
     }
+
+    if (title.length > 50)
+      throw new BadRequestException('제목은 50글자 이하로 적어주세요');
 
     tags = tags.toString();
 
@@ -288,7 +292,7 @@ export default class PostServices {
     if (!find) throw new NotFoundException('게시물이 존재하지 않습니다');
 
     if (find.userName !== userName) {
-      throw new NotFoundException('본인의 글만 삭제 가능합니다');
+      throw new BadRequestException('본인의 글만 삭제 가능합니다');
     }
 
     const post = await this.postRepository.PostDelete(postId, userName);
@@ -298,7 +302,7 @@ export default class PostServices {
 
   PostLike = async (postId, userName) => {
     const findLike = await this.postRepository.PostLikeOne(postId, userName);
-    if (findLike) throw new BadRequestException('이미 좋아요한 게시물입니다');
+    if (findLike) throw new ConflictException('이미 좋아요한 게시물입니다');
     if (!findLike) {
       const like = await this.postRepository.PostLike(postId, userName);
     }
@@ -307,7 +311,7 @@ export default class PostServices {
   PostLikeDelete = async (postId, userName) => {
     const findLike = await this.postRepository.PostLikeOne(postId, userName);
     if (findLike === null) {
-      throw new BadRequestException('좋아요를 하지 않았습니다');
+      throw new ConflictException('좋아요를 하지 않았습니다');
     } else {
       const like = await this.postRepository.PostLikeDestroy(postId, userName);
     }
@@ -335,7 +339,7 @@ export default class PostServices {
     if (findBookMark === null) {
       const bookmark = await this.postRepository.PostBookmark(postId, userName);
     } else {
-      throw new BadRequestException('북마크를 이미 하였습니다');
+      throw new ConflictException('북마크를 이미 하였습니다');
     }
   };
 
@@ -346,7 +350,7 @@ export default class PostServices {
     );
 
     if (findBookMark === null) {
-      throw new BadRequestException('즐겨찾기한 북마크가 없습니다');
+      throw new ConflictException('즐겨찾기한 북마크가 없습니다');
     } else {
       const bookmark = await this.postRepository.PostBookmarkDestroy(
         postId,
