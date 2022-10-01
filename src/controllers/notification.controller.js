@@ -99,22 +99,3 @@ export default class Notificationcontroller {
     }
   };
 }
-// NotiSSE = async (req, res) => {
-//   const userName = req.params.userName;
-
-//   res.writeHead(200, {
-//     'Content-Type': 'text/event-stream',
-//     'Cache-Control': 'no-cache',
-//     Connection: 'keep-alive',
-//   });
-
-//   const noti = await this.notificationService.NotiNoti(userName);
-
-//   res.write(`event: helloworld\ndata: ${JSON.stringify(userName)}\n\n`);
-
-//   res.on('close', () => {
-//     console.log('server end');
-//     res.end();
-//     console.log('test');
-//   });
-// };

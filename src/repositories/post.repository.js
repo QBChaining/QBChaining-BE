@@ -32,7 +32,7 @@ export default class PostRepository {
     return bookmark;
   };
 
-  PostShowAll = async (page, page_count) => {
+  PostShowAll = async (page, page_count, userName) => {
     const post = await Post.findAll({
       offset: page_count * page,
       limit: page_count,
@@ -48,13 +48,22 @@ export default class PostRepository {
         'like',
         'tags',
       ],
-
       where: {},
       include: [
         { model: User, attributes: ['userName', 'profileImg'] },
         { model: PostComment, attributes: ['userName', 'comment'] },
-        { model: PostLike, attributes: ['userName'] },
-        { model: PostBookmark, attributes: ['userName'] },
+        {
+          model: PostLike,
+          attributes: ['userName'],
+          where: { userName: [userName, undefined] },
+          required: false,
+        },
+        {
+          model: PostBookmark,
+          attributes: ['userName'],
+          where: { userName: [userName, undefined] },
+          required: false,
+        },
       ],
       order: [['createdAt', 'DESC']],
     });
@@ -62,37 +71,52 @@ export default class PostRepository {
     return post;
   };
 
-  PostShowHit = async () => {
+  PostShowHit = async (userName) => {
+    const nowMinusOneDay = new Date();
+    nowMinusOneDay.setDate(nowMinusOneDay.getDate() - 1);
+    nowMinusOneDay.setHours(nowMinusOneDay.getHours() + 9);
+
+    const now = new Date();
+    now.setHours(now.getHours() + 9);
+
     const post = await Post.findAll({
       limit: 4,
-      where: {},
-      include: [{ model: PostLike, attributes: ['userName'] }],
-      attributes: [
-        [
-          sequelize.fn('substring', sequelize.col('content'), 1, 100),
-          'content',
-        ],
-        'id',
-        'title',
-        'createdAt',
-        'updatedAt',
-        'like',
-        'tags',
+      // op.gt : 6   ===  > 6
+      // op.lt : 6   ===  6 <
+      where: { createdAt: { [op.gt]: nowMinusOneDay, [op.lt]: now } },
+      include: [
+        {
+          model: PostLike,
+          attributes: ['userName'],
+          where: { userName: [userName, undefined] },
+          required: false,
+        },
       ],
+      attributes: ['id', 'title', 'createdAt', 'like'],
       order: [['like', 'DESC']],
     });
 
-    return post.reverse();
+    return post;
   };
 
-  PostShowOne = async (postId) => {
+  PostShowOne = async (postId, userName) => {
     const post = await Post.findOne({
       where: { id: postId },
       include: [
         { model: User, attributes: ['userName', 'profileImg'] },
         { model: PostComment, attributes: ['userName'] },
-        { model: PostBookmark, attributes: ['userName'] },
-        { model: PostLike, attributes: ['userName'] },
+        {
+          model: PostBookmark,
+          attributes: ['userName'],
+          where: { userName: [userName, undefined] },
+          required: false,
+        },
+        {
+          model: PostLike,
+          attributes: ['userName'],
+          where: { userName: [userName, undefined] },
+          required: false,
+        },
       ],
     });
 

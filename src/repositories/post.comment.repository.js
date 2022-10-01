@@ -45,13 +45,18 @@ export default class PostCommentRepository {
     });
   };
 
-  CommentShowAll = async (postId) => {
+  CommentShowAll = async (postId, userName) => {
     const postcomment = await PostComment.findAll({
       where: { postId: postId },
       attributes: ['id', 'comment', 'createdAt', 'updatedAt', 'like'],
       include: [
         { model: User, attributes: ['userName', 'profileImg'] },
-        { model: PostCommentLike, attributes: ['userName'] },
+        {
+          model: PostCommentLike,
+          attributes: ['userName'],
+          where: { userName: [userName, undefined] },
+          required: false,
+        },
       ],
     });
     return postcomment;
