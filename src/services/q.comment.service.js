@@ -67,7 +67,7 @@ class QnaCommentService {
         userName: list.userName,
         profileImg: list.User?.profileImg,
         createdAt: list.createdAt,
-        like: list.like,
+        like: list.likes,
         isChoose: list.isChoose,
         isLike: !userName
           ? false
@@ -81,7 +81,7 @@ class QnaCommentService {
           comment: chooseComment.comment,
           isChoose: chooseComment.isChoose,
           userName: chooseComment.userName,
-          like: chooseComment.like,
+          like: chooseComment.likes,
           createdAt: chooseComment.createdAt,
           profileImg: chooseComment.User.profileImg,
           isLike: !userName

@@ -57,7 +57,7 @@ class QnaService {
         profileImg: list.User?.profileImg,
         isResolve: list.isResolve,
         createdAt: list.createdAt,
-        like: list.like,
+        like: list.likes,
         isLike: !userName ? false : list.QnaLikes[0]?.userName === userName,
         isBookmark: !userName
           ? false
@@ -79,7 +79,7 @@ class QnaService {
       userName: list.userName,
       profileImg: list['User.profileImg'],
       isResolve: list.isResolve,
-      like: list.like,
+      like: list.likes,
       isLike: list['QnaLikes.userName'] === userName ? true : false,
       isBookmark: list['QnaBookmarks.userName'] === userName ? true : false,
       createdAt: list.createdAt,
@@ -160,7 +160,7 @@ class QnaService {
         profileImg: list.User.profileImg,
         isResolve: list.isResolve,
         createdAt: list.createdAt,
-        like: list.like,
+        like: list.likes,
         isLike: !userName ? false : list.QnaLikes[0]?.userName === userName,
         isBookmark: !userName
           ? false
