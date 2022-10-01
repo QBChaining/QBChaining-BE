@@ -45,7 +45,7 @@ export default class PostRepository {
         'title',
         'createdAt',
         'updatedAt',
-        'like',
+        'likes',
         'tags',
       ],
       where: {},
@@ -92,8 +92,8 @@ export default class PostRepository {
           required: false,
         },
       ],
-      attributes: ['id', 'title', 'createdAt', 'like'],
-      order: [['like', 'DESC']],
+      attributes: ['id', 'title', 'createdAt', 'likes'],
+      order: [['likes', 'DESC']],
     });
 
     return post;
@@ -128,7 +128,7 @@ export default class PostRepository {
       where: { userName: userName },
       attributes: [],
       include: [
-        { model: Post, attributes: ['title', 'id', 'createdAt', 'like'] },
+        { model: Post, attributes: ['title', 'id', 'createdAt', 'likes'] },
         {
           model: PostComment,
           attributes: ['comment'],
@@ -136,7 +136,7 @@ export default class PostRepository {
             {
               model: Post,
               where: { userName: { [op.ne]: userName } },
-              attributes: ['title', 'id', 'createdAt', 'like'],
+              attributes: ['title', 'id', 'createdAt', 'likes'],
             },
           ],
         },
@@ -177,7 +177,7 @@ export default class PostRepository {
 
   PostLike = async (postId, userName) => {
     const like = await PostLike.create({ postId, userName });
-    await Post.increment({ like: 1 }, { where: { id: postId } });
+    await Post.increment({ likes: 1 }, { where: { id: postId } });
 
     return like;
   };
@@ -186,7 +186,7 @@ export default class PostRepository {
     const likeDelete = await PostLike.destroy({
       where: { postId: postId, userName: userName },
     });
-    await Post.decrement({ like: 1 }, { where: { id: postId } });
+    await Post.decrement({ likes: 1 }, { where: { id: postId } });
 
     return likeDelete;
   };

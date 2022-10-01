@@ -18,7 +18,6 @@ export default class PostCommentServices {
       userName
     );
     if (!postcomment) throw new NotFoundException('게시물이 없습니다');
-    console.log(postcomment);
     if (postcomment)
       return postcomment.map((comment) => {
         let isLike = false;
@@ -35,7 +34,7 @@ export default class PostCommentServices {
           updatedAt: comment.updatedAt,
           userName: comment.User.userName,
           profileImg: comment.User.profileImg,
-          like: comment.like,
+          like: comment.likes,
           isLike: isLike,
         };
       });
