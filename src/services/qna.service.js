@@ -160,7 +160,7 @@ class QnaService {
         profileImg: list.User.profileImg,
         isResolve: list.isResolve,
         createdAt: list.createdAt,
-        like: list.QnaLikes.length,
+        like: list.like,
         isLike: !userName ? false : list.QnaLikes[0]?.userName === userName,
         isBookmark: !userName
           ? false
