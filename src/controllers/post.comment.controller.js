@@ -42,15 +42,7 @@ export default class PostCommentController {
         postId,
         profileImg
       );
-      // if (commentcreate) {
-      //   res.writeHead(200, {
-      //     'Content-Type': 'text/event-stream',
-      //     'Cache-Control': 'no-cache',
-      //     Connection: 'keep-alive',
-      //   });
 
-      //   res.write('event: helloworld\ndata: helpme\n\n');
-      // }
       return res.status(200).json({
         success: true,
         data: commentcreate,
@@ -157,17 +149,4 @@ export default class PostCommentController {
       });
     }
   };
-
-  // PostNotification = async (req, res) => {
-  //   userName = req.decoded.userName;
-
-  //   res.writeHead(200, {
-  //     'Content-Type': 'text/event-stream',
-  //     'Cache-Control': 'no-cache',
-  //     Connection: 'keep-alive',
-  //   });
-
-  //   const cmt = await this.postCommentServices.CommentCreate();
-  //   res.write('event: helloworld\ndata: test\n\n');
-  // };
 }

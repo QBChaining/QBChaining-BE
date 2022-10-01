@@ -54,7 +54,7 @@ export default class PostServices {
 
   PostShowhit = async (userName) => {
     const posthit = await this.postRepository.PostShowHit(userName);
-    const posthitmap = posthit.map((post) => {
+    return posthit.map((post) => {
       let isLike = false;
 
       if (post.PostLikes[0]?.userName === userName && userName !== undefined) {
@@ -65,29 +65,9 @@ export default class PostServices {
         id: post.id,
         title: post.title,
         createdAt: post.createdAt,
-        updatedAt: post.updatedAt,
         isLike,
         like: post.like,
       };
-    });
-
-    let posthits = [];
-    let answer = [];
-    let now = new Date();
-    for (let i = 0; i < posthitmap.length; i++) {
-      const datecompare =
-        now.getTime() - new Date(posthitmap[i].createdAt).getTime();
-      const inttime = datecompare / 1000 / 60 / 60 / 24;
-      if (parseInt(inttime) < 24) {
-        posthits.push(i);
-      }
-    }
-    for (let i = 0; i < posthits.length; i++) {
-      answer.push(posthitmap[i]);
-    }
-
-    return answer.sort((a, b) => {
-      return b.like - a.like;
     });
   };
 

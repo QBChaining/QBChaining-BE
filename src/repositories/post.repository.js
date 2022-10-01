@@ -72,9 +72,18 @@ export default class PostRepository {
   };
 
   PostShowHit = async (userName) => {
+    const nowMinusOneDay = new Date();
+    nowMinusOneDay.setDate(nowMinusOneDay.getDate() - 1);
+    nowMinusOneDay.setHours(nowMinusOneDay.getHours() + 9);
+
+    const now = new Date();
+    now.setHours(now.getHours() + 9);
+
     const post = await Post.findAll({
       limit: 4,
-      where: {},
+      // op.gt : 6   ===  > 6
+      // op.lt : 6   ===  6 <
+      where: { createdAt: { [op.gt]: nowMinusOneDay, [op.lt]: now } },
       include: [
         {
           model: PostLike,
@@ -83,22 +92,11 @@ export default class PostRepository {
           required: false,
         },
       ],
-      attributes: [
-        [
-          sequelize.fn('substring', sequelize.col('content'), 1, 100),
-          'content',
-        ],
-        'id',
-        'title',
-        'createdAt',
-        'updatedAt',
-        'like',
-        'tags',
-      ],
+      attributes: ['id', 'title', 'createdAt', 'like'],
       order: [['like', 'DESC']],
     });
 
-    return post.reverse();
+    return post;
   };
 
   PostShowOne = async (postId, userName) => {
