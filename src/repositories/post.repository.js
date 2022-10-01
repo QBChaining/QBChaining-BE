@@ -74,10 +74,8 @@ export default class PostRepository {
   PostShowHit = async (userName) => {
     const nowMinusOneDay = new Date();
     nowMinusOneDay.setDate(nowMinusOneDay.getDate() - 1);
-    nowMinusOneDay.setHours(nowMinusOneDay.getHours() + 9);
 
     const now = new Date();
-    now.setHours(now.getHours() + 9);
 
     const post = await Post.findAll({
       limit: 4,
