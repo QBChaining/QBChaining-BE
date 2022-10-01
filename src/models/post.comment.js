@@ -10,6 +10,11 @@ export default class PostComment extends Sequelize.Model {
           type: Sequelize.STRING(1000),
           allowNull: false,
         },
+        like: {
+          type: Sequelize.INTEGER,
+          defaultValue: 0,
+          allowNull: false,
+        },
       },
       {
         sequelize,
@@ -30,6 +35,11 @@ export default class PostComment extends Sequelize.Model {
     db.postComment.belongsTo(db.user, {
       foreignKey: 'userName',
       targetKey: 'userName',
+      onDelete: 'cascade',
+    });
+    db.postComment.hasMany(db.postCommentLike, {
+      foreignKey: 'postCommentId',
+      sourceKey: 'id',
       onDelete: 'cascade',
     });
   }

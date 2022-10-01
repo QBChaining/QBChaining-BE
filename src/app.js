@@ -14,7 +14,7 @@ passportConfig();
 
 let corsOption = {
   origin: 'https://www.qb-chaning.com',
-  // origin : true,
+  // origin: true,
 };
 
 app.use(cors(corsOption));
@@ -25,7 +25,7 @@ import { sequelize } from './models/index.js';
 app.set('port', process.env.PORT || 3000);
 
 sequelize
-  .sync({ alter: true })
+  .sync({ alter: false })
   .then(() => console.log('db connect'))
   .catch((err) => console.error(err));
 

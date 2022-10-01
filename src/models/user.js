@@ -79,5 +79,10 @@ export default class User extends Sequelize.Model {
       foreignKey: 'userName',
       sourceKey: 'userName',
     });
+    db.user.hasMany(db.postCommentLike, {
+      foreignKey: 'userName',
+      sourceKey: 'userName',
+      onDelete: 'cascade',
+    });
   }
 }

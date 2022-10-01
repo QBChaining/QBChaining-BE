@@ -6,8 +6,13 @@ export default class PostCommentController {
 
   CommentShowAll = async (req, res, next) => {
     const postId = req.params.postId;
+    const userName = req.user?.userName;
+
     try {
-      const postcomment = await this.postCommentServices.CommentShowAll(postId);
+      const postcomment = await this.postCommentServices.CommentShowAll(
+        postId,
+        userName
+      );
 
       return res.status(200).json({
         success: true,
@@ -36,6 +41,15 @@ export default class PostCommentController {
         postId,
         profileImg
       );
+      // if (commentcreate) {
+      //   res.writeHead(200, {
+      //     'Content-Type': 'text/event-stream',
+      //     'Cache-Control': 'no-cache',
+      //     Connection: 'keep-alive',
+      //   });
+
+      //   res.write('event: helloworld\ndata: helpme\n\n');
+      // }
       return res.status(200).json({
         success: true,
         data: commentcreate,
@@ -86,6 +100,52 @@ export default class PostCommentController {
       return res.status(200).json({
         success: true,
         message: '삭제 성공',
+      });
+    } catch (error) {
+      const exception = exceptionHandler(error);
+
+      res.status(exception.statusCode).json({
+        success: exception.success,
+        message: exception.message,
+      });
+    }
+  };
+
+  CommentLike = async (req, res, next) => {
+    const commentId = req.params.commentId;
+    const userName = req.decoded.userName;
+
+    try {
+      const commentlike = await this.postCommentServices.CommentLike(
+        commentId,
+        userName
+      );
+      return res.status(200).json({
+        success: true,
+        message: '좋아요 성공',
+      });
+    } catch (error) {
+      const exception = exceptionHandler(error);
+      console.log(error);
+
+      res.status(exception.statusCode).json({
+        success: exception.success,
+        message: exception.message,
+      });
+    }
+  };
+
+  CommentLikeDelete = async (req, res, next) => {
+    const commentId = req.params.commentId;
+    const userName = req.decoded.userName;
+
+    try {
+      const commentlikedelete =
+        await this.postCommentServices.CommentLikeDelete(commentId, userName);
+
+      return res.status(200).json({
+        success: true,
+        message: '좋아요 삭제 성공',
       });
     } catch (error) {
       const exception = exceptionHandler(error);
