@@ -60,12 +60,12 @@ export default class QnaCommentRepository {
 
   LikeQna = async (qnaCommentId, userName) => {
     await QnaCommentLike.create({ qnaCommentId, userName });
-    await QnaComment.increment({ like: 1 }, { where: { id: qnaCommentId } });
+    await QnaComment.increment({ likes: 1 }, { where: { id: qnaCommentId } });
   };
 
   RemoveLikeQna = async (qnaCommentId, userName) => {
     await QnaCommentLike.destroy({ where: { qnaCommentId, userName } });
-    await QnaComment.increment({ like: -1 }, { where: { id: qnaCommentId } });
+    await QnaComment.increment({ likes: -1 }, { where: { id: qnaCommentId } });
   };
 
   FindComment = async (qnaCommentId) => {

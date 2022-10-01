@@ -46,7 +46,7 @@ export default class PostServices {
         isLike,
         tags,
         cntComment: post.PostComments.length,
-        like: post.like,
+        like: post.likes,
         profileImg: post.User.profileImg,
       };
     });
@@ -66,7 +66,7 @@ export default class PostServices {
         title: post.title,
         createdAt: post.createdAt,
         isLike,
-        like: post.like,
+        like: post.likes,
       };
     });
   };
@@ -98,7 +98,7 @@ export default class PostServices {
       profileImg: post.User.profileImg,
       userName: post.User.userName,
       cntComment: post.PostComments.length,
-      like: post.like,
+      like: post.likes,
     };
   };
 

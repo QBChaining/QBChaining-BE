@@ -7,7 +7,6 @@ export default (req, res, next) => {
     req.user = Jwt.verify(value, process.env.JWT_SECRET);
     return next();
   } catch (err) {
-    console.log(err);
     if (err.name == 'TokenExpiredError') return next();
     const exception = exceptionHandler(err);
     res

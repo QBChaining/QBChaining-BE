@@ -29,7 +29,7 @@ export default class QnaRepository {
         'category',
         'userName',
         'tags',
-        'like',
+        'likes',
         [
           sequelize.fn('substring', sequelize.col('content'), 1, 100),
           'content',
@@ -74,8 +74,8 @@ export default class QnaRepository {
           [option.gt]: new Date(new Date() - 24 * 60 * 60 * 1000),
         },
       },
-      attributes: ['id', 'title', 'like'],
-      order: [['like', 'DESC']],
+      attributes: ['id', 'title', ['likes', 'like']],
+      order: [['likes', 'DESC']],
     });
   };
 
@@ -92,7 +92,7 @@ export default class QnaRepository {
         'createdAt',
         'userName',
         'tags',
-        'like',
+        'likes',
       ],
       include: [
         { model: User, attributes: ['profileImg'] },
@@ -146,12 +146,12 @@ export default class QnaRepository {
 
   LikeQna = async (qnaId, userName) => {
     await QnaLike.create({ qnaId, userName });
-    await Qna.increment({ like: 1 }, { where: { id: qnaId } });
+    await Qna.increment({ likes: 1 }, { where: { id: qnaId } });
   };
 
   RemoveLikeQna = async (qnaId, userName) => {
     await QnaLike.destroy({ where: { qnaId, userName } });
-    await Qna.increment({ like: -1 }, { where: { id: qnaId } });
+    await Qna.increment({ likes: -1 }, { where: { id: qnaId } });
   };
 
   GetQnaCategory = async (category, page, page_count, userName, status) => {
@@ -170,7 +170,7 @@ export default class QnaRepository {
         'category',
         'userName',
         'tags',
-        'like',
+        'likes',
       ],
 
       include: [

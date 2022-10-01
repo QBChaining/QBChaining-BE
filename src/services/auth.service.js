@@ -1,6 +1,6 @@
 import Language from '../models/language.js';
 import AuthRepository from '../repositories/auth.repository.js';
-import { ForbiddenException } from '../exception/customException.js';
+import { NotFoundException } from '../exception/customException.js';
 export default class AuthService {
   authRepository = new AuthRepository();
 
@@ -54,7 +54,7 @@ export default class AuthService {
         userId
       );
     } else {
-      console.log('NO USER FOUND');
+      throw NotFoundException('유저 정보를 기입하지 않은 유저 입니다.');
     }
 
     const userLanguages = await this.authRepository.findLanguageById(userId);
@@ -72,7 +72,7 @@ export default class AuthService {
       await user.setLanguages(lanArr);
       await Language.destroy({ where: { userId: null } });
     } else {
-      console.log('NO USER 정보 FOUND');
+      throw NotFoundException('유저 정보를 기입하지 않은 유저 입니다.');
     }
 
     return {};

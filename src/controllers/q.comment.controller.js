@@ -21,7 +21,6 @@ class QnaCommentController {
         .status(201)
         .json({ success: true, message: '댓글 작성 완료', data });
     } catch (err) {
-      console.log(err);
       const exception = exceptionHandler(err);
 
       return res
@@ -45,7 +44,6 @@ class QnaCommentController {
         .status(200)
         .json({ success: true, message: '댓글 조회 완료', data });
     } catch (err) {
-      console.log(err);
       const exception = exceptionHandler(err);
 
       return res
@@ -61,7 +59,6 @@ class QnaCommentController {
       await this.qnaCommentService.LikeComment(id, userName);
       return res.status(200).json({ success: true, message: '댓글 추천 완료' });
     } catch (err) {
-      console.log(err);
       const exception = exceptionHandler(err);
 
       return res
@@ -77,7 +74,6 @@ class QnaCommentController {
       await this.qnaCommentService.RemoveLikeComment(id, userName);
       return res.status(200).json({ success: true, message: '댓글 삭제 완료' });
     } catch (err) {
-      console.log(err);
       const exception = exceptionHandler(err);
 
       return res
@@ -94,7 +90,6 @@ class QnaCommentController {
       await this.qnaCommentService.ChooseComment(comment_id, userName);
       return res.status(200).json({ success: true, message: '댓글 채택 완료' });
     } catch (err) {
-      console.log(err);
       const exception = exceptionHandler(err);
 
       return res

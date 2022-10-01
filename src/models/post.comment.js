@@ -10,7 +10,7 @@ export default class PostComment extends Sequelize.Model {
           type: Sequelize.STRING(1000),
           allowNull: false,
         },
-        like: {
+        likes: {
           type: Sequelize.INTEGER,
           defaultValue: 0,
           allowNull: false,
