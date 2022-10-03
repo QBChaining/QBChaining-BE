@@ -1,0 +1,37 @@
+{
+  "config": {
+    "target": "http://localhost:3000",
+    "phases": [
+      {
+        "duration": 30,
+        "arrivalRate": 2
+      }
+    ]
+  },
+  "scenarios": [
+    {
+      "flow": [
+        {
+          "get": {
+            "url": "/api/qna?page=0&page_count=10&resolve=0"
+          }
+        },
+        {
+          "get": {
+            "url": "/api/qna?page=1&page_count=10&resolve=0"
+          }
+        },
+        {
+          "get": {
+            "url": "/api/qna?page=2&page_count=10&resolve=0"
+          }
+        },
+        {
+          "get": {
+            "url": "/api/qna?page=3&page_count=10&resolve=0"
+          }
+        }
+      ]
+    }
+  ]
+}

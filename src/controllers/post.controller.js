@@ -13,6 +13,12 @@ export default class PostController {
         page * 1,
         page_count * 1
       );
+      if (postShowAll.length === 0) {
+        return res.status(200).json({
+          success: false,
+          message: '조회할게 없음',
+        });
+      }
       return res.status(200).json({
         success: true,
         message: '조회 성공',
