@@ -15,9 +15,6 @@ export default class PostServices {
       userName
     );
 
-    if (post.length === 0)
-      throw new BadRequestException('조회할 데이터가 없습니다');
-
     return post.map((post) => {
       let isBookmark = false;
       let isLike = false;
