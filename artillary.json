@@ -4,7 +4,7 @@
     "phases": [
       {
         "duration": 30,
-        "arrivalRate": 2
+        "arrivalRate": 50
       }
     ]
   },
@@ -13,22 +13,12 @@
       "flow": [
         {
           "get": {
-            "url": "/api/qna?page=0&page_count=10&resolve=0"
+            "url": "/api/posts?page=0&page_count=10"
           }
         },
         {
           "get": {
-            "url": "/api/qna?page=1&page_count=10&resolve=0"
-          }
-        },
-        {
-          "get": {
-            "url": "/api/qna?page=2&page_count=10&resolve=0"
-          }
-        },
-        {
-          "get": {
-            "url": "/api/qna?page=3&page_count=10&resolve=0"
+            "url": "/api/posts/hits"
           }
         }
       ]
