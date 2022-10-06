@@ -79,9 +79,9 @@ export default class QnaCommentRepository {
     await QnaComment.update({ isChoose: true }, { where: { id } });
   };
 
-  QnaCommentBookmark = async (qnaid) => {
+  QnaCommentBookmark = async (qnaid, userName) => {
     return await QnaBookmark.findAll({
-      where: { qnaid: qnaid },
+      where: { qnaid: qnaid, userName: { [option.ne]: userName } },
     });
   };
 

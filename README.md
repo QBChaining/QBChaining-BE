@@ -33,7 +33,6 @@
     <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=MySQL&logoColor=white">
     <img src="https://img.shields.io/badge/Passport-34E27A?style=flat&logo=Passport&logoColor=white">
     <img src="https://img.shields.io/badge/.ENV-ECD53F?style=flat&logo=dotenv&logoColor=white">
-    <img src="https://img.shields.io/badge/redis-DC382D?style=flat&logo=redis&logoColor=white">
     <img src="https://img.shields.io/badge/Nginx-009639?style=flat&logo=nginx&logoColor=white">
     <img src="https://img.shields.io/badge/Github Action-2088FF?style=flat&logo=GitHub Actions&logoColor=white">
     <img src="https://img.shields.io/badge/Sequelize-52B0E7?style=flat&logo=sequelize&logoColor=white">
