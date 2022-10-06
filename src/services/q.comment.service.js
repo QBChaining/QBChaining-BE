@@ -25,13 +25,23 @@ class QnaCommentService {
       userName,
       comment
     );
+    console.log(userName);
+    if (existQna.userName === userName) {
+      const commentbookmark =
+        await this.qnaCommentRepository.QnaCommentBookmark(qnaId, userName);
+
+      commentbookmark.map(async (noti) => {
+        await this.qnaCommentRepository.CreateNoti(noti.qnaId, noti.userName);
+      });
+    }
 
     if (existQna.userName !== userName) {
-      await this.qnaCommentRepository.Notification(existQna);
-
       const commentbookmark =
-        await this.qnaCommentRepository.QnaCommentBookmark(qnaId);
+        await this.qnaCommentRepository.QnaCommentBookmark(qnaId, userName);
 
+      if (commentbookmark.length === 0) {
+        await this.qnaCommentRepository.Notification(existQna);
+      }
       commentbookmark.map(async (noti) => {
         await this.qnaCommentRepository.CreateNoti(noti.qnaId, noti.userName);
       });
