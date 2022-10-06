@@ -79,8 +79,6 @@ export default class PostRepository {
 
     const post = await Post.findAll({
       limit: 4,
-      // op.gt : 6   ===  > 6
-      // op.lt : 6   ===  6 <
       where: { createdAt: { [op.gt]: nowMinusOneDay, [op.lt]: now } },
       include: [
         {

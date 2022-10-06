@@ -30,9 +30,17 @@ const config = {
     username: process.env.DB_ID,
     password: process.env.DB_PW,
     database: process.env.DB,
-    host: '127.0.0.1',
+    host: process.env.DB_HOST,
     dialect: 'mysql',
     logging: false,
+    timezone: '+09:00',
+    dialectOptions: {
+      dateStrings: true,
+      typeCast: true,
+    },
+    define: {
+      timestamps: true,
+    },
   },
 };
 
