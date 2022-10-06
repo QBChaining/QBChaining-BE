@@ -12,7 +12,7 @@ import SearchRepository from '../repositories/search.repository.js';
 
 class SearchService {
   searchRepository = new SearchRepository();
-  QnaSearch = async (keyWords, userName, page_count, page) => {
+  QnaSearch = async (keyWords, userName, page_count, endId) => {
     if (!keyWords || keyWords.trim() === '')
       throw new BadRequestException('검색 조건이 옳지 않습니다.');
     const Op = sequelize.Op;
@@ -26,39 +26,41 @@ class SearchService {
       searchKeywords.push(content);
     }
 
-    const lists = await this.searchRepository.QnaSearch(
-      searchKeywords,
-      userName,
-      page_count,
-      page,
-      Op
-    );
+    let lists = '';
+    if (endId !== 0) {
+      lists = await this.searchRepository.QnaSearch(
+        searchKeywords,
+        userName,
+        page_count,
+        endId,
+        Op
+      );
+    } else {
+      lists = await this.searchRepository.FirstQnaSearch(
+        searchKeywords,
+        userName,
+        page_count,
+        endId,
+        Op
+      );
+    }
 
     if (!lists.length) return '검색 결과가 없습니다.';
 
     return lists.map((list) => {
-      let isBookmark = '';
-      if (!userName) isBookmark = false;
-      else isBookmark = list.QnaBookmarks[0]?.userName === userName;
-
-      let isLike = false;
-      for (let i = 0; i < list.QnaLikes.length; i++) {
-        if (list.QnaLikes[i]?.userName === userName) {
-          isLike = true;
-          break;
-        }
-      }
-
       return {
         id: list.id,
         title: list.title,
+        content: list.content,
         userName: list.userName,
         profileImg: list.User?.profileImg,
         isResolve: list.isResolve,
         createdAt: list.createdAt,
         like: list.likes,
-        isLike,
-        isBookmark,
+        isLike: !userName ? false : list.QnaLikes[0]?.userName === userName,
+        isBookmark: !userName
+          ? false
+          : list.QnaBookmarks[0]?.userName === userName,
         cntcomment: list.QnaComments.length,
         category: list.category,
         tags: list.tags.split(','),
@@ -66,7 +68,7 @@ class SearchService {
     });
   };
 
-  PostSearch = async (keyWords, userName, page_count, page) => {
+  PostSearch = async (keyWords, userName, page_count, endId) => {
     if (!keyWords || keyWords.trim() === '')
       throw new BadRequestException('검색 조건이 옳지 않습니다.');
     const Op = sequelize.Op;
@@ -79,41 +81,42 @@ class SearchService {
       searchKeywords.push(title);
       searchKeywords.push(content);
     }
+    let lists = '';
+    if (endId !== 0) {
+      lists = await this.searchRepository.PostSearch(
+        searchKeywords,
+        userName,
+        page_count,
+        endId,
+        Op
+      );
+    } else {
+      lists = await this.searchRepository.FirstPostSearch(
+        searchKeywords,
+        userName,
+        page_count,
+        endId,
+        Op
+      );
+    }
 
-    const lists = await this.searchRepository.PostSearch(
-      searchKeywords,
-      userName,
-      page_count,
-      page,
-      Op
-    );
     if (!lists.length) return '검색 결과가 없습니다.';
 
     return lists.map((list) => {
-      let isBookmark = '';
-      if (!userName) isBookmark = false;
-      else isBookmark = list.PostBookmarks[0]?.userName === userName;
-
-      let isLike = false;
-      for (let i = 0; i < list.PostLikes.length; i++) {
-        if (list.PostLikes[i]?.userName === userName) {
-          isLike = true;
-          break;
-        }
-      }
-
       return {
         id: list.id,
         title: list.title,
-        userName: list.userName,
-        profileImg: list.User?.profileImg,
-        isResolve: list.isResolve,
+        content: list.content,
         createdAt: list.createdAt,
-        like: list.likes,
-        isLike,
-        isBookmark,
-        cntcomment: list.PostComments.length,
+        userName: list.userName,
         tags: list.tags.split(','),
+        profileImg: list.User?.profileImg,
+        like: list.like,
+        isLike: !userName ? false : list.PostLikes[0]?.userName === userName,
+        isBookmark: !userName
+          ? false
+          : list.PostBookmarks[0]?.userName === userName,
+        cntcomment: list.PostComments.length,
       };
     });
   };
