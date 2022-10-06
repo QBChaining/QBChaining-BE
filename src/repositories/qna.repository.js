@@ -74,7 +74,7 @@ export default class QnaRepository {
           [option.gt]: new Date(new Date() - 24 * 60 * 60 * 1000),
         },
       },
-      attributes: ['id', 'title', 'likes'],
+      attributes: ['id', 'title', ['likes', 'like']],
       order: [['likes', 'DESC']],
     });
   };

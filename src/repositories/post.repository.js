@@ -32,7 +32,7 @@ export default class PostRepository {
     return bookmark;
   };
 
-  PostShowAll = async (page, page_count) => {
+  PostShowAll = async (page, page_count, userName) => {
     const post = await Post.findAll({
       offset: page_count * page,
       limit: page_count,
@@ -45,16 +45,25 @@ export default class PostRepository {
         'title',
         'createdAt',
         'updatedAt',
-        'like',
+        'likes',
         'tags',
       ],
-
       where: {},
       include: [
         { model: User, attributes: ['userName', 'profileImg'] },
         { model: PostComment, attributes: ['userName', 'comment'] },
-        { model: PostLike, attributes: ['userName'] },
-        { model: PostBookmark, attributes: ['userName'] },
+        {
+          model: PostLike,
+          attributes: ['userName'],
+          where: { userName: [userName, undefined] },
+          required: false,
+        },
+        {
+          model: PostBookmark,
+          attributes: ['userName'],
+          where: { userName: [userName, undefined] },
+          required: false,
+        },
       ],
       order: [['createdAt', 'DESC']],
     });
@@ -62,37 +71,48 @@ export default class PostRepository {
     return post;
   };
 
-  PostShowHit = async () => {
+  PostShowHit = async (userName) => {
+    const nowMinusOneDay = new Date();
+    nowMinusOneDay.setDate(nowMinusOneDay.getDate() - 1);
+
+    const now = new Date();
+
     const post = await Post.findAll({
       limit: 4,
-      where: {},
-      include: [{ model: PostLike, attributes: ['userName'] }],
-      attributes: [
-        [
-          sequelize.fn('substring', sequelize.col('content'), 1, 100),
-          'content',
-        ],
-        'id',
-        'title',
-        'createdAt',
-        'updatedAt',
-        'like',
-        'tags',
+      where: { createdAt: { [op.gt]: nowMinusOneDay, [op.lt]: now } },
+      include: [
+        {
+          model: PostLike,
+          attributes: ['userName'],
+          where: { userName: [userName, undefined] },
+          required: false,
+        },
       ],
-      order: [['like', 'DESC']],
+      attributes: ['id', 'title', 'createdAt', 'likes'],
+      order: [['likes', 'DESC']],
     });
 
-    return post.reverse();
+    return post;
   };
 
-  PostShowOne = async (postId) => {
+  PostShowOne = async (postId, userName) => {
     const post = await Post.findOne({
       where: { id: postId },
       include: [
         { model: User, attributes: ['userName', 'profileImg'] },
         { model: PostComment, attributes: ['userName'] },
-        { model: PostBookmark, attributes: ['userName'] },
-        { model: PostLike, attributes: ['userName'] },
+        {
+          model: PostBookmark,
+          attributes: ['userName'],
+          where: { userName: [userName, undefined] },
+          required: false,
+        },
+        {
+          model: PostLike,
+          attributes: ['userName'],
+          where: { userName: [userName, undefined] },
+          required: false,
+        },
       ],
     });
 
@@ -104,7 +124,7 @@ export default class PostRepository {
       where: { userName: userName },
       attributes: [],
       include: [
-        { model: Post, attributes: ['title', 'id', 'createdAt', 'like'] },
+        { model: Post, attributes: ['title', 'id', 'createdAt', 'likes'] },
         {
           model: PostComment,
           attributes: ['comment'],
@@ -112,7 +132,7 @@ export default class PostRepository {
             {
               model: Post,
               where: { userName: { [op.ne]: userName } },
-              attributes: ['title', 'id', 'createdAt', 'like'],
+              attributes: ['title', 'id', 'createdAt', 'likes'],
             },
           ],
         },
@@ -153,7 +173,7 @@ export default class PostRepository {
 
   PostLike = async (postId, userName) => {
     const like = await PostLike.create({ postId, userName });
-    await Post.increment({ like: 1 }, { where: { id: postId } });
+    await Post.increment({ likes: 1 }, { where: { id: postId } });
 
     return like;
   };
@@ -162,7 +182,7 @@ export default class PostRepository {
     const likeDelete = await PostLike.destroy({
       where: { postId: postId, userName: userName },
     });
-    await Post.decrement({ like: 1 }, { where: { id: postId } });
+    await Post.decrement({ likes: 1 }, { where: { id: postId } });
 
     return likeDelete;
   };

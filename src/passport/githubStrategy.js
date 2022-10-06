@@ -39,7 +39,6 @@ const github = () => {
             done(null, newUser);
           }
         } catch (error) {
-          console.error(error);
           done(error);
         }
       }

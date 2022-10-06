@@ -45,13 +45,18 @@ export default class PostCommentRepository {
     });
   };
 
-  CommentShowAll = async (postId) => {
+  CommentShowAll = async (postId, userName) => {
     const postcomment = await PostComment.findAll({
       where: { postId: postId },
-      attributes: ['id', 'comment', 'createdAt', 'updatedAt', 'like'],
+      attributes: ['id', 'comment', 'createdAt', 'updatedAt', 'likes'],
       include: [
         { model: User, attributes: ['userName', 'profileImg'] },
-        { model: PostCommentLike, attributes: ['userName'] },
+        {
+          model: PostCommentLike,
+          attributes: ['userName'],
+          where: { userName: [userName, undefined] },
+          required: false,
+        },
       ],
     });
     return postcomment;
@@ -125,7 +130,7 @@ export default class PostCommentRepository {
       postCommentId: commentId,
       userName,
     });
-    await PostComment.increment({ like: 1 }, { where: { id: commentId } });
+    await PostComment.increment({ likes: 1 }, { where: { id: commentId } });
 
     return like;
   };
@@ -134,7 +139,7 @@ export default class PostCommentRepository {
     const likeDelete = await PostCommentLike.destroy({
       where: { postCommentId: commentId, userName: userName },
     });
-    await PostComment.decrement({ like: 1 }, { where: { id: commentId } });
+    await PostComment.decrement({ likes: 1 }, { where: { id: commentId } });
 
     return likeDelete;
   };

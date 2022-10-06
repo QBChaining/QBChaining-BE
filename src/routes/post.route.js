@@ -10,8 +10,6 @@ const searchCotroller = new SearchCotroller();
 
 router.get('/', checkSignin, postController.PostShowAll);
 router.get('/search', checkSignin, searchCotroller.PostSearch);
-router.get('/comment', checkSignin, postController.PostShowComment);
-router.get('/like', checkSignin, postController.PostShowLike);
 router.get('/hits', checkSignin, postController.PostShowhit);
 router.get('/bookmark', verifyToken, postController.PostBookMarkView);
 router.get('/tags', checkSignin, postController.PostTagShow);
