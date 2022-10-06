@@ -5,7 +5,7 @@ class SearchCotroller {
   searchService = new SearchService();
 
   QnaSearch = async (req, res, next) => {
-    const { page_count, page } = req.query;
+    const { page_count, endid } = req.query;
     const { q } = req.query;
     const userName = req.user?.userName;
     try {
@@ -13,7 +13,7 @@ class SearchCotroller {
         q,
         userName,
         page_count * 1,
-        page * 1
+        endid * 1
       );
       return res
         .status(200)
@@ -28,7 +28,7 @@ class SearchCotroller {
   };
 
   PostSearch = async (req, res, next) => {
-    const { page_count, page } = req.query;
+    const { page_count, endid } = req.query;
     const { q } = req.query;
     const userName = req.user?.userName;
     try {
@@ -36,7 +36,7 @@ class SearchCotroller {
         q,
         userName,
         page_count * 1,
-        page * 1
+        endid * 1
       );
       return res
         .status(200)
