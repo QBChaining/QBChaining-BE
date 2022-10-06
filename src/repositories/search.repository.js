@@ -25,7 +25,7 @@ export default class SearchRepository {
   //      LEFT OUTER JOIN qnaComment AS QnaComment ON 'Qna.id' = 'QnaComments.qnaId'`
   //   );
   // };
-  QnaSearch = async (searchKeywords, userName, page_count, page, Option) => {
+  QnaSearch1 = async (searchKeywords, userName, page_count, page, Option) => {
     return await Qna.findAll({
       offset: page_count * page,
       limit: page_count,
