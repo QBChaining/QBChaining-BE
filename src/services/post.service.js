@@ -7,7 +7,6 @@ import {
 
 export default class PostServices {
   postRepository = new PostRepository();
-  // 최신순 정렬
   PostShowAll = async (userName, page, page_count) => {
     const post = await this.postRepository.PostShowAll(
       page,

@@ -3,7 +3,6 @@ import github from './githubStrategy.js';
 import User from '../models/user.js';
 
 const passportConfig = () => {
-  // user.id 확인하기
   passport.serializeUser((user, done) => {
     done(null, user.id);
   });

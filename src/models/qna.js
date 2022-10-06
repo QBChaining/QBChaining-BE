@@ -40,11 +40,9 @@ export default class Qna extends Sequelize.Model {
         charset: 'utf8mb4',
         collate: 'utf8mb4_unicode_ci',
         indexes: [
-          // 인덱스 설정
           {
             name: 'content',
-            // 인덱스 이름은 따로 지정해주지 않아, 인덱스명은 [table]_[fields]
-            type: 'FULLTEXT', // 풀텍스트 인덱스 설정
+            type: 'FULLTEXT',
             fields: ['content'],
           },
         ],

@@ -59,9 +59,6 @@ export default class AuthService {
 
     const userLanguages = await this.authRepository.findLanguageById(userId);
 
-    // 기존의 언어/직업을 찾고
-    // 기존의 언어/직업을 새로운 언어/직업으로 업데이트
-
     if (userLanguages.length > 0) {
       const lanArr = await Promise.all(
         language.map((e) => {
