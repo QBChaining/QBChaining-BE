@@ -48,7 +48,7 @@
 
 ## ERD
 
-![image](https://user-images.githubusercontent.com/107670953/192533007-182dcb4c-9e49-4abc-b111-c461858399e1.png)
+![image](https://user-images.githubusercontent.com/90764424/194865874-fbd3915f-b97e-4bdc-95bd-f81e44b4d3ee.png)
 
 ## 라이브 러리 | Library
 
