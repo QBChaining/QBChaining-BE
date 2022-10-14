@@ -54,12 +54,6 @@ class QnaCommentService {
       page,
       userName
     );
-
-    let chooseComment = await this.qnaCommentRepository.Getchoose(
-      qnaId,
-      userName
-    );
-
     commentLists = commentLists.map((list) => {
       return {
         id: list.id,
@@ -74,21 +68,7 @@ class QnaCommentService {
           : list.QnaCommentLikes[0]?.userName === userName,
       };
     });
-    chooseComment = !chooseComment
-      ? null
-      : {
-          id: chooseComment.id,
-          comment: chooseComment.comment,
-          isChoose: chooseComment.isChoose,
-          userName: chooseComment.userName,
-          like: chooseComment.likes,
-          createdAt: chooseComment.createdAt,
-          profileImg: chooseComment.User.profileImg,
-          isLike: !userName
-            ? false
-            : chooseComment?.QnaCommentLikes[0]?.userName === userName,
-        };
-    return { commentLists, chooseComment };
+    return { commentLists };
   };
 
   LikeComment = async (qnaCommentId, userName) => {
