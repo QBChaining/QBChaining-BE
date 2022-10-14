@@ -16,21 +16,7 @@ export default class QnaCommentRepository {
   CreateComment = async (qnaId, userName, comment) => {
     return await QnaComment.create({ qnaId, userName, comment });
   };
-  Getchoose = async (qnaId, userName) => {
-    return await QnaComment.findOne({
-      where: { qnaId, isChoose: true },
-      attributes: { exclude: ['qnaId', 'updatedAt'] },
-      include: [
-        { model: User, attributes: ['profileImg'] },
-        {
-          model: QnaCommentLike,
-          attributes: ['userName'],
-          where: { userName: { [option.eq]: `${userName}` } },
-          required: false,
-        },
-      ],
-    });
-  };
+
   GetQnaComment = async (qnaId, page_count, page, userName) => {
     return await QnaComment.findAll({
       where: { qnaId },
@@ -49,6 +35,7 @@ export default class QnaCommentRepository {
         },
         { model: User, attributes: ['profileImg'] },
       ],
+      order: [['isChoose', 'DESC']],
     });
   };
   FindQnaLike = async (qnaCommentId, userName) => {
